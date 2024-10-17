@@ -1,0 +1,250 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+<style>
+    .button-custom {
+        background-color: #4AA147;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 0px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px 8px 8px 8px;
+        cursor: pointer;
+        opacity: 1; /* Fully visible */
+        transform: rotate(0deg); /* No rotation */
+    }
+
+    .button-custom i {
+            margin-right: 5px; /* Space between icon and text */
+        }
+
+    .info-icon {
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .offcanvas-body label {
+        font-weight: 500;
+    }
+
+    .input-group {
+        margin-bottom: 10px;
+    }
+
+</style>
+
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2 border-1">
+
+    <div class="row mx-0 " style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+
+        <div class="pt-2 pb-2" style="/* border-bottom: 1px solid #D4D4D4; */ display: flex; justify-content: space-between; align-items: center;">
+            <span class="mt-2" style="font-weight: 600; font-size: 20px;">Setup Leaves</span>
+            <button class="button-custom" data-bs-toggle="offcanvas" data-bs-target="#offcanvasForm" aria-controls="offcanvasForm">
+                <i class="fas fa-plus"></i> Create New
+            </button>
+        </div>
+
+        <div id="leave-table" class="pt-2"></div>
+       
+
+    </div>
+
+</div>
+
+
+<!-- Offcanvas Structure -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasForm" aria-labelledby="offcanvasFormLabel" style="width: 800px;">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasFormLabel">Leave Rules And Policy</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <form>
+            <div class="mb-3 row">
+                <label for="leaveName" class="col-sm-3 col-form-label">Leave Name:</label>
+                <div class="col-sm-3">
+                    <input type="text" class="form-control" id="leaveName" value="">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="employeeStatus" class="col-sm-3 col-form-label">Employee Status:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" id="employeeStatus">
+                        <option value="Active" selected>Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="leavePerPeriod1" class="col-sm-3 col-form-label">Leave Per Period:</label>
+                <div class="col-sm-3">
+                    <input type="number" class="form-control" id="leavePerPeriod1" value="14">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="employeeApply1" class="col-sm-3 col-form-label">Employee Pre Apply:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" id="employeeApply1" required>
+                        <option value="" disabled selected>Yes/No</option>
+                        <option value="Active">Yes</option>
+                        <option value="Inactive">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="maximumDay" class="col-sm-3 col-form-label">Maximum Day:</label>
+                <div class="col-sm-3">
+                    <input type="number" class="form-control" id="maximumDay" value="14">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="futureAdjust" class="col-sm-3 col-form-label">Future Adjust Able:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" id="futureAdjust" required>
+                        <option value="" disabled selected>Yes/No</option>
+                        <option value="Active">Yes</option>
+                        <option value="Inactive">No</option>
+                    </select>
+                </div>
+
+                <label for="withinDays" class="col-sm-3 col-form-label">Within Days:</label>
+                <div class="col-sm-3">
+                    <input type="number" class="form-control" id="withinDays" value="15">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="percentageLeave" class="col-sm-3 col-form-label">Percentage Leave Carried Forward:</label>
+                <div class="col-sm-3">
+                    <input type="number" class="form-control" id="percentageLeave" value="14" min="0" max="100" step="1" placeholder="Enter percentage">
+                    <span class="input-group-text">%</span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="eligibleFor" class="col-sm-3 col-form-label">Eligible for:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" id="eligibleFor" required>
+                        <option value="" disabled selected>Select</option>
+                        <option value="Active">After Confirmation</option>
+                        <option value="Inactive">60 Days</option>
+                        <option value="Inactive">30 Days</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="adminAssign" class="col-sm-3 col-form-label">Admin Assign To Employee:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" id="adminAssign" required>
+                        <option value="" disabled selected>Yes/No</option>
+                        <option value="Active">Yes</option>
+                        <option value="Inactive">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="leaveOption" class="col-sm-3 col-form-label">Leave Options:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" id="leaveOption" required>
+                        <option value="" disabled selected>Select</option>
+                        <option value="Full Day">Full Day</option>
+                        <option value="Half Day">Half Day</option>
+                        <option value="Hourly">Hourly</option>
+                    </select>
+                </div>
+
+                <label for="maximumHour" class="col-sm-3 col-form-label">Maximum Hour:</label>
+                <div class="col-sm-3">
+                    <input type="number" class="form-control" id="maximumHour" value="15">
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="paidTimeOff" class="col-sm-3 col-form-label">Paid time off (PTO):</label>
+                <div class="col-sm-3">
+                    <select class="form-select" id="paidTimeOff">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="allowedFor" class="col-sm-3 col-form-label">Allowed for:</label>
+                <div class="col-sm-3">
+                    <select class="form-select" id="allowedFor" required>
+                        <option value="" disabled selected>All</option>
+                        <option value="Active">After Confirmation</option>
+                        <option value="Inactive">60 Days</option>
+                        <option value="Inactive">30 Days</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="offcanvas">Cancel</button>
+                <button type="submit" class="btn button-custom">Update</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+<script>
+
+    // Wait for the DOM to load
+    document.addEventListener("DOMContentLoaded", function () {
+        // Data for the table
+        const tableData = [
+            { leaveName: "Sick Leave", displayName: "", definitions: "", leaveDays: "", color: "", leaveType: "" },
+            { leaveName: "Maternity Leave", displayName: "", definitions: "", leaveDays: "", color: "", leaveType: "" },
+            { leaveName: "Casual Leave", displayName: "", definitions: "", leaveDays: "", color: "", leaveType: "" },
+            { leaveName: "Earn Leave", displayName: "", definitions: "", leaveDays: "", color: "", leaveType: "" },
+            { leaveName: "Annual Leave", displayName: "", definitions: "", leaveDays: "", color: "", leaveType: "" },
+            { leaveName: "Marriage Leave", displayName: "", definitions: "", leaveDays: "", color: "", leaveType: "" },
+        ];
+
+        // Initialize Tabulator
+        const table = new Tabulator("#leave-table", {
+            data: tableData,
+            layout: "fitColumns",
+            columns: [
+                { title: "Leave Name", field: "leaveName", headerSort: false },
+                { title: "Display Name", field: "displayName", headerSort: false },
+                { title: "Definitions", field: "definitions", headerSort: false },
+                { title: "Leave Days", field: "leaveDays", headerSort: false },
+                { title: "Color", field: "color", headerSort: false },
+                { title: "Leave(Daily/Hourly)", field: "leaveType", headerSort: false },
+                {
+                    title: "Info",
+                    field: "info",
+                    headerSort: false,
+                    formatter: function () {
+                        return '<i class="fas fa-info-circle"></i>';
+                    },
+                    hozAlign: "center",
+                    cellClick: function (e, cell) {
+                        alert(`Info for ${cell.getRow().getData().leaveName}`);
+                    },
+                },
+            ],
+            pagination: "local",
+            paginationSize: 6,
+            paginationButtonCount: 4,
+            paginationSizeSelector: [10, 25, 50, 100],
+        });
+    });
+
+</script>

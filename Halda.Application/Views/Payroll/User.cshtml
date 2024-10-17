@@ -1,0 +1,600 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+<style>
+    .nav-tabs {
+        border-bottom: none;
+    }
+        /* Nav Tabs Styling */
+        .nav-tabs .nav-link {
+            color: #6c757d;
+            border: none;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+        }
+
+            .nav-tabs .nav-link.active {
+                color: #4AA147;
+                font-weight: 600;
+                background-color: transparent;
+                border-bottom: 3px solid #4AA147;
+                border-radius: 0px;
+            }
+
+    .employee-stats {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px; /* Space between items */
+        
+    }
+
+
+
+    /* Additional styles for stat-item and stat-text, if needed */
+    .stat-item {
+        background-color: #F9FAFB; /* Light background for each item */
+        border-radius: 12px;
+        padding: 5px;
+    }
+
+    .stat-text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: -18px;
+        color: #667085;
+        font-family: AirbnbCereal_W_Bk;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px; /* 166.667% */
+    }
+
+    .emp-list-header {
+        color: var(--Gray-h, #414042);
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 20px; /* 111.111% */
+    }
+
+    .emp-list-img {
+        max-width: 25px;
+        max-height: 25px;
+        margin-top: -15px;
+    }
+
+    .header-text-4 {
+        color: var(--Gray-h, #414042);
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 22.194px; /* 110.97% */
+    }
+
+</style>
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2">
+
+    <div class="row mx-0" style="background-color: #FFFFFF; border-radius: 5px; box-shadow: 0px 0px 10px 0px #0000000D;">
+        <h4 class="py-2">Payroll & Finance</h4>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button style="font-size: 14px;" class="nav-link active" data-bs-toggle="tab" data-bs-target="#payroll" type="button" role="tab" aria-selected="true">Payroll</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button style="font-size: 14px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#loans" type="button" role="tab" aria-selected="false">Loans</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button style="font-size: 14px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#payslip" type="button" role="tab" aria-selected="false">Payslip</button>
+            </li>
+        </ul>
+
+    </div>
+    <div class="tab-content mt-3">
+        <div class="tab-pane fade show active" id="payroll" role="tabpanel">
+            <div class="row mb-2">
+                <!-- Profile Image -->
+                <div class="col-4 col-md-2 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
+                    <img src="/User/img/robin.png" alt="Profile Picture" class="pt-3 ps-md-3" style="max-width: 150px; max-height: 150px; border-radius: 50%;">
+                </div>
+                <!-- Profile Details -->
+                <div class="col-8 col-md-10 d-flex flex-column justify-content-center">
+                    <h5 class="mb-1" style="color:#414042; font-weight: 700;">Borhan Uddin</h5>
+                    <p class="mb-1 profile-custom-p">jr.programmer</p>
+                    <div class="d-flex align-items-center mb-1">
+                        <img src="/User/img/smart-phone-01.png" alt="Phone Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                        <p class="mb-0 profile-custom-p">01906750597</p>
+                    </div>
+                    <div class="d-flex align-items-center mb-1">
+                        <img src="/User/img/mail-01.png" alt="Email Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                        <p class="mb-0 profile-custom-p">smborhan.cse@gmail.com</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <img src="/User/img/time-02.png" alt="Last Active Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                        <p class="mb-0 profile-custom-p">Last Active time today - 12.00 PM</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row border-bottom pb-2 mx-0 mt-1">
+                <div class="col-12 d-flex align-items-center gap-2">
+                    <div class="toggle-switch d-flex align-items-center" id="toggleSwitch">
+                        <div class="status-text">Active</div>
+                        <div class="slider"></div>
+                    </div>
+
+                    <div class="tag-container d-flex gap-1">
+                        <span class="tag">Training</span>
+                        <span class="tag">Learning</span>
+                        <span class="tag">Development</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2 mx-0" style="background-color: #FFFFFF; border-radius: 5px; box-shadow: 0px 0px 10px 0px #0000000D;">
+                <div class="row mx-0" style="border-bottom: 0.52px solid #E5E3E3; ">
+                    <div class="col-6 my-2 d-flex align-items-center">
+                        <img alt="calander" class="me-2" src="/User/img/calender.png" width="40px">
+                        <h5 class="header-text-4 mb-0"> Employee self service portal</h5>
+                    </div>
+                    <div class="col-6 my-2">
+                        <div class="button-group" style="border: 1px solid #D0D5DD; border-radius: 7px; display: inline-block;">
+                            <button class="btn" style="border-right: 1px solid #D0D5DD; border-bottom-right-radius: 0px; border-top-right-radius: 0px;" id="monthly-btn">Monthly</button>
+                            <button class="btn" style="border-right: 1px solid #D0D5DD; border-bottom-right-radius: 0px; border-top-right-radius: 0px;" id="quarterly-btn">Quarterly</button>
+                            <button class="btn" id="yearly-btn">Yearly</button>
+                        </div>
+                    </div>
+
+                   
+                </div>
+
+                <div class="col-12 ">
+                    <div class="">
+                        ghgjh
+                    </div>
+                </div>
+                
+            </div>
+
+            
+                <div class="row mx-0" style="border-bottom: 0.52px solid #E5E3E3">
+                    <div class="col-6 my-2 d-flex align-items-center">
+                        <img alt="calander" class="me-2" src="/User/img/calender.png" width="40px">
+                        <h5 class="header-text-4 mb-0">Employee List</h5>
+                    </div>
+                    <div class="col-6 my-2">
+                        <div class="button-group" style="border: 1px solid #D0D5DD; border-radius: 7px; display: inline-block;">
+                            <button class="btn" style="border-right: 1px solid #D0D5DD; border-bottom-right-radius: 0px; border-top-right-radius: 0px;" id="monthly-btn">Monthly</button>
+                            <button class="btn" style="border-right: 1px solid #D0D5DD; border-bottom-right-radius: 0px; border-top-right-radius: 0px;" id="quarterly-btn">Quarterly</button>
+                            <button class="btn" id="yearly-btn">Yearly</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="employee-stats mt-2 mb-2">
+                    <div class="stat-item ">
+                        <div class="p-2">
+                            <h4 class="emp-list-header">
+                                20,000
+                            </h4>
+                            <div class="stat-text">
+                                <p>Total Employee</p>
+                                <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="p-2">
+                            <h4 class="emp-list-header">2,500</h4>
+                            <div class="stat-text">
+                                <p>Active Employee</p>
+                                <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="p-2">
+                            <h4 class="emp-list-header">100</h4>
+                            <div class="stat-text">
+                                <p>Release Employee</p>
+                                <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="p-2">
+                            <h4 class="emp-list-header">50</h4>
+                            <div class="stat-text">
+                                <p>New Joining</p>
+                                <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="p-2">
+                            <h4 class="emp-list-header">03</h4>
+                            <div class="stat-text">
+                                <p>On Process</p>
+                                <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           
+
+            <div class="row mt-2 mx-0" style="background-color: #FFFFFF; border-radius: 5px; box-shadow: 0px 0px 10px 0px #0000000D;">
+
+            jjjj
+            </div>
+
+            <div class="col-12 pb-2 mt-4 d-flex justify-content-end">
+                <button type="button" class="btn  me-2 " style="background-color: #F0F2F0; color: #2F2F2F; padding: px 8px; font-size: 16px; font-weight: 500;">Download</button>
+                <button type="button" class="btn  " style="background-color: #4AA147; color: #FFFFFF; border-color: #4AA147; padding: px 8px; font-size: 16px;"> Print</button>
+            </div>
+
+        </div>
+
+
+        <div class="tab-pane fade" id="loans" role="tabpanel">
+            <div class="row mt-2 mx-0" style="background-color: #FFFFFF; border-radius: 5px; box-shadow: 0px 0px 10px 0px #0000000D;">
+                <h5>Loan Management</h5>
+
+                <ul class="nav nav-tabs " role="tablist" >
+                    <li class="nav-item" role="presentation">
+                        <button style="font-size: 14px;" class="nav-link active" data-bs-toggle="tab" data-bs-target="#opened-loan" type="button" role="tab" aria-selected="true">Opened Loan</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button style="font-size: 14px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#loan-history" type="button" role="tab" aria-selected="false">Loan History</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button style="font-size: 14px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#loan-requests" type="button" role="tab" aria-selected="false">Loan Requests</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button style="font-size: 14px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#loan-halt-request" type="button" role="tab" aria-selected="false">Loan Halt Request</button>
+                    </li>
+                </ul>
+
+
+                <div class="p-2 mt-2" style="border-top: 0.5px solid #D4D4D4">
+ 
+                        <div class="tab-content p-2">
+                            <div class="tab-pane fade show active" id="opened-loan" role="tabpanel" aria-labelledby="opened-loan-tab">
+                                <div style="background-color: #FFFFFF; box-shadow: 0px 1px 11px 0px #00000024; border-radius: 8px;">
+
+                                   <div class="row mx-0 p-3" style="border-bottom: 0.5px solid #D4D4D4">
+                                      <div class="col-8">
+                                        <h3 style="font-weight: 700; color: #414042;"> 500000 TK </h3>
+                                        <h5 style="font-weight: 600; color: #414042;">Medical Loan II LOAN-0002</h5>
+                                      </div>
+                                      <div class="col-4">
+                                        <div class="progress mt-3" style="height: 20px;">
+                                            <div class="progress-bar" role="progressbar" style="width: 10%; background-color: #007bff;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">10%</div>
+                                        </div>
+                                      
+                                      </div> 
+                                   </div>
+
+                                   <div class="row mx-0 p-3">
+                                      <div class="col-3">
+                                        <h5 style="color: #5D5D62; font-weight: 500;">Opened Loan</h5>
+                                        <h4 style="color: #414042; font-weight: 500;">100000 TK</h4>
+                                      </div>
+                                      <div class="col-3">
+                                        <h5 style="color: #5D5D62; font-weight: 500;"> Amount Repaid</h5>
+                                        <h4 style="color: #49A17D; font-weight: 500;">100000 TK</h4>
+                                      </div>
+                                      <div class="col-3">
+                                        <h5 style="color: #5D5D62; font-weight: 500;">Remaining Amount</h5>
+                                        <h4 style="color: #414042; font-weight: 500;">400000 TK</h4>
+                                      </div>
+                                      <div class="col-3 ">
+                                        <button class="btn btn-success" style="background-color: #F0F0F0; font-size: 22px; color: #4AA147; border: 1px solid #D0D5DD; font-weight: 500;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasLoan" aria-controls="offcanvasLoan">
+                                            Closed Loan
+                                        </button>
+                                      </div>
+
+
+
+                                      <div class="col-6" style="margin-top: 20px;">
+                                        <h6 style="display: inline; font-weight: bold; margin-right: 5px;">Next Installment:</h6>
+                                        <h6 style="display: inline; font-weight: bold;">30/3/2024 (4 Remaining)</h6>
+                                      </div>
+                                    <div class="col-6" style="margin-top: 20px;">
+                                        <h6 style="display: inline; font-weight: bold; margin-right: 5px;">Next Amount :</h6>
+                                        <h6 style="display: inline; font-weight: bold; margin-right: 15px;">  30000 TK</h6>
+                                        <h6 style="display: inline; font-weight: bold; margin-right: 5px;">Closing Date :</h6>
+                                        <h6 style="display: inline; font-weight: bold;">    30/8/2024 </h6>
+                                    </div>
+
+
+                                   </div>
+                                  
+
+                                 </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="loan-history" role="tabpanel" aria-labelledby="loan-history-tab">
+                                 <div id="loan-table"></div>
+                            </div>
+
+                            <div class="tab-pane fade" id="loan-requests" role="tabpanel" aria-labelledby="loan-requests-tab">
+
+                                <div id="loan-request"></div>
+
+                            </div>
+
+                            <div class="tab-pane fade" id="loan-halt-request" role="tabpanel" aria-labelledby="loan-halt-request-tab">
+                                <h3>Loan Halt Request</h3>
+                                <p>Information about requests to halt loans.</p>
+                                <!-- Additional content for loan halt requests can go here -->
+                            </div>
+                        </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div class="tab-pane fade" id="payslip" role="tabpanel">
+            <div class="row mx-0 mb-2 " style="background-color: #FFFFFF; border-radius: 8px;  box-shadow: 0px 0px 10px 0px #0000000D; border: 0.5px solid #B1B1B1; ">
+                <h6 class="my-3 pb-2" style="border-bottom: 0.5px solid #B1B1B1">Payslip for month of :March- 2024</h6>
+                <div class="row mx-0 pb-3" >
+                    
+                    <div class="col-md-6 ps-4">
+                        <div class="mb-2 mt-3 d-flex align-items-center">
+                            <h6 class="mb-0 me-2">Employee ID     :  </h6>
+                            <p class="mb-0">GTR-123</p>
+                        </div>
+
+                        <div class="mb-2 d-flex align-items-center">
+                            <h6 class="mb-0 me-2">Name                    :  </h6>
+                            <p class="mb-0">Robin</p>
+                        </div>
+
+                        <div class="mb-2 d-flex align-items-center">
+                            <h6 class="mb-0 me-2">Designation      : </h6>
+                            <p class="mb-0">UI/UX Designer</p>
+                        </div>
+
+                        <div class="mb-2 d-flex align-items-center">
+                            <h6 class="mb-0 me-2">Department     :  </h6>
+                            <p class="mb-0">Business Operation</p>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 ps-4">
+                        <div class="mb-2 mt-3 d-flex align-items-center">
+                            <h6 class="mb-0 me-2">Blood Group   : </h6>
+                            <p class="mb-0">B+</p>
+                        </div>
+
+                        <div class="mb-2 d-flex align-items-center">
+                            <h6 class="mb-0 me-2">Office Location : </h6>
+                            <p class="mb-0">DHK Office</p>
+                        </div>
+
+                        <div class="mb-2 d-flex align-items-center">
+                            <h6 class="mb-0 me-2">Join Date              :</h6>
+                            <p class="mb-0">11 March, 2023</p>
+                        </div>
+
+                        <div class="mb-2 d-flex align-items-center">
+                            <h6 class="mb-0 me-2">Release Date      : </h6>
+                            <p class="mb-0">11 March, 2023</p>
+                        </div>
+                    </div>
+                </div>
+               
+
+               
+                </div>
+
+            <div class="row mx-0 mb-2 " style="background-color: #FFFFFF; border-radius: 8px;  box-shadow: 0px 0px 10px 0px #0000000D; border: 0.5px solid #B1B1B1; ">
+            hello
+
+                <div class="col-12 pb-2 mt-4 d-flex justify-content-end">
+                    <button type="button" class="btn  me-2 " style="background-color: #F0F2F0; color: #2F2F2F; padding: px 8px; font-size: 16px; font-weight: 500;">Download</button>
+                    <button type="button" class="btn  " style="background-color: #4AA147; color: #FFFFFF; border-color: #4AA147; padding: px 8px; font-size: 16px;"> Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Offcanvas -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasLoan" aria-labelledby="offcanvasLoanLabel" style="width: 400px">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasLoanLabel">Loan Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <!-- Total Loan Information -->
+        <div>
+            <h4>Total: 500000 TK</h4>
+            <p>Medical Loan  II  LOAN-0002</p>
+        </div>
+
+        <!-- Loan Info Section -->
+        <div class="d-flex justify-content-between">
+            <div>
+                <p>Disbursed on:</p>
+                <p>22/5/23</p>
+            </div>
+            <div>
+                <p>Amount Repaid</p>
+                <p>50000</p>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <div>
+                <p>Closed on:</p>
+                <p>22/5/24</p>
+            </div>
+            <div>
+                <p>Remaining Amount:</p>
+                <p>40000</p>
+            </div>
+        </div>
+
+        <hr />
+
+        <!-- User Information -->
+        <h5>Robin Ahmed</h5>
+        <p>Employee ID: Gtr-5006</p>
+        <p>UI/UX Designer</p>
+
+        <!-- Progress Bar -->
+        <div class="progress mb-3" style="height: 20px;">
+            <div class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">10%</div>
+        </div>
+
+        <!-- Date Information -->
+        <div class="d-flex justify-content-between">
+            <div>
+                <p>Ins. Opened Date</p>
+                <p>30/3/2024</p>
+            </div>
+            <div>
+                <p>Ins. Close Date</p>
+                <input type="text" class="form-control" value="10 Jan 2024">
+                <button class="btn btn-light btn-sm mt-1">View Details</button>
+            </div>
+        </div>
+
+        <!-- Loan Breakdown -->
+        <table class="table table-bordered mt-3">
+            <tbody>
+                <tr>
+                    <td>Loan Amount:</td>
+                    <td>5000000</td>
+                </tr>
+                <tr>
+                    <td>Paid:</td>
+                    <td>1000000</td>
+                </tr>
+                <tr>
+                    <td>Interest 10%:</td>
+                    <td>50000</td>
+                </tr>
+                <tr>
+                    <td>Due:</td>
+                    <td>1000000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Next Installment & Remaining Loan -->
+        <div class="d-flex justify-content-between mt-3">
+            <div>
+                <label for="nextInstallment">Next Inst. Amount</label>
+                <input type="text" class="form-control" id="nextInstallment" value="40000">
+            </div>
+            <div>
+                <label for="remainingLoan">Remaining Loan</label>
+                <input type="text" class="form-control" id="remainingLoan" value="0">
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-content-end mt-4">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="offcanvas">Cancel</button>
+            <button type="submit" class="btn button-custom">Update</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tableData = [
+            { loanName: "Bike Loan", loanAmount: "200000 TK", noOfInstallments: 4, disbursedOn: "4/02/2023", closedOn: "4/02/2024", status: "Successfully Closed" },
+            { loanName: "Bike Loan", loanAmount: "200000 TK", noOfInstallments: 4, disbursedOn: "5/02/2022", closedOn: "5/02/2023", status: "Successfully Closed" }
+        ];
+
+        var table = new Tabulator("#loan-table", {
+            data: tableData,
+            layout: "fitColumns",
+            columns: [
+                { title: "Loan Name", field: "loanName", },
+                { title: "Loan Amount", field: "loanAmount",  },
+                { title: "No. of Installments", field: "noOfInstallments",  },
+                { title: "Disbursed on", field: "disbursedOn",  },
+                { title: "Closed on", field: "closedOn",  },
+                {
+                    title: "Status",
+                    field: "status",
+                    formatter: function (cell, formatterParams, onRendered) {
+                        var value = cell.getValue();
+                        return "<span class='status-cell status-" + value.toLowerCase().replace(/\s+/g, '-') + "'>" + value + "</span>";
+                    }
+                }
+            ],
+            responsiveLayout: "hide"
+        });
+
+        var loanNameEditor = function (cell, onRendered, success, cancel, editorParams) {
+            var editor = document.createElement("select");
+            editor.appendChild(new Option("Car Loan", "Car Loan"));
+            editor.appendChild(new Option("Bike Loan", "Bike Loan"));
+            editor.addEventListener("change", function (e) {
+                success(this.value);
+            });
+            return editor;
+        };
+
+        var payBackEditor = function (cell, onRendered, success, cancel, editorParams) {
+            var editor = document.createElement("select");
+            editor.appendChild(new Option("Every Month", "Every Month"));
+            editor.appendChild(new Option("In 3 Month", "In 3 Month"));
+            editor.addEventListener("change", function (e) {
+                success(this.value);
+            });
+            return editor;
+        };
+
+        var loanStartsEditor = function (cell, onRendered, success, cancel, editorParams) {
+            var editor = document.createElement("select");
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            months.forEach(function (month) {
+                editor.appendChild(new Option(month, month));
+            });
+            editor.addEventListener("change", function (e) {
+                success(this.value);
+            });
+            return editor;
+        };
+
+        var table = new Tabulator("#loan-request", {
+            data: [
+                { loanName: "Car Loan", loanAmount: "600000 TK", noOfInstallments: 6, payBack: "Every Month", loanStarts: "January", action: "View", status: "Request" },
+                { loanName: "Bike Loan", loanAmount: "200000 TK", noOfInstallments: 4, payBack: "Every Month", loanStarts: "March", action: "View", status: "Approved" },
+                { loanName: "Bike Loan", loanAmount: "200000 TK", noOfInstallments: 4, payBack: "In 3 Month", loanStarts: "April", action: "View", status: "Reject" }
+            ],
+            layout: "fitColumns",
+            columns: [
+                { title: "Loan Name", field: "loanName", editor: loanNameEditor, editorParams: { values: ["Car Loan", "Bike Loan"] } },
+                { title: "Loan Amount", field: "loanAmount", editor: "input" },
+                { title: "No. of Installments", field: "noOfInstallments", editor: "number" },
+                { title: "Pay Back", field: "payBack", editor: payBackEditor },
+                { title: "Loan Starts", field: "loanStarts", editor: loanStartsEditor },
+                {
+                    title: "Action", field: "action", formatter: function (cell, formatterParams, onRendered) {
+                        if (cell.getValue() === "View") {
+                            return '<a href="#" class="view-button">View 🖨️</a>';
+                        } else {
+                            return '<button class="action-button">↻</button>';
+                        }
+                    }
+                },
+                {
+                    title: "Status", field: "status", formatter: function (cell, formatterParams, onRendered) {
+                        var value = cell.getValue();
+                        return "<span class='status-cell status-" + value.toLowerCase() + "'>" + value + "</span>";
+                    }
+                }
+            ],
+            responsiveLayout: "hide"
+        });
+    });
+</script>

@@ -1,0 +1,711 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+@section Styles{
+    <style>
+        th, td {
+            padding: 1px !important;
+        }
+
+        .toast-green {
+            background-color: darkgreen !important;
+            color: white !important;
+        }
+
+        .toast-red {
+            background-color: darkred !important;
+            color: white !important;
+        }
+
+        .toast-bottom-center {
+            bottom: 20px;
+            left: 55%;
+            transform: translateX(-50%);
+            position: fixed;
+        }
+
+        .tab-btn.active {
+            background-color: #28a745 !important;
+            color: white; 
+        }
+
+        .halda-form-input{
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            border: 1px solid #D0D5DD;
+            padding:  10px 14px;
+            width: 75%
+        }
+
+        select2-container--default .select2-selection--single {
+            background-color: #FFFFFF !important;
+            border-radius: 8px !important;
+            border: 1px solid #D0D5DD !important;
+            padding: 20px 54px !important;
+            
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: normal !important; /* Aligns text properly inside the select */
+
+        }
+
+        .select2-selection.select2-selection--single {
+            height: 46px !important;
+            background-color: #FFFFFF !important;
+            border-radius: 8px !important;
+            border: 1px solid #D0D5DD !important;
+        }
+
+    </style>
+}
+
+<div class="container mt-1 rounded border border-muted p-2 border-1" style="background: #FBFBFB;">
+    <!-- Profile Section -->
+    <div class="row mb-1">
+        <!-- Profile Image -->
+        <div class="col-4 col-md-2 d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
+            <img src="~/User/img/Employee.png" alt="Profile Picture" class="pt-3 ps-md-3" style="max-width: 170px; max-height: 170px; border-radius: 50%;">
+        </div>
+        <!-- Profile Details -->
+        <div class="col-8 col-md-10 d-flex flex-column justify-content-center">
+            <h5 class="mb-1" style="color:#414042; font-weight: 700;">Borhan Uddin</h5>
+            <p class="mb-1 profile-custom-p">jr.programmer</p>
+            <div class="d-flex align-items-center mb-1">
+                <img src="~/User/img/smart-phone-01.png" alt="Phone Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">01906750597</p>
+            </div>
+            <div class="d-flex align-items-center mb-1">
+                <img src="~/User/img/mail-01.png" alt="Email Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">smborhan.cse@gmail.com</p>
+            </div>
+            <div class="d-flex align-items-center">
+                <img src="~/User/img/time-02.png" alt="Last Active Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">Last Active time today - 12.00 PM</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row border-bottom pb-2 mt-1">
+        <div class="col-12 d-flex align-items-center gap-2">
+            <div class="toggle-switch d-flex align-items-center" id="toggleSwitch">
+                <div class="status-text">Active</div>
+                <div class="slider"></div>
+            </div>
+
+            <div class="tag-container d-flex gap-1">
+                <span class="tag">Training</span>
+                <span class="tag">Learning</span>
+                <span class="tag">Development</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-2">
+        <ul class="nav custom-pills mb-1 pb-2" id="custom-pills-tab" role="tablist">
+            <button type="button" class="btn btn-light tab-btn active" style="background-color: #e7ebf0;" id="personal-tab">
+                <i class="bi bi-person"></i> Personal
+            </button>
+            <button type="button" class="btn btn-light tab-btn" style="background-color: #e7ebf0;" id="organization-tab">
+                <i class="bi bi-buildings"></i> Organization
+            </button>
+            <button type="button" class="btn btn-light tab-btn" style="background-color: #e7ebf0;" id="checklist-tab">
+                <i class="bi bi-buildings"></i> Checklist
+            </button>
+        </ul>
+    </div>
+
+    <div class="row">
+        <h5 class="mt-2" style="padding: 15px;border-radius: var(--8, 8px) var(--8, 8px) 0px 0px; background: #EDEDED;">
+            Basic Information
+        </h5>
+
+
+        <div class="row px-md-5">
+            <input type="hidden" id="Id" name="Id" value="" />
+
+          
+
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="FirstName" class="col-form-label col-12 mb-0 custom-label">First Name</label>
+                    <div class="col-12 mt-0">
+                        <input type="text" class="halda-form-input"  id="FirstName">
+                        <span id="FirstNameError" class="text-danger" style="display: none;">Please fill up this</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="lastName" class="col-form-label col-12 mb-0 custom-label">Last Name</label>
+                    <div class="col-12 mt-0">
+                        <input type="text" class="halda-form-input" id="LastName" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="FatherName" class="col-form-label col-12 mb-0 custom-label">Father's Name</label>
+                    <div class="col-12 mt-0">
+                        <input type="text" class="halda-form-input" id="FatherName" >
+                        <span id="FatherNameError" class="text-danger" style="display: none;">Please fill up this</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="MotherName" class="col-form-label col-12 mb-0 custom-label">Mother's Name</label>
+                    <div class="col-12 mt-0">
+                        <input type="text" class="halda-form-input" id="MotherName" >
+                        <span id="MotherNameError" class="text-danger" style="display: none;">Please fill up this</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="EmployeeCode" class="col-form-label col-12 mb-0 custom-label">Employee Code</label>
+                    <div class="col-12 mt-0">
+                        <input type="text" class="halda-form-input" id="EmployeeCode" >
+                        <span id="EmployeeCodeError" class="text-danger" style="display: none;">Please fill up this</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="EmployeeType" class="col-form-label col-12 mb-0 custom-label">Employee Type</label>
+                    <div class="col-12 mt-0">
+                        <input type="text" class="halda-form-input" id="EmployeeType" >
+                        <span id="EmployeeTypeError" class="text-danger" style="display: none;">Please fill up this</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="JoiningDate" class="col-form-label col-12 mb-0 custom-label">Join Date</label>
+                    <div class="col-12 mt-0">
+                        <input class="halda-form-input" id="JoiningDate" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="FingerId" class="col-form-label col-12 mb-0 custom-label">Finger Id</label>
+                    <div class="col-12 mt-0">
+                        <input type="text" class="halda-form-input" id="FingerId" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="OldFingerId" class="col-form-label col-12 mb-0 custom-label">Old Finger Id</label>
+                    <div class="col-12 mt-0">
+                        <input type="text" class="halda-form-input" id="OldFingerId" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="dateOfBirth" class="col-form-label col-12 mb-0 custom-label">Date of Birth</label>
+                    <div class="col-12 mt-0">
+                        <input class="halda-form-input" id="dateOfBirth" >
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="Gender" class="col-form-label col-12 mb-0 custom-label">Gender</label>
+                    <div class="col-12 mt-0">
+                        <select class="form-control" style="width: 75%" id="Gender" >
+                            <option value="">Select gender</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                        <div class="invalid-feedback">Please select your gender.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="Religion" class="col-form-label col-12 mb-0 custom-label">Religion</label>
+                    <div class="col-12 mt-0">
+                        <select class="form-control" style="width: 75%" id="Religion">
+                            <option value="">Select religion</option>
+                            <!-- Add religion options here -->
+                        </select>
+                        <div class="invalid-feedback">Please select your religion.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="maritalStatus" class="col-form-label col-12 mb-0 custom-label">Marital Status</label>
+                    <div class="col-12 mt-0">
+                        <select class="form-control" style="width: 75%" id="MeritalStatus">
+                            <option value="">Select marital status</option>
+                            <!-- Add marital status options here -->
+                        </select>
+                        <div class="invalid-feedback">Please select your marital status.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="designation" class="col-form-label col-12 mb-0 custom-label">Designation</label>
+                    <div class="col-12 mt-0">
+                        <select class="form-control" style="width: 75%" id="designation">
+                            <option value="">Select designation</option>
+                            <!-- Add designation options here -->
+                        </select>
+                        <div class="invalid-feedback">Please select your designation.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="department" class="col-form-label col-12 mb-0 custom-label">Department</label>
+                    <div class="col-12 mt-0">
+                        <select class="form-control" style="width: 75%" id="department">
+                            <option value="">Select department</option>
+                            <!-- Add department options here -->
+                        </select>
+                        <div class="invalid-feedback">Please select your department.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="line" class="col-form-label col-12 mb-0 custom-label">Line</label>
+                    <div class="col-12 mt-0">
+                        <select class="form-control" style="width: 75%" id="line">
+                            <option value="">Select line</option>
+                            <!-- Add line options here -->
+                        </select>
+                        <div class="invalid-feedback">Please select your line.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="nationality" class="col-form-label col-12 mb-0 custom-label">Nationality</label>
+                    <div class="col-12 mt-0">
+                        <select class="form-control" style="width: 75%" id="Nationality">
+                            <option value="">Select nationality</option>
+                            <!-- Add nationality options here -->
+                        </select>
+                        <div class="invalid-feedback">Please select your nationality.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="section" class="col-form-label col-12 mb-0 custom-label">Section</label>
+                    <div class="col-12 mt-0">
+                        <select class="form-control" style="width: 75%" id="Section">
+                            <option value="">Select section</option>
+                            <!-- Add section options here -->
+                        </select>
+                        <div class="invalid-feedback">Please select your section.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="floor" class="col-form-label col-12 mb-0 custom-label">Floor</label>
+                    <div class="col-12 mt-0">
+                        <select class="form-control" style="width: 75%; " id="floor">
+                            <option value="">Select floor</option>
+                            <!-- Add floor options here -->
+                        </select>
+                        <div class="invalid-feedback">Please select your floor.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="NID" class="col-form-label col-12 mb-0 custom-label">National Id</label>
+                    <div class="col-12 mt-0">
+                        <input type="text" class="halda-form-input" id="NID" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="PassportIssueDate" class="col-form-label col-12 mb-0 custom-label">Passport Issue Date</label>
+                    <div class="col-12 mt-0">
+                        <input class="halda-form-input" id="PassportIssueDate" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="PrimaryMNo" class="col-form-label col-12 mb-0 custom-label">Primary Mobile No.</label>
+                    <div class="col-12 mt-0">
+                        <input type="tel" class="halda-form-input" id="PrimaryMNo" >
+                        <span id="PrimaryMNoError" class="text-danger" style="display: none;">Please fill up this</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="secondaryMobile" class="col-form-label col-12 mb-0 custom-label">Secondary Mobile No.</label>
+                    <div class="col-12 mt-0">
+                        <input type="tel" class="halda-form-input" id="secondaryMobile" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="EmergencyContact" class="col-form-label col-12 mb-0 custom-label">Emergency Contact</label>
+                    <div class="col-12 mt-0">
+                        <input type="tel" class="halda-form-input" id="EmergencyContact" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="PrimaryEmail" class="col-form-label col-12 mb-0 custom-label">Primary Email</label>
+                    <div class="col-12 mt-0">
+                        <input type="email" class="halda-form-input" id="PrimaryEmail" >
+                        <span id="PrimaryEmailError" class="text-danger" style="display: none;">Please fill up this</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 mb-2">
+                <div class="row align-items-center">
+                    <label for="PassportNumber" class="col-form-label col-12 mb-0 custom-label">Passport Number</label>
+                    <div class="col-12 mt-0">
+                        <input class="halda-form-input" id="PassportNumber" >
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    @if (ViewBag.ActionType == "Create")
+    {
+        <button id="BtnSave" type="button" class="btn btn-success mt-3">Save</button>
+    }
+    else if (ViewBag.ActionType == "Edit")
+    {
+        <input type="hidden" id="updateId" value="@ViewBag.EmployeeId" />
+        <button id="BtnSave" type="button" class="btn btn-success mt-3">Update</button>
+    }
+</div>
+
+@section Scripts {
+
+    <script src="~/js/service/apiservice.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            // Handle tab button clicks
+            $('.tab-btn').click(function () {
+                // Remove active class from all buttons
+                $('.tab-btn').removeClass('active');
+
+                // Add active class to the clicked button
+                $(this).addClass('active');
+            });
+        });
+
+        $('#organization-tab').click(function () {
+            var employeeId = '@ViewBag.employeeId';
+
+            if (employeeId) {
+                window.location.href = '@Url.Action("EmployeeOrganization", "EmployeeAdmin")' + '?employeeId=' + employeeId;
+            } else {
+                toastr.warning("This option is not available");
+            }
+        });
+
+
+        $(document).ready(function () {
+           
+            select2Initializer("#department", "@Url.Action("SearchDepartment", "Department")");
+            select2Initializer("#designation", '@Url.Action("SearchDesignation", "Designation")');
+            select2Initializer("#line", "@Url.Action("SearchLine", "Line")");
+            select2Initializer("#Section", "@Url.Action("SearchSection", "Section")");
+            select2Initializer("#floor", "@Url.Action("SearchFloor", "Floor")");
+            select2Initializer("#Gender", "@Url.Action("SearchVariable", "Variable")", "Gender");
+            select2Initializer("#Religion", "@Url.Action("SearchVariable", "Variable")", "Religion");
+            select2Initializer("#MeritalStatus", "@Url.Action("SearchVariable", "Variable")", "Marital Status");
+            select2Initializer("#Nationality", "@Url.Action("SearchVariable", "Variable")", "Nationality");
+            LoadEmployee();
+            
+        });
+
+        const toggleSwitch = document.getElementById('toggleSwitch');
+        const statusText = toggleSwitch.querySelector('.status-text');
+        let isActive = true; // Initial state is 'Active'
+
+        toggleSwitch.addEventListener('click', function () {
+            this.classList.toggle('off');
+            if (this.classList.contains('off')) {
+                statusText.textContent = 'Disable';
+                isActive = false; // Set to false when 'Deactive'
+            } else {
+                statusText.textContent = 'Active';
+                isActive = true; // Set to true when 'Active'
+            }
+        });
+
+
+        $('#dateOfBirth').datepicker({
+            dateFormat: 'dd-M-yy',
+            todayHighlight: true,
+            autoclose: true
+        }).datepicker("setDate", new Date());
+
+        $('#PassportIssueDate').datepicker({
+            dateFormat: 'dd-M-yy',
+            todayHighlight: true,
+            autoclose: true
+        }).datepicker("setDate", new Date());
+
+        $('#JoiningDate').datepicker({
+            dateFormat: 'dd-M-yy',
+            todayHighlight: true,
+            autoclose: true
+        }).datepicker("setDate", new Date());
+
+        $("#EmployeeCode").on("input", function () {
+            $("#EmployeeCodeError").hide();
+        });
+
+        $("#EmployeeType").on("input", function () {
+            $("#EmployeeTypeError").hide();
+        });
+
+        $("#MotherName").on("input", function () {
+            $("#MotherNameError").hide();
+        });
+
+        $("#FatherName").on("input", function () {
+            $("#FatherNameError").hide();
+        });
+
+        $("#FirstName").on("input", function () {
+            $("#FirstNameError").hide();
+        });
+
+        $("#PrimaryMNo").on("input", function () {
+            $("#PrimaryMNoError").hide();
+        });
+
+        $("#PrimaryEmail").on("input", function () {
+            $("#PrimaryEmailError").hide();
+        });
+
+        $('#BtnSave').click(function () {
+
+            $("#EmployeeCodeError").hide();
+            var isValid = true;
+            if ($("#EmployeeCode").val().trim() === "") {
+                $("#EmployeeCodeError").show();
+                isValid = false;
+            }
+
+            if ($("#EmployeeType").val().trim() === "") {
+                $("#EmployeeTypeError").show();
+                isValid = false;
+            }
+
+            if ($("#MotherName").val().trim() === "") {
+                $("#MotherNameError").show();
+                isValid = false;
+            }
+
+            if ($("#FatherName").val().trim() === "") {
+                $("#FatherNameError").show();
+                isValid = false;
+            }
+
+            if ($("#FirstName").val().trim() === "") {
+                $("#FirstNameError").show();
+                isValid = false;
+            }
+
+            if ($("#PrimaryMNo").val().trim() === "") {
+                $("#PrimaryMNoError").show();
+                isValid = false;
+            }
+
+            if ($("#PrimaryEmail").val().trim() === "") {
+                $("#PrimaryEmailError").show();
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            var comid = '@ViewBag.CompanyId';
+            var userid = '@ViewBag.UserId';
+            var updateId = $('#updateId').val();
+
+            var Model =
+            {
+                CompanyId: comid,
+                UserId: userid,                
+                FirstName: $("#FirstName").val(),
+                LastName: $("#LastName").val(),
+                FatherName: $("#FatherName").val(),
+                MotherName: $("#MotherName").val(),
+                DOB: new Date($("#dateOfBirth").val()).toISOString(),
+                JoiningDate: new Date($("#JoiningDate").val()).toISOString(),
+                EmployeeCode: $("#EmployeeCode").val(),
+                EmployeeType: $("#EmployeeType").val(),
+                FingerId: $("#FingerId").val(),
+                OldFingerId: $("#OldFingerId").val(),
+                Gender: $("#Gender option:selected").text(),
+                Religion: $("#Religion option:selected").text(),
+                MeritalStatus: $("#MeritalStatus option:selected").text(),
+                Nationality: $("#Nationality option:selected").text(),
+                NID: $("#NID").val(),
+                PassportNumber: $("#PassportNumber").val(),                
+                PassportIssueDate: new Date($("#PassportIssueDate").val()).toISOString(),
+                PrimaryMNo: $("#PrimaryMNo").val(),
+                SecMNo: $("#secondaryMobile").val(),
+                EmergencyContact: $("#EmergencyContact").val(),
+                PrimaryEmail: $("#PrimaryEmail").val(),
+                designationid: $("#designation  option:selected").val() || null,
+                departmentid: $("#department  option:selected").val() || null,
+                lineid: $("#line  option:selected").val() || null,
+                sectionid: $("#Section  option:selected").val() || null,
+                floorid: $("#floor  option:selected").val() || null,
+                IsActive: isActive
+            };
+
+            if ('@ViewBag.ActionType' === 'Edit') {
+                Model.Id = updateId;
+            }
+
+            console.log("after save console", Model)
+            var EmployeeIdAbc = 0;
+
+            $.ajax({
+                
+                type: "POST",
+                url: '@Url.Action("SaveEmployee", "EmployeeAdmin")?updateId=' + updateId,
+                data: JSON.stringify(Model),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //console.log("after save console::", response);
+                    if (response.error) {
+                        toastr.error(response.message, "", {
+                            "toastClass": "toast-red",
+                            "positionClass": "toast-bottom-center"
+                        });
+                    } else {
+                        EmployeeIdAbc = response.Id;
+                        toastr.success(response.message, "", {
+                            "toastClass": "toast-green",
+                            "positionClass": "toast-bottom-center"
+                        });
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("AdminEmployeeList", "EmployeeAdmin")';
+                        }, 3000)
+                    }
+
+                },
+                error: function (response) {
+                }
+            });
+
+           
+
+        });
+
+        function LoadEmployee() {
+            if ('@ViewBag.ActionType' == "Edit") {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("GetEmployeeData", "EmployeeAdmin")",
+                    data: { "employeeId": '@ViewBag.employeeId' },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log("edit mode er data dekhi:", response);
+                        $("#FirstName").val(response.firstName);
+                        $("#LastName").val(response.lastName);
+                        $("#FatherName").val(response.fatherName);
+                        $("#MotherName").val(response.motherName);
+                        $("#dateOfBirth").val(response.dob);
+                        $("#JoiningDate").val(response.joiningDate);
+                        $("#EmployeeCode").val(response.employeeCode);
+                        $("#EmployeeType").val(response.employeeType);
+                        $("#FingerId").val(response.fingerId);
+                        $("#OldFingerId").val(response.oldFingerId);
+                        $("#PrimaryEmail").val(response.primaryEmail);                              
+                        $("#NID").val(response.nid);
+                        $("#PassportNumber").val(response.passportNumber);
+                        $("#PassportIssueDate").val(response.passportIssueDate);
+                        $("#PrimaryMNo").val(response.primaryMNo);
+                        $("#secondaryMobile").val(response.secMNo);
+                        $("#EmergencyContact").val(response.emergencyContact);
+                        DefaultSelected("#designation", response.designationId, response.desigName)
+                        DefaultSelected("#department", response.departmentId, response.deptName)
+                        DefaultSelected("#Section", response.sectionId, response.secName)
+                        DefaultSelected("#line", response.lineId, response.lineName)
+                        DefaultSelected("#floor", response.floorId, response.floorName)
+                        DefaultSelected("#Gender", response.gender, response.gender)
+                        DefaultSelected("#Religion", response.religion, response.religion)
+                        DefaultSelected("#MeritalStatus", response.meritalStatus, response.meritalStatus)
+                        DefaultSelected("#Nationality", response.nationality, response.nationality)
+
+                        if (response.isActive) {
+                            statusText.textContent = 'Active';
+                            toggleSwitch.classList.remove('off'); 
+                            isActive = true; 
+                        } else {
+                            statusText.textContent = 'Disable';
+                            toggleSwitch.classList.add('off'); 
+                            isActive = false; 
+                        }
+
+                    },
+                    error: function (error) {
+                        console.error("Error fetching data: " + error);
+                    }
+                });
+
+            }
+        }
+
+    </script>
+
+}
+
+
+
+

@@ -1,0 +1,460 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+    .button-custom {
+        background-color: #4AA147;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 0px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px 8px 8px 8px;
+        cursor: pointer;
+        opacity: 1; /* Fully visible */
+        transform: rotate(0deg); /* No rotation */
+    }
+
+        .button-custom i {
+            margin-right: 5px; /* Space between icon and text */
+        }
+
+    .nav-tabs .nav-link {
+        color: #6c757d;
+        border: none;
+        font-weight: 500;
+        border-radius: 0px;
+        font-size: 16px !important;
+        border-bottom: 2px solid transparent;
+    }
+
+        .nav-tabs .nav-link.active {
+            color: #4AA147;
+            font-weight: 500;
+            border-radius: 0px;
+            font-size: 16px !important;
+            background-color: transparent;
+            border-bottom: 3px solid #4AA147;
+        }
+
+    .btn-create-shift {
+        background-color: #198754;
+        color: white;
+    }
+
+    .offcanvas-body label {
+        font-weight: 500;
+    }
+
+    .input-group {
+        margin-bottom: 10px;
+    }
+
+    .change-data-container {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        overflow-x: auto; /* Allows horizontal scrolling if content overflows */
+    }
+
+    .change-data-item {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        min-width: 160px;
+        white-space: nowrap; /* Ensures everything stays in one line */
+    }
+
+        .change-data-item input[type="text"],
+        .change-data-item input[type="date"] {
+            flex: 1;
+            margin-left: 5px;
+        }
+
+        /* Removes margin from the last item to fit within the container */
+        .change-data-item:last-child {
+            margin-right: 0;
+        }
+
+    /* Container for checkbox and label */
+    .checkbox-label-container {
+        display: flex;
+        align-items: center;
+        background-color: #F9F9F9;
+        padding: 4px 5px;
+        padding-right: 5px;
+    }
+
+</style>
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2 border-1">
+
+    <div class="row mx-0 mb-2" style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button style="border-radius: 0px;" class="nav-link  active" id="attedance-process-tab" data-bs-toggle="tab" data-bs-target="#attedance-process" type="button" role="tab" aria-controls="attedance-process" aria-selected="false">Attendances Process</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button style="border-radius: 0px;" class="nav-link" id="fixed-attedance-tab" data-bs-toggle="tab" data-bs-target="#fixed-attedance" type="button" role="tab" aria-controls="fixed-attedance" aria-selected="false">Fixed Attendances </button>
+            </li>
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+
+            <div class="tab-pane fade show active" id="attedance-process" role="tabpanel" aria-labelledby="attedance-process-tab">
+
+                <div class="row mt-3 mb-3">
+                    <div class="col-12 col-md-12 mb-2 mb-md-0 d-flex align-items-center">
+                        <label for="leaveBalanceYear" style="font-size: 14px;" class="custom-label pt-2 me-2"> Enter Date process:</label>
+                        <input type="date" class="form-control me-2" id="leaveBalanceYear" value="2024-01-10" style="width: auto;">
+                        <label for="lastprocessingdate" style="font-size: 14px;" class="custom-label pt-2 me-2">  Last processing Date:</label>
+                        <input type="date" class="form-control me-2" id="lastprocessingdate" value="2024-01-10" style="width: auto;">
+                        <label for="criteria" style="font-size: 14px;" class="custom-label pt-2 me-2">Day Type:</label>
+                        <select class="form-select" id="criteria" style="width: auto;">
+                            <option selected="">Regular</option>
+                            <option value="active">Active Employees</option>
+                            <option value="inactive">Inactive Employees</option>
+                            <option value="on_leave">Employees on Leave</option>
+                            <option value="terminated">Terminated Employees</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+                <div class="mt-2 p-2 mb-2" style="border: 0.67px solid #D4D4D4; box-shadow: 0px 0px 10px 0px #0000000D; border-radius: 8px;">
+
+
+                    <div class="row mb-3 mt-4 pb-2" style="border-bottom: 0.52px solid #E5E3E3">
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="employeeCode" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Criteria</label>
+                            <select class="form-select custom-select" id="employeeCode">
+                                <option selected="">All Employee</option>
+                                <option value="E001">E001</option>
+                                <option value="E002">E002</option>
+                                <option value="E003">E003</option>
+                                <option value="E004">E004</option>
+                                <option value="E005">E005</option>
+                            </select>
+                        </div>
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="employeeCode" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Employee Code</label>
+                            <select class="form-select custom-select" id="employeeCode">
+                                <option selected="">Employee Code</option>
+                                <option value="E001">E001</option>
+                                <option value="E002">E002</option>
+                                <option value="E003">E003</option>
+                                <option value="E004">E004</option>
+                                <option value="E005">E005</option>
+                            </select>
+                        </div>
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="department" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Department</label>
+                            <select class="form-select custom-select" id="department">
+                                <option selected="">Department</option>
+                                <option value="HR">HR</option>
+                                <option value="IT">IT</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Marketing">Marketing</option>
+                            </select>
+                        </div>
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="section" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Section</label>
+                            <select class="form-select custom-select" id="section">
+                                <option selected="">Section</option>
+                                <option value="A">Section A</option>
+                                <option value="B">Section B</option>
+                                <option value="C">Section C</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="col-12 pb-2 d-flex justify-content-end">
+                        <button type="button" class="btn  me-2 " style="background-color: #FE8F73; border-color: #4AA147; color: #FFFFFF; padding: px 8px; font-size: 16px;"> Send Mail</button>
+                        <button type="button" class="btn  " style="background-color: #4AA147; color: #FFFFFF; border-color: #4AA147; padding: px 8px; font-size: 16px;"> Process</button>
+                    </div>
+                </div>
+
+
+                <div class="mt-2 p-2 mb-2" style="border: 0.67px solid #D4D4D4; box-shadow: 0px 0px 10px 0px #0000000D; border-radius: 8px;">
+                    <div class=" py-2 px-3 d-flex align-items-center">
+                        @*  <img alt="calendar" src="/User/img/calender.png" width="40px" style="margin-right: 8px;"> *@
+                        <h5 class="header-text-4 mb-0">Process History</h5>
+                    </div>
+
+                    <div class="mt-3" id="processhistroy"></div>
+
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="fixed-attedance" role="tabpanel" aria-labelledby="fixed-attedance-tab">
+
+                <div class="row mt-3 mb-3">
+                    <div class="col-12 col-md-12 mb-2 mb-md-0 d-flex align-items-center">
+                        <label for="leaveBalanceYear" style="font-size: 14px;" class="custom-label pt-2 me-2"> Enter Date process:</label>
+                        <input type="date" class="form-control me-5" id="leaveBalanceYear" value="2024-01-10" style="width: auto;">
+
+                        <label for="criteria" style="font-size: 14px;" class="custom-label pt-2 me-2">Criteria:</label>
+                        <select class="form-select me-3" id="criteria" style="width: auto;">
+                            <option selected="">Regular</option>
+                            <option value="active">Active Employees</option>
+                            <option value="inactive">Inactive Employees</option>
+                            <option value="on_leave">Employees on Leave</option>
+                            <option value="terminated">Terminated Employees</option>
+                        </select>
+
+                        <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; padding: px 8px; font-size: 16px;"> Load</button>
+                    </div>
+                </div>
+
+                <div class="mt-2 p-2 mb-2" style="border: 0.67px solid #D4D4D4; box-shadow: 0px 0px 10px 0px #0000000D; border-radius: 8px;">
+
+                    <div class="row mb-4 mt-4 pb-2" style="border-bottom: 0.52px solid #E5E3E3">
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="employeeCode" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Employee ID</label>
+                            <select class="form-select custom-select" id="employeeCode">
+                                <option selected="">All Employee</option>
+                                <option value="E001">E001</option>
+                                <option value="E002">E002</option>
+                                <option value="E003">E003</option>
+                                <option value="E004">E004</option>
+                                <option value="E005">E005</option>
+                            </select>
+                        </div>
+
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="designation" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Designation</label>
+                            <select class="form-select custom-select" id="designation">
+                                <option selected="">All Designations</option>
+                                <option value="Manager">Manager</option>
+                                <option value="Engineer">Engineer</option>
+                                <option value="Technician">Technician</option>
+                                <option value="Clerk">Clerk</option>
+                                <option value="Supervisor">Supervisor</option>
+                            </select>
+                        </div>
+
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="department" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Department</label>
+                            <select class="form-select custom-select" id="department">
+                                <option selected="">All Departments</option>
+                                <option value="HR">HR</option>
+                                <option value="IT">IT</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Marketing">Marketing</option>
+                            </select>
+                        </div>
+
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="section" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Section</label>
+                            <select class="form-select custom-select" id="section">
+                                <option selected="">All Sections</option>
+                                <option value="A">Section A</option>
+                                <option value="B">Section B</option>
+                                <option value="C">Section C</option>
+                            </select>
+                        </div>
+
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="line" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Line</label>
+                            <select class="form-select custom-select" id="line">
+                                <option selected="">All Lines</option>
+                                <option value="Line 1">Line 1</option>
+                                <option value="Line 2">Line 2</option>
+                                <option value="Line 3">Line 3</option>
+                            </select>
+                        </div>
+
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="shift" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Shift</label>
+                            <select class="form-select custom-select" id="shift">
+                                <option selected="">All Shifts</option>
+                                <option value="Morning">Morning</option>
+                                <option value="Evening">Evening</option>
+                                <option value="Night">Night</option>
+                            </select>
+                        </div>
+
+                        <div class="col" style="">
+                            <label for="status" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Status</label>
+                            <select class="form-select custom-select" id="status">
+                                <option selected="">All Statuses</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                                <option value="On Leave">On Leave</option>
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                    <h6>Change Data :</h6>
+                    <div class="change-data-container mb-3" style="border: 1px solid #F0F0F0">
+                        <div class="change-data-item">
+                            <div class="checkbox-label-container">
+                                <input class="" type="checkbox" name="changeOption" value="timeIn" id="timeInRadio" style="padding: .35rem .5rem !important;">
+                                <label class="ps-1" for="timeInRadio" class="mb-0 ml-1">Time In</label>
+                            </div>
+                            <input type="time" id="timeInInput" class="form-control form-control-sm" value="09:00">
+                        </div>
+                        <div class="change-data-item">
+                            <div class="checkbox-label-container">
+                                <input class="" type="checkbox" name="changeOption" value="timeOut" id="timeOutRadio" style="padding: .35rem .5rem !important;">
+                                <label class="ps-1" for="timeOutRadio" class="mb-0 ml-1">Time Out</label>
+                            </div>
+                            <input type="time" id="timeOutInput" class="form-control form-control-sm" value="17:00">
+                        </div>
+                        <div class="change-data-item">
+                            <div class="checkbox-label-container">
+                                <input class="" type="checkbox" name="changeOption" value="otHour" id="otHourRadio" style="padding: .35rem .5rem !important;">
+                                <label class="ps-1" for="otHourRadio" class="mb-0 ml-1">OT Hour</label>
+                            </div>
+                            <input type="number" id="otHourInput" class="form-control form-control-sm" placeholder="Enter OT Hour">
+                        </div>
+                        <div class="change-data-item">
+                            <div class="checkbox-label-container">
+                                <input class="" type="checkbox" name="changeOption" value="status" id="statusRadio" style="padding: .35rem .5rem !important;">
+                                <label class="ps-1" for="statusRadio" class="mb-0 ">Status</label>
+                            </div>
+                            <input type="text" id="statusInput" class="form-control form-control-sm" placeholder="Enter Status">
+                        </div>
+                    </div>
+
+                    <div class="col-12 pb-3 d-flex justify-content-end">
+                        <button type="button" class="btn  me-2 " style="background-color: #FE8F73; border-color: #FE8F73; color: #FFFFFF; padding: px 8px; font-size: 16px;"> Fill Data</button>
+                        <button type="button" class="btn  " style="background-color: #4AA147; color: #FFFFFF; border-color: #4AA147; padding: px 8px; font-size: 16px;"> Update</button>
+                    </div>
+                </div>
+
+
+                <div class="mt-2 p-2 mb-2 row" style="border: 0.67px solid #D4D4D4; box-shadow: 0px 0px 10px 0px #0000000D; border-radius: 8px;">
+
+                    <div class="col-md-6 mb-2 col-12 d-flex align-items-center gap-2">
+                        <button id="select-all" class="btn" style="white-space: nowrap; border: 1px solid #D0D5DD;">Select All</button>
+                        
+                        <div class="input-group mt-2" style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FAFAFAED; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 2px 3px;">
+                            <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                            <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                                <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="mt-0" id="fixedattendance"></div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script>
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Sample data for the table
+        var tabledata = [
+            { ProcessDate: "2024-09-25", UserName: "John Doe", StartTime: "08:00 AM", EndTime: "04:00 PM", Status: "Completed" },
+            { ProcessDate: "2024-09-26", UserName: "Jane Smith", StartTime: "09:00 AM", EndTime: "05:00 PM", Status: "In Progress" },
+            { ProcessDate: "2024-09-27", UserName: "Michael Brown", StartTime: "07:30 AM", EndTime: "03:30 PM", Status: "Pending" },
+            { ProcessDate: "2024-09-28", UserName: "Emily White", StartTime: "08:15 AM", EndTime: "04:15 PM", Status: "Completed" },
+            { ProcessDate: "2024-09-29", UserName: "William Black", StartTime: "10:00 AM", EndTime: "06:00 PM", Status: "Cancelled" }
+        ];
+        // Initialize the Tabulator table
+        var table = new Tabulator("#processhistroy", {
+            data: tabledata, // Load the data into the table
+            layout: "fitColumns", // Fit columns to width of the table
+            columns: [
+                { title: "Process Date", field: "ProcessDate", formatter: "textarea", headerHozAlign: "center" },
+                { title: "User Name", field: "UserName", headerHozAlign: "center" },
+                { title: "Start Time", field: "StartTime", width: 135, headerHozAlign: "center" },
+                { title: "End Time", field: "EndTime", headerHozAlign: "center" },
+                { title: "Status", field: "Status", headerHozAlign: "center" },
+            ],
+        });
+
+        // Sample data for the table
+        var fixedattendance = [
+            { EmployeeCode: "GTRC114", EmployeeName: "Charles", EmployeeShift: "9 am - 6 pm", PunchDate: "28 Sep 2023", TimeIn: "9:00 am", TimeOut: "7:00 pm", Status: "CI", Remark: "" },
+            { EmployeeCode: "GTRC115", EmployeeName: "Alice", EmployeeShift: "9 am - 6 pm", PunchDate: "28 Sep 2023", TimeIn: "9:05 am", TimeOut: "6:55 pm", Status: "CI", Remark: "" },
+            { EmployeeCode: "GTRC116", EmployeeName: "Bob", EmployeeShift: "10 am - 7 pm", PunchDate: "28 Sep 2023", TimeIn: "10:10 am", TimeOut: "7:05 pm", Status: "Pending", Remark: "Late" },
+            { EmployeeCode: "GTRC117", EmployeeName: "Diana", EmployeeShift: "9 am - 6 pm", PunchDate: "28 Sep 2023", TimeIn: "9:00 am", TimeOut: "6:30 pm", Status: "CI", Remark: "" },
+            { EmployeeCode: "GTRC118", EmployeeName: "Ethan", EmployeeShift: "8 am - 5 pm", PunchDate: "28 Sep 2023", TimeIn: "8:30 am", TimeOut: "5:00 pm", Status: "Completed", Remark: "On time" },
+            { EmployeeCode: "GTRC119", EmployeeName: "Fiona", EmployeeShift: "11 am - 8 pm", PunchDate: "28 Sep 2023", TimeIn: "11:00 am", TimeOut: "8:15 pm", Status: "Cancelled", Remark: "Emergency" },
+            { EmployeeCode: "GTRC120", EmployeeName: "George", EmployeeShift: "9 am - 6 pm", PunchDate: "28 Sep 2023", TimeIn: "9:00 am", TimeOut: "6:00 pm", Status: "CI", Remark: "" },
+            { EmployeeCode: "GTRC121", EmployeeName: "Helen", EmployeeShift: "10 am - 7 pm", PunchDate: "28 Sep 2023", TimeIn: "10:00 am", TimeOut: "7:00 pm", Status: "CI", Remark: "" },
+            { EmployeeCode: "GTRC122", EmployeeName: "Ian", EmployeeShift: "9 am - 6 pm", PunchDate: "28 Sep 2023", TimeIn: "9:15 am", TimeOut: "6:45 pm", Status: "Pending", Remark: "Late arrival" },
+            { EmployeeCode: "GTRC123", EmployeeName: "Judy", EmployeeShift: "9 am - 6 pm", PunchDate: "28 Sep 2023", TimeIn: "9:00 am", TimeOut: "6:00 pm", Status: "CI", Remark: "" },
+            { EmployeeCode: "GTRC124", EmployeeName: "Kevin", EmployeeShift: "9 am - 6 pm", PunchDate: "28 Sep 2023", TimeIn: "9:00 am", TimeOut: "6:10 pm", Status: "CI", Remark: "Left early" },
+            { EmployeeCode: "GTRC125", EmployeeName: "Laura", EmployeeShift: "9 am - 6 pm", PunchDate: "28 Sep 2023", TimeIn: "9:00 am", TimeOut: "6:00 pm", Status: "CI", Remark: "" },
+            // Add more data entries as needed
+        ];
+
+
+        // Initialize the Tabulator table
+        var table = new Tabulator("#fixedattendance", {
+            data: fixedattendance, // Load the data into the table
+            layout: "fitColumns", // Fit columns to width of the table
+            selectable: true, // Enable row selection
+            columns: [
+                {
+                    titleFormatter: "rowSelection", // Add select all checkbox in the header
+                    headerHozAlign: "center",
+                    hozAlign: "center",
+                    formatter: "rowSelection",
+                    cellClick: function (e, cell) {
+                        cell.getRow().toggleSelect();
+                    },
+                    width: 50,
+                    headerSort: false
+                },
+                { title: "Employee Code", field: "EmployeeCode", headerHozAlign: "center" },
+                { title: "Employee Name", field: "EmployeeName", headerHozAlign: "center" },
+                { title: "Employee Shift", field: "EmployeeShift", editor: "select", editorParams: { values: { "9 am - 6 pm": "9 am - 6 pm", "Other Shift": "Other Shift" } }, headerHozAlign: "center" },
+                { title: "Punch Date", field: "PunchDate", headerHozAlign: "center" },
+                { title: "Time In", field: "TimeIn", editor: "time", headerHozAlign: "center" },
+                { title: "Time Out", field: "TimeOut", editor: "time", headerHozAlign: "center" },
+                { title: "Status", field: "Status", editor: "select", editorParams: { values: { "CI": "CI", "Pending": "Pending", "Completed": "Completed", "Cancelled": "Cancelled" } }, headerHozAlign: "center" },
+                { title: "Remark", field: "Remark", editor: "input", headerHozAlign: "center" },
+            ],
+            pagination: "local",
+            paginationSize: 7,
+            paginationButtonCount: 4,
+            paginationSizeSelector: [10, 25, 50, 100],
+            selectable: true, // Enable row selection
+        });
+
+        // Add an event listener to the "Select All" button
+        document.getElementById("select-all").addEventListener("click", function () {
+            var allSelected = table.getSelectedData().length === table.getDataCount(); // Check if all rows are selected
+            if (allSelected) {
+                table.deselectRow(); // Deselect all if they are already selected
+            } else {
+                table.selectRow(); // Select all if they are not selected
+            }
+        });
+
+
+
+
+        // Tab switching logic
+        document.querySelectorAll('.nav-link').forEach(function (navLink) {
+            navLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(function (link) {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    });
+</script>

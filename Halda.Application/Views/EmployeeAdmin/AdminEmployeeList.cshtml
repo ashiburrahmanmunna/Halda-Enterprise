@@ -1,0 +1,354 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+
+<style>
+
+    .employee-stats {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px; /* Space between items */
+    }
+
+
+
+    /* Additional styles for stat-item and stat-text, if needed */
+    .stat-item {
+        background-color: #F9FAFB; /* Light background for each item */
+        border-radius: 12px;
+        padding: 5px;
+    }
+
+    .stat-text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: -18px;
+        color: #667085;
+        font-family: AirbnbCereal_W_Bk;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px; /* 166.667% */
+    }
+
+    .emp-list-header {
+        color: var(--Gray-h, #414042);
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 20px; /* 111.111% */
+    }
+
+    .emp-list-img {
+        max-width: 25px;
+        max-height: 25px;
+        margin-top: -15px;
+    }
+
+    .header-text-4 {
+        color: var(--Gray-h, #414042);
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 22.194px; /* 110.97% */
+    }
+</style>
+  
+
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2 border-1">
+
+
+
+    <div class="row mx-0 mb-2" style="background-color: #FFFFFF; border-radius: 8px; padding: 9px; box-shadow: 0px 0px 10px 0px #0000000D; ">
+        <div class="col-md-6 col-6">
+            <h5 class="emp-header-1">Employee Management</h5>
+        </div>
+        <div class="col-md-6 col-6 d-flex justify-content-end">
+            <button id="CreateId" type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Employee Create</button>
+        </div>
+    </div>
+
+    <div class="employee-stats mb-2">
+        <div class="stat-item ">
+            <div class="p-2">
+                <h4 class="emp-list-header">
+                    20,000
+                </h4>
+                <div class="stat-text">
+                    <p>Total Employee</p>
+                    <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                </div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="p-2">
+                <h4 class="emp-list-header">2,500</h4>
+                <div class="stat-text">
+                    <p>Active Employee</p>
+                    <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                </div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="p-2">
+                <h4 class="emp-list-header">100</h4>
+                <div class="stat-text">
+                    <p>Release Employee</p>
+                    <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                </div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="p-2">
+                <h4 class="emp-list-header">50</h4>
+                <div class="stat-text">
+                    <p>New Joining</p>
+                    <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                </div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="p-2">
+                <h4 class="emp-list-header">03</h4>
+                <div class="stat-text">
+                    <p>On Process</p>
+                    <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div style=" box-shadow: 0px 0px 10px 0px #0000000D; border-radius: 9px;">
+        <div class="row mx-0" style="background-color: #FFFFFF; border-radius: 8px 8px 0px 0px; padding: 9px;">
+            <div class="col-md-7 col-12 d-flex align-items-center gap-2">
+                <img alt="calander" src="~/User/img/calender.png" width="40px">
+                <h5 class="header-text-4 mb-0" style="white-space: nowrap;">Employee List</h5>
+                <div class="input-group " style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                    <input id="searchInput" type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                    <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                        <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-2 col-6 d-flex justify-content-end align-items-end">
+                <button class="btn" style="background-color: #D3F6D2;  border-radius: 12px; margin-top: -3px;" type="button">Custom View</button>
+            </div>
+            <div class="col-md-3 col-6 d-flex justify-content-end align-items-end gap-2">
+
+
+                <div style="margin-right: 8px; border: 0.52px solid #E5E3E3; border-radius: 7px ; padding: 5px 13px;">
+                    <img id="printPDF" class="cursor-pointer" alt="calendar" src="/User/img/pdf.svg" width="30px">
+                </div>
+                <div style="margin-right: 8px; border: 0.52px solid #E5E3E3; border-radius: 7px ; padding: 5px 13px;">
+                    <img id="download-xlsx" class="cursor-pointer" alt="calendar" src="/User/img/download.svg" width="30px">
+                </div>
+                <div style=" border: 0.52px solid #E5E3E3; border-radius: 7px ; padding: 5px 13px;">
+                    <img id="print-data" class="cursor-pointer" alt="calendar" src="/User/img/printer.svg" width="30px">
+                </div>
+            </div>
+
+        </div>
+        
+    </div>
+    <div id="employee-table"></div>
+
+</div>
+
+@section Scripts {
+   
+
+
+<script>
+    var employeeTable;
+
+    document.getElementById("CreateId").addEventListener("click", function () {       
+        window.location.href = '@Url.Action("AddEmployeeInformation", "EmployeeAdmin")';
+    });
+    
+    var EmployeeFields = [
+        {
+            title: "Emp Code", field: "employeeCode", headerHozAlign: "center", width: 130
+        },
+        {
+            title: "Employee", field: "firstName", headerHozAlign: "center", width: 205,
+        },
+        { title: "Employee Type", field: "employeeType", width: 165, headerHozAlign: "center" },
+        { title: "Email", field: "primaryEmail", width: 200, headerHozAlign: "center" },
+        { title: "Join Date", field: "joiningDate", width: 125, headerHozAlign: "center",
+                formatter: function (cell) {
+                    var value = cell.getValue();
+                    if (!value) {
+                        return ""; 
+                    }
+                    var date = new Date(value);
+                    if (isNaN(date.getTime())) {
+                        return ""; 
+                    }
+                    var options = { day: '2-digit', month: 'short', year: 'numeric' };
+                    return date.toLocaleDateString('en-GB', options).replace(/\s/g, '-');
+                }
+        },
+        { title: "Finger ID", field: "fingerId", width: 125, headerHozAlign: "center" },
+        { title: "Line", field: "lineName", width: 90, headerHozAlign: "center",
+            formatter: function (cell, formatterParams) {
+                // Access the row data
+                var data = cell.getRow().getData();
+                return data.line && data.line.lineName ? data.line.lineName : 'N/A';
+            }
+        },
+        { title: "Floor", field: "floorName", width: 90, headerHozAlign: "center",
+            formatter: function (cell, formatterParams) {
+                // Access the row data
+                var data = cell.getRow().getData();
+                return data.floor && data.floor.floorName ? data.floor.floorName : 'N/A';
+            }
+        },
+        {
+            title: "Actions",
+            formatter: function (cell, formatterParams, onRendered) {
+                return `
+                    <img alt="edit" width="20px" height="20px" src="/User/img/edit-off.png" class="action-icon" style="cursor: pointer;"/>
+                    <img alt="delete" width="20px" height="20px" src="/User/img/delete.png" class="action-icon" style="cursor: pointer;"/>
+                `;
+            },
+            width: 110,
+            hozAlign: "center",
+            cellClick: function (e, cell) {
+                const target = e.target;
+                const data = cell.getData();
+                if (target.tagName === "IMG") {
+                    if (target.alt === "edit") {
+                            var Edit = `@Url.Action("AddEmployeeInformation", "EmployeeAdmin")?employeeId=` + data.id;
+                            window.location.href = Edit;
+                    } else if (target.alt === "delete") {
+                            DeleteAdminEmployee(data.id);
+                    }
+                }
+            }
+
+        }
+    ];
+
+    
+    EmployeeList();
+
+        $("#searchInput").on("input", function () {
+            var input = $(this).val();
+            var url = '@Url.Action("GetEmployeeList", "EmployeeAdmin")?searchquery=' + encodeURIComponent(input);
+            employeeTable.setData(url);
+        });
+    
+    function EmployeeList() {
+
+        var EMPURL = '@Url.Action("GetEmployeeList", "EmployeeAdmin")';
+        employeeTable = new Tabulator("#employee-table", {
+            //height: "350px",
+            dataTree: true,            
+            movableColumns: true,
+            dataTreeStartExpanded: true,
+            dataTreeChildField: "children",
+            layout: "fitDataTable",
+            selectable: 1,
+            pagination: true,
+            paginationMode: "remote",
+            filterMode: "remote",
+            paginationSize: 10,
+            paginationInitialPage: 1,
+            paginationSizeSelector: [5, 10, 25, 50, 100, 500, 1000],
+            paginationCounter: "rows",
+            ajaxURL: EMPURL,
+            ajaxConfig: "get",
+            ajaxContentType: "json",
+
+            ajaxResponse: function (url, params, response) {
+                    employeeTable.setMaxPage(response.pageCount);
+                    //console.log("response.last_page", response.last_page); setPageCount
+
+                dataLoadExpense = response.data;
+                console.log("dataLoadExpense abc:", dataLoadExpense);
+
+                return {
+                    data: response.data,
+                        last_page: response.pageCount,
+
+                };
+            },
+
+            columns: EmployeeFields,
+            // ajaxURLGenerator: function (url, config, params) {
+            //     //return request url
+            //     return url + "&searchquery=" + encodeURIComponent(JSON.stringify(params)); //encode parameters as a json object
+            // },
+            dataBound: function () {
+                // Freeze the top 1 row (index 0) after the table is created
+                var rows = table.getRows();
+                if (rows.length > 0) {
+                    var cells = rows[0].getCells();
+                    cells.forEach(cell => {
+                        cell.freeze();
+                    });
+                }
+            },
+        });
+
+    }
+
+        function DeleteAdminEmployee(data) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("DeleteAdminEmp", "EmployeeAdmin")',
+                        type: "get",
+                        data: { employeeId: data },
+                        traditional: true,
+                        success: function (response) {
+                            if (response.success == "1") {
+                                toastr.success(response.msg, "", {
+                                    "toastClass": "toast-green",
+                                    "positionClass": "toast-bottom-center"
+                                });
+                                EmployeeList();
+                            }
+                            else {                               
+                                toastr.success(response.msg, "", {
+                                    "toastClass": "toast-red",
+                                    "positionClass": "toast-bottom-center"
+                                });
+                                EmployeeList();
+                            }
+                           
+                        },
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
+                            toastr.error("Error during delete.", "", { "toastClass": "toast-red" });
+                        }
+                    });
+                }
+            });
+        };
+       
+        document.getElementById("printPDF").addEventListener("click", function () {
+            employeeTable.download("pdf", "data.pdf", { title: "Employee List", });
+        });
+        document.getElementById("download-xlsx").addEventListener("click", function () {
+            employeeTable.download("xlsx", "Data.xlsx", { sheetName: "Data" });
+        });
+        document.getElementById("print-data").addEventListener("click", function () {
+            employeeTable.print(false, true);
+        });
+    
+</script>
+
+}

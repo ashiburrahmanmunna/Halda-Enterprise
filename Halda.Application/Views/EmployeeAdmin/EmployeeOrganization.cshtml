@@ -1,0 +1,2043 @@
+﻿@using Halda.Core.Enums
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+@section Styles {
+    <style>
+        th, td {
+            padding: 1px !important;
+        }
+
+        .toast-green {
+            background-color: darkgreen !important;
+            color: white !important;
+        }
+
+        .toast-red {
+            background-color: darkred !important;
+            color: white !important;
+        }
+
+        .toast-bottom-center {
+            bottom: 20px;
+            left: 55%;
+            transform: translateX(-50%);
+            position: fixed;
+        }
+
+        .tabulator-row.tabulator-selected {
+            background-color: #9abcea !important;
+        }
+
+        #TeamModal #employee-table .tabulator-row .tabulator-cell {
+            border-left: none !important;
+            border-bottom: none !important;
+            border-top: none !important;
+        }
+
+        #teamMember-table .tabulator-row .tabulator-cell {           
+            border-bottom: none !important;
+            border-top: none !important;
+        }
+       
+        .nav-link {
+            color: black; 
+        }
+
+        .nav-link.active {
+            color: green!important;          
+        }
+
+        #file-drop-area {
+            border: 2px dashed #ccc;          
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #image-uploadify {
+            display: none;
+        }
+
+        #file-drop-area1 {
+            border: 2px dashed #ccc;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #image-uploadify1 {
+            display: none;
+        }
+
+        #file-drop-area2 {
+            border: 2px dashed #ccc;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #image-uploadify2 {
+            display: none;
+        }
+
+        #file-drop-area3 {
+            border: 2px dashed #ccc;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #image-uploadify3 {
+            display: none;
+        }
+
+        #file-drop-area4 {
+            border: 2px dashed #ccc;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #image-uploadify4 {
+            display: none;
+        }
+
+        #file-drop-area5 {
+            border: 2px dashed #ccc;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #image-uploadify5 {
+            display: none;
+        }
+
+        #file-drop-area6 {
+            border: 2px dashed #ccc;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #image-uploadify6 {
+            display: none;
+        }
+
+    </style>
+}
+
+<div class="container mt-1 rounded border border-muted p-2 border-1" style="background: #FBFBFB;">
+    <!-- Profile Section -->
+    <div class="row mb-1">
+        <!-- Profile Image -->
+        <div class="col-4 col-md-2 d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
+            <img src="~/User/img/Employee.png" alt="Profile Picture" class="pt-3 ps-md-3" style="max-width: 170px; max-height: 170px; border-radius: 50%;">
+        </div>
+        <!-- Profile Details -->
+        <div class="col-8 col-md-10 d-flex flex-column justify-content-center">
+            <h5 class="mb-1" style="color:#414042; font-weight: 700;">Borhan Uddin</h5>
+            <p class="mb-1 profile-custom-p">jr.programmer</p>
+            <div class="d-flex align-items-center mb-1">
+                <img src="~/User/img/smart-phone-01.png" alt="Phone Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">01906750597</p>
+            </div>
+            <div class="d-flex align-items-center mb-1">
+                <img src="~/User/img/mail-01.png" alt="Email Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">smborhan.cse@gmail.com</p>
+            </div>
+            <div class="d-flex align-items-center">
+                <img src="~/User/img/time-02.png" alt="Last Active Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">Last Active time today - 12.00 PM</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row border-bottom pb-2 mt-1">
+        <div class="col-12 d-flex align-items-center gap-2">
+            <div class="toggle-switch d-flex align-items-center" id="toggleSwitch">
+                <div class="status-text">Active</div>
+                <div class="slider"></div>
+            </div>
+
+            <div class="tag-container d-flex gap-1">
+                <span class="tag">Training</span>
+                <span class="tag">Learning</span>
+                <span class="tag">Development</span>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class="card">
+        <div class="row mt-1 align-items-center">
+            <div class="col-lg-6">
+                <p class="fs-4 fw-bold" style="margin-bottom: 0px;margin-left: 14px;">Contract</p>
+            </div>
+
+            <div class="col-lg-6 d-flex justify-content-end">
+                <div class="">
+                    <button class="btn btn-light fw-bold ms-3 h-100 radius-30" type="button" data-bs-toggle="modal" data-bs-target="#AddModal">
+                        Add <i class="bi bi-plus-lg ms-1"></i>
+                    </button>
+                </div>
+                <div class="">
+                    <input type="hidden" id="updateId" />
+                    <button id="editBtn" class="btn btn-light fw-bold ms-3 h-100 radius-30" type="button" data-bs-toggle="modal" data-bs-target="#AddModal">
+                        Edit <i class="bi bi-pen ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <ul class="nav nav-tabs mt-4">
+                <li class="nav-item">
+                    <a class="nav-link  fw-semibold active" href="#" id="EmpCurrent">Current</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold" href="#" id="Prevcontracts">Previous contracts</a>
+                </li>
+            </ul>
+
+            <div id="ContractPeriodView">
+                <div id="ContractPeriodDiv" class="row" style="background: #e9ecef6b;">
+                    <div id="contract-table"></div>
+                </div>
+            </div>
+
+            <div id="PreviousContractView" class="d-none">
+
+                <div class="row py-3" style="background: #e9ecef6b;">
+                    <div class="col-lg">
+                        <p class="fs-4 fw-bold">  </p>
+                    </div>
+                    <div class="col-lg">
+                        <div class="float-end">
+                            <button class="btn btn-success fw-bold ms-3 h-100 radius-30" type="button" data-bs-toggle="offcanvas" data-bs-target="#PODOffcanvas">
+                                New
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="previousContract-table"></div>
+
+            </div>
+           
+        </div>
+
+        <div class="modal fade" id="AddModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Contract Period</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="ContractPeriod" class="custom-label">Contract Period</label>
+                                <input type="text" class="form-control" id="ContractPeriod">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="Status" class="custom-label">Status</label>
+                                <input type="text" class="form-control" id="Status">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="ContractStartDate" class="custom-label">Contract Start Date</label>
+                                <input type="text" class="form-control" id="ContractStartDate">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="ContractEndDate" class="custom-label">Contract End Date</label>
+                                <input type="text" class="form-control" id="ContractEndDate">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="Attachments" class="custom-label">Attachments</label>
+                                <input type="text" class="form-control" id="Attachments">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button id="BtnSave" type="button" class="btn btn-success">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <br />
+    @*munna*@
+    <div class="card">
+        <div class=" row">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="card-header" style="border-bottom: 0;width: 885px;">
+                    Team members
+                </div>
+                <div class="">
+                    <button id="editTeam" class="btn btn-light fw-bold h-100 radius-30" type="button" data-bs-toggle="modal" data-bs-target="#TeamModal">
+                        Edit <i class="bi bi-pen ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="teamMember-table"></div>
+
+    </div>
+
+    <div class="modal fade" id="TeamModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Team Members</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <label style=" font-size: smaller; padding-bottom: 5px; ">Name / Email</label>
+                        <div class="input-group " style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                            <input id="searchInput" type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                            <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                                <i class="bi bi-search"></i>
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div id="employee-table"></div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="TeamSave" type="button" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <div class="card">
+        <div class=" row">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="card-header" style="border-bottom: 0;width: 885px;">
+                    Job Information
+                </div>
+                <div class="">
+                    <button id="editJob" class="btn btn-light fw-bold h-100 radius-30" type="button" data-bs-toggle="modal" data-bs-target="#JobModal">
+                        Edit <i class="bi bi-pen ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="JoiningDate" class="custom-label">Joining Date</label>
+                    <ul id="joiningDateList" style=" padding-left: 0rem; "></ul>
+                </div>
+                <div class="col-md-6">
+                    <label for="EmployeeType" class="custom-label">Employee Type</label>
+                    <ul id="employeeTypeList" style=" padding-left: 0rem; "></ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="Designation" class="custom-label">Job Title</label>
+                    <ul id="designationList" style=" padding-left: 0rem; "></ul>
+                </div>
+                <div class="col-md-6">
+                    <label for="Department" class="custom-label">Department</label>
+                    <ul id="departmentList" style=" padding-left: 0rem; "></ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="EmployeeCode" class="custom-label">Employee ID</label>
+                    <ul id="employeeCodeList" style=" padding-left: 0rem; "></ul>
+                </div>
+                <div class="col-md-6">
+                    <label for="Gender" class="custom-label">Gender</label>
+                    <ul id="genderList" style=" padding-left: 0rem; "></ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="Location" class="custom-label">Location</label>
+                    <ul id="locationList" style=" padding-left: 0rem; "></ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="JobModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Job Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="JoiningDate" class="custom-label">Joining Date</label>
+                            <input type="text" class="form-control" id="JoiningDate">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="EmployeeType" class="custom-label">Employee Type</label>
+                            <input type="text" class="form-control" id="EmployeeType">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="Designation" class="custom-label">Job Title</label>
+                            <select style="width: 221px;" class="form-control" id="Designation">
+                                <option value="">Select designation</option>                               
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Department" class="custom-label">Department</label>
+                            <select style="width: 221px;" class="form-control" id="Department">
+                                <option value="">Select department</option>                               
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="EmployeeCode" class="custom-label">Employee ID</label>
+                            <input type="text" class="form-control" id="EmployeeCode">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Gender" class="custom-label">Gender</label>
+                            <select style="width: 221px;" class="form-control" id="Gender">
+                                <option value="">Select gender</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="Location" class="custom-label">Location</label>                          
+                            <select class="form-control" id="Location">
+                                <option value="">Select Location</option>
+                                <option value="Chittagong">Chittagong</option>
+                                <option value="Dhaka">Dhaka</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <input type="hidden" id="empJobInfoId" value="@ViewBag.EmployeeId" />
+                    <button id="SaveJobInfo" type="button" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div class="hiddenSector">
+        <div class="row">
+            <input type="hidden" id="PurchaseFilePath" name="PurchaseFilePath" value="" />
+        </div>
+    </div>
+
+    <div class="card">
+        <div class=" row">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="card-header" style="border-bottom: 0;width: 885px;">
+                    Documents
+                </div>
+                <div class="">
+                    <button id="" class="btn btn-light fw-bold h-100 radius-30" type="button" data-bs-toggle="modal" data-bs-target="#DocumentModal">
+                        Edit <i class="bi bi-pen ms-1"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+               <span id="documentlist"></span>
+               <br />
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label text-center" style=" margin-left: 20px; ">National ID Card</label>
+                    </div>
+                    <div class="col">
+                        <label class="form-label text-center">Passport Copy</label>
+                    </div>
+                </div>
+                <br />
+                <div class="col">
+                    <label style=" margin-left: 20px; ">Declaration</label>
+                    <span></span>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col">
+                        <label class="form-label text-center" style=" margin-left: 20px; ">Employee Signature</label>
+                    </div>
+                    <div class="col">
+                        <label class="form-label text-center">Date</label>
+                        <input type="text" class="form-control" id="DocDate" style=" width: 140px; ">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="modal fade" id="DocumentModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Documents</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"> 
+                        <div class="row">  
+                            <div class="col-md">
+                            <div id="file-drop-area">
+                                    <i class="bi bi-upload" style=" font-size: larger;background-color: #0fcb0f;color: white;padding-left: 5px;padding-right: 5px;border-radius: 5px; "></i>
+                                    <ul id="selected-files-list" style=" margin-bottom: 1px; padding-left: 0px;"></ul> <!-- List to display selected file names -->
+                            </div>
+                            <input type="hidden" id="fileType" value="Resume" />
+                            <input id="image-uploadify" type="file" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                                <label class="form-label" style=" text-align: center;margin-left: 23px; ">Resume</label>
+                            </div>
+                            <div class="col-md">
+                                <div id="file-drop-area1">
+                                    <i class="bi bi-upload" style=" font-size: larger;background-color: #0fcb0f;color: white;padding-left: 5px;padding-right: 5px;border-radius: 5px; "></i>
+                                    <ul id="selected-files-list1" style=" margin-bottom: 1px;padding-left: 0px; "></ul> <!-- List to display selected file names -->
+                                </div>
+                                <input type="hidden" id="fileType1" value="Offer letter" />
+                                <input id="image-uploadify1" type="file" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                                <label class="form-label" style=" text-align: center;margin-left: 9px; ">Offer letter</label>
+                            </div>
+                            <div class="col-md">
+                                <div id="file-drop-area2">
+                                    <i class="bi bi-upload" style=" font-size: larger;background-color: #0fcb0f;color: white;padding-left: 5px;padding-right: 5px;border-radius: 5px; "></i>
+                                    <ul id="selected-files-list2" style=" margin-bottom: 1px;padding-left: 0px; "></ul> <!-- List to display selected file names -->
+                                </div>
+                                <input type="hidden" id="fileType2" value="Pay-slip" />
+                                <input id="image-uploadify2" type="file" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                                <label class="form-label" style=" text-align: center;margin-left: 24px; ">Pay-slip</label>
+                            </div>
+                            <div class="col-md">
+                                <div id="file-drop-area3">
+                                    <i class="bi bi-upload" style=" font-size: larger;background-color: #0fcb0f;color: white;padding-left: 5px;padding-right: 5px;border-radius: 5px; "></i>
+                                    <ul id="selected-files-list3" style=" margin-bottom: 1px;padding-left: 0px; "></ul> <!-- List to display selected file names -->
+                                </div>
+                                <input type="hidden" id="fileType3" value="Birth Certificate" />
+                                <input id="image-uploadify3" type="file" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                                <label class="form-label" style=" text-align: center; ">Birth Certificate</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label text-center">National ID Card</label>
+                            </div>
+                            <div class="col">
+                                <label class="form-label text-center">Passport Copy</label>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                        <div class="col-md">
+                            <div id="file-drop-area4">
+                                <i class="bi bi-upload" style=" font-size: larger;background-color: #0fcb0f;color: white;padding-left: 5px;padding-right: 5px;border-radius: 5px; "></i>
+                                <ul id="selected-files-list4" style=" margin-bottom: 1px;padding-left: 0px; "></ul> <!-- List to display selected file names -->
+                            </div>
+                            <input type="hidden" id="fileType4" value="Resume" />
+                            <input id="image-uploadify4" type="file" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                            <label class="form-label" style=" text-align: center;margin-left: 37px; ">Font side</label>
+                        </div>
+                        <div class="col-md">
+                            <div id="file-drop-area5">
+                                <i class="bi bi-upload" style=" font-size: larger;background-color: #0fcb0f;color: white;padding-left: 5px;padding-right: 5px;border-radius: 5px; "></i>
+                                <ul id="selected-files-list5" style=" margin-bottom: 1px;padding-left: 0px; "></ul> <!-- List to display selected file names -->
+                            </div>
+                            <input type="hidden" id="fileType5" value="Resume" />
+                            <input id="image-uploadify5" type="file" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                            <label class="form-label" style=" text-align: center;margin-left: 37px; ">Back side</label>
+                        </div>
+                        <div class="col-md">
+                            <div id="file-drop-area6">
+                                <i class="bi bi-upload" style=" font-size: larger;background-color: #0fcb0f;color: white;padding-left: 5px;padding-right: 5px;border-radius: 5px; "></i>
+                                <ul id="selected-files-list6" style=" margin-bottom: 1px;padding-left: 0px; "></ul> <!-- List to display selected file names -->
+                            </div>
+                            <input type="hidden" id="fileType6" value="Resume" />
+                            <input id="image-uploadify6" type="file" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                            <label class="form-label" style=" text-align: center;margin-left: 38px; ">Passport</label>
+                        </div>
+                        </div>
+                        <br />
+                        <div><label class="form-label">Declaration</label></div>
+                        <div class="">  
+                          <input type="text" id="DocDeclaration" class="form-control" placeholder="Your declaration" aria-label="Username" aria-describedby="addon-wrapping">
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label text-center">Employee signature</label>
+                                <div class="col-md">
+                                    <div id="file-drop-area" style="width: 178px;">
+                                        <i class="bi bi-upload" style=" font-size: 13px; "></i> <span style=" font-size: 13px; ">Upload sign</span>
+                                        <ul id="selected-files-list" style=" margin-bottom: 1px;padding-left: 0px; "></ul> <!-- List to display selected file names -->
+                                    </div>
+                                    <input type="hidden" id="fileType" value="Resume" />
+                                    <input id="image-uploadify" type="file" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                                    
+                                </div>
+                            </div>
+                            <div class="col">
+                                <label class="form-label text-center">Date</label>
+                                <input type="text" class="form-control" id="DocumentDate" style=" width: 140px; ">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <input type="hidden" id="empDocumentId" value="@ViewBag.EmployeeId" />
+                        <button id="SaveDocument" type="button" class="btn btn-success">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <div class=" row">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="card-header" style="border-bottom: 0;width: 885px;">
+                    Add Bank Details
+                </div>
+                <div class="">
+                    <button id="editBankDetail" class="btn btn-light fw-bold h-100 radius-30" type="button" data-bs-toggle="" data-bs-target="">
+                        Edit <i class="bi bi-pen ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="AccHolderName" class="custom-label">Account Holder Name</label>
+                    <h6 id="AccHolderNameDisplay" class="display-value"></h6>
+                    <input type="text" class="form-control d-none" id="AccHolderName">
+                </div>
+                <div class="col-md-6">
+                    <label for="AccType" class="custom-label">Account Type</label>
+                    <h6 id="AccTypeDisplay" class="display-value"></h6>
+                    <select class="form-control d-none" id="AccType" name="AccType">
+                        <option value="">Select Type</option>
+                        @foreach (var item in Enum.GetValues(typeof(AccountType)))
+                        {
+                            <option value="@((int)item)">@item</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="BankName" class="custom-label">Bank Name</label>
+                    <h6 id="BankNameDisplay" class="display-value"></h6>
+                    <input type="text" class="form-control d-none" id="BankName">
+                </div>
+                <div class="col-md-6">
+                    <label for="BankNumber" class="custom-label">Bank Number</label>
+                    <h6 id="BankNumberDisplay" class="display-value"></h6>
+                    <input type="text" class="form-control d-none" id="BankNumber">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="RoutingNumber" class="custom-label">Transit Number</label>
+                    <h6 id="RoutingNumberDisplay" class="display-value"></h6>
+                    <input type="text" class="form-control d-none" id="RoutingNumber">
+                </div>
+                <div class="col-md-6">
+                    <label for="AccNumber" class="custom-label">Account Number</label>
+                    <h6 id="AccNumberDisplay" class="display-value"></h6>
+                    <input type="text" class="form-control d-none" id="AccNumber">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="ReAccNumber" class="custom-label">Re-enter Account Number</label>
+                    <h6 id="ReAccNumberDisplay" class="display-value"></h6>
+                    <input type="text" class="form-control d-none" id="ReAccNumber">
+                </div>
+            </div>
+            <br />
+            <div>
+                <input type="hidden" id="empBankId" value="@ViewBag.EmployeeId" />
+                <button id="SaveBankDetail" type="button" class="btn btn-success float-end">Save</button>
+            </div>
+        </div>
+
+
+    </div>
+    <br />
+    <div class="card">
+        <div class=" row">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="card-header" style="border-bottom: 0;width: 885px;">
+                    Tax Details
+                </div>
+                <div class="">
+                    <button id="editTaxDetail" class="btn btn-light fw-bold h-100 radius-30" type="button" data-bs-toggle="" data-bs-target="">
+                        Edit <i class="bi bi-pen ms-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="TaxYear" class="custom-label">Tax Year</label>
+                    <h6 id="TaxYearDisplay" class="Taxdisplay-value"></h6>
+                    <input type="text" class="form-control" id="TaxYear">
+                </div>
+                <div class="col-md-6">
+                    <label for="AcknowledgmentSlipRecDate" class="custom-label">Acknowledgement slip receive date</label>
+                    <h6 id="AcknowledgmentSlipRecDateDisplay" class="Taxdisplay-value"></h6>
+                    <input class="form-control" id="AcknowledgmentSlipRecDate">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="Name" class="custom-label">Name</label>
+                    <h6 id="NameDisplay" class="Taxdisplay-value"></h6>
+                    <input type="text" class="form-control" id="Name">
+                </div>
+                <div class="col-md-6">
+                    <label for="TaxCertificateReceive" class="custom-label">Tax certificate receive</label>
+                    <h6 id="TaxCertificateReceiveDisplay" class="Taxdisplay-value"></h6>
+                    <select class="form-control" id="TaxCertificateReceive" name="TaxCertificateReceive">
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="ReturnSubmit" class="custom-label">Return Submit</label>
+                    <h6 id="ReturnSubmitDisplay" class="Taxdisplay-value"></h6>
+                    <select class="form-control" id="ReturnSubmit" name="ReturnSubmit">
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="TaxExtension" class="custom-label">Tax Extension</label>
+                    <h6 id="TaxExtensionDisplay" class="Taxdisplay-value"></h6>
+                    <select class="form-control" id="TaxExtension" name="TaxExtension">
+                        <option value="false">No</option>
+                        <option value="true">Yes</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="ReturnSubmitDate" class="custom-label">Return submit date</label>
+                    <h6 id="ReturnSubmitDateDisplay" class="Taxdisplay-value"></h6>
+                    <input class="form-control" id="ReturnSubmitDate">
+                </div>
+
+            </div>
+            <br />
+            <div>
+                <input type="hidden" id="empTaxId" value="@ViewBag.EmployeeId" />
+                <button id="SaveTaxDetail" type="button" class="btn btn-success float-end">Save</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    @*munna*@
+
+
+    @*port of discharge all html tags starts*@
+ 
+
+    
+    <br />
+    <br />
+    <br />
+
+</div>
+
+@section Scripts {
+
+    <script src="~/js/service/apiservice.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>
+
+        //$('#AccType').select2();      
+
+        $('#ContractStartDate').datepicker({
+            dateFormat: 'dd-M-yy',
+            todayHighlight: true,
+            autoclose: true
+        }).datepicker("setDate", new Date());
+
+        $('#ContractEndDate').datepicker({
+            dateFormat: 'dd-M-yy',
+            todayHighlight: true,
+            autoclose: true
+        }).datepicker("setDate", new Date());
+
+        $('#AcknowledgmentSlipRecDate').datepicker({
+            dateFormat: 'dd-M-yy',
+            todayHighlight: true,
+            autoclose: true
+        }).datepicker("setDate", new Date());
+
+        $('#ReturnSubmitDate').datepicker({
+            dateFormat: 'dd-M-yy',
+            todayHighlight: true,
+            autoclose: true
+        }).datepicker("setDate", new Date());
+
+        $('#JoiningDate').datepicker({
+            dateFormat: 'dd-M-yy',
+            todayHighlight: true,
+            autoclose: true
+        }).datepicker("setDate", new Date());
+
+        $('#DocumentDate').datepicker({
+            dateFormat: 'dd-M-yy',
+            todayHighlight: true,
+            autoclose: true
+        }).datepicker("setDate", new Date());
+
+        $('#DocDate').datepicker({
+            dateFormat: 'dd-M-yy',
+            todayHighlight: true,
+            autoclose: true
+        }).datepicker("setDate", new Date());
+
+        $("#EmpCurrent").on("click", function () {
+            $("#ContractPeriodView").removeClass("d-none");
+            $("#PreviousContractView").addClass("d-none");
+
+            $("#EmpCurrent").addClass("active");
+            $("#Prevcontracts").removeClass("active");
+            
+        })
+
+        $("#Prevcontracts").on("click", function () {
+            $("#ContractPeriodView").addClass("d-none");
+            $("#PreviousContractView").removeClass("d-none");
+
+            $("#Prevcontracts").addClass("active");
+            $("#EmpCurrent").removeClass("active");
+
+        })
+
+        $(document).ready(function () {
+            // Event handler for when the JobModal is shown
+            $('#JobModal').on('show.bs.modal', function () {
+                select2Initializer("#Department", "@Url.Action("SearchDepartment", "Department")", "", "#JobModal");
+                select2Initializer("#Designation", '@Url.Action("SearchDesignation", "Designation")', "", "#JobModal");
+                select2Initializer("#Gender", "@Url.Action("SearchVariable", "Variable")", "Gender", "#JobModal");
+            });            
+        });
+
+        // $(document).ready(function () {
+        //     // Initialize Select2 inside the modal when modal is opened
+        //     $('#JobModal').on('shown.bs.modal', function () {
+        //         // Initialize Select2 with the dropdownParent option correctly set
+        //         $('#Department').select2({                                       
+        //             ajax: {
+        //                 url: '@Url.Action("SearchDepartment", "Department")',
+        //                 data: function (params) {
+        //                     return {
+        //                         searchTerm: params.term
+        //                     };
+        //                 },
+        //                 processResults: function (data) {
+        //                     return {
+        //                         results: data
+        //                     };
+        //                 }
+        //             },
+        //             dropdownParent: $('#JobModal') // Correctly sets the dropdown within the modal
+        //         });
+
+        //         $('#Designation').select2({                    
+        //             ajax: {
+        //                 url: '@Url.Action("SearchDesignation", "Designation")',
+        //                 data: function (params) {
+        //                     return {
+        //                         searchTerm: params.term
+        //                     };
+        //                 },
+        //                 processResults: function (data) {
+        //                     return {
+        //                         results: data
+        //                     };
+        //                 }
+        //             },
+        //             dropdownParent: $('#JobModal') // Correctly sets the dropdown within the modal
+        //         });
+
+        //         $('#Gender').select2({                    
+        //             ajax: {
+        //                 url: '@Url.Action("SearchVariable", "Variable")',
+        //                 data: function (params) {
+        //                     return {
+        //                         searchTerm: params.term,
+        //                         type: "Gender"
+        //                     };
+        //                 },
+        //                 processResults: function (data) {
+        //                     return {
+        //                         results: data
+        //                     };
+        //                 }
+        //             },
+        //             dropdownParent: $('#JobModal') // Correctly sets the dropdown within the modal
+        //         });
+        //     });
+        // });
+
+        
+        $('#BtnSave').click(function () {
+            var comid = '@ViewBag.CompanyId';
+            var userid = '@ViewBag.UserId';
+            var updateId = $('#updateId').val();
+
+            if (!updateId) {
+                alert("updateId is empty or null.");
+                return;
+            }
+
+            var Model =
+            {
+                CompanyId: comid,
+                UserId: userid,
+                ContractPeriod: $("#ContractPeriod").val(),
+                Status: $("#Status").val(),
+                Attachments: $("#Attachments").val(),
+                ContractStartDate: new Date($("#ContractStartDate").val()).toISOString(),
+                ContractEndDate: new Date($("#ContractEndDate").val()).toISOString(),
+                Id: updateId
+            };
+            
+            console.log("after save console", Model)
+            var IdAbc = 0;
+
+            $.ajax({
+
+                type: "POST",
+                url: '@Url.Action("SaveEmpOrganization", "EmployeeAdmin")?updateId=' + updateId,
+                data: JSON.stringify(Model),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //console.log("after save console::", response);
+                    if (response.error) {
+                        toastr.error(response.message, "", {
+                            "toastClass": "toast-red",
+                            "positionClass": "toast-bottom-center"
+                        });
+                    } else {
+                        IdAbc = response.Id;
+                        toastr.success(response.message, "", {
+                            "toastClass": "toast-green",
+                            "positionClass": "toast-bottom-center"
+                        });
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("EmployeeOrganization", "EmployeeAdmin")';
+                        }, 3000)
+                    }
+
+                },
+                error: function (response) {
+                }
+            });
+
+        });
+
+        
+
+        function selectData() {
+            // Get the selected row data
+            var selectedData = contractTable.getSelectedData();  // This returns an array of selected row(s)
+
+            // Check if any row is selected
+            if (selectedData.length === 0) {
+                alert("Please select a row to edit.");
+                return;
+            }
+
+            // If row is selected, populate the modal fields
+            var rowData = selectedData[0];  // Assuming you're working with a single row selection
+
+            function formatDate(dateString) {
+                var date = new Date(dateString);  
+                var options = { day: '2-digit', month: 'short', year: 'numeric' };  
+                return date.toLocaleDateString('en-GB', options).replace(/ /g, '-');  
+            }
+
+            // Populate the modal fields
+            $("#ContractPeriod").val(rowData.contractPeriod);
+            $("#Status").val(rowData.status);
+            $("#ContractStartDate").val(formatDate(rowData.contractStartDate));
+            $("#ContractEndDate").val(formatDate(rowData.contractEndDate));
+            $("#Attachments").val(rowData.attachments);  
+
+        }
+
+        var contractTable;
+        var ContractFields = [
+            {
+                title: "Contract Period", field: "contractPeriod", headerHozAlign: "center"
+            },           
+            {
+                title: "Contract Start Date", field: "contractStartDate", headerHozAlign: "center",
+                formatter: function (cell) {
+                    var value = cell.getValue();
+                    if (!value) {
+                        return "";
+                    }
+                    var date = new Date(value);
+                    if (isNaN(date.getTime())) {
+                        return "";
+                    }
+                    var options = { day: '2-digit', month: 'short', year: 'numeric' };
+                    return date.toLocaleDateString('en-GB', options).replace(/\s/g, '-');
+                }
+            },
+            {
+                title: "Contract End Date", field: "contractEndDate", headerHozAlign: "center",
+                formatter: function (cell) {
+                    var value = cell.getValue();
+                    if (!value) {
+                        return "";
+                    }
+                    var date = new Date(value);
+                    if (isNaN(date.getTime())) {
+                        return "";
+                    }
+                    var options = { day: '2-digit', month: 'short', year: 'numeric' };
+                    return date.toLocaleDateString('en-GB', options).replace(/\s/g, '-');
+                }
+            },
+            {
+                title: "Status", field: "status", headerHozAlign: "center"
+            },
+            {
+                title: "Attachments", field: "attachments", headerHozAlign: "center"                
+            },
+            {
+                title: "Action", field: "CuAction", headerHozAlign: "center",
+                formatter: function (cell, formatterParams) {
+                    return '<i class="bi bi-three-dots-vertical"></i>';
+                }
+            }
+
+        ]
+
+        ContractPeriodList();
+
+        function ContractPeriodList() {
+
+            var EMPURL = '@Url.Action("GetContractList", "EmployeeAdmin")';
+            contractTable = new Tabulator("#contract-table", {
+                //height: "350px",
+              
+                layout: "fitDataTable",
+                selectableRows: true,
+                selectable: 1,
+                ajaxURL: EMPURL,
+                ajaxConfig: "get",
+                ajaxContentType: "json",
+
+                ajaxResponse: function (url, params, response) {
+                    contractTable.setMaxPage(response.pageCount);
+                    //setPageCount
+
+                    if (Array.isArray(response.data)) {
+                        console.log("Data loaded successfully:", response.data);
+                        return response.data; // Pass the array directly
+                    } else {
+                        console.error("Data loading error: expected an array, received something else.");
+                        return []; // Return an empty array if the data isn't correct
+                    }
+
+                },
+
+                columns: ContractFields,
+                // ajaxURLGenerator: function (url, config, params) {
+                //     //return request url
+                //     return url + "&searchquery=" + encodeURIComponent(JSON.stringify(params)); //encode parameters as a json object
+                // },
+
+               
+
+            });
+
+        }
+
+        document.getElementById("editBtn").addEventListener("click", function () {
+            contractTable.selectRow(1);
+
+            var selectedData = contractTable.getSelectedData();
+
+            if (selectedData.length > 0) {
+                console.log("Selected Row Data:", selectedData[0]); // Log the first selected row's data
+                var updateId = selectedData[0].id; 
+                $('#updateId').val(updateId);
+                selectData();
+            } else {
+                console.log("No row selected.");
+            }
+
+        });
+
+
+        var employeeTable;
+
+        function customCheckBoxFormatter(cell, formatterParams, onRendered) {
+            return '<input type="checkbox" class="custom-checkbox mt-2">';
+        }
+
+        var EmployeeFields = [
+            { title: "", field: "CheckBox", headerHozAlign: "left", headerSort: false, formatter: customCheckBoxFormatter, visible: true, width: 50 },
+            {
+                title: "", field: "firstName", headerHozAlign: "center", headerSort: false, width: 210,
+            },
+           
+        ];
+
+        TeamEmployee();
+
+        $("#searchInput").on("input", function () {
+            var input = $(this).val();
+            var url = '@Url.Action("GetTeamMemberList", "EmployeeAdmin")?searchquery=' + encodeURIComponent(input);
+            employeeTable.setData(url);
+        });
+
+        function TeamEmployee() {
+
+            var EMPURL = '@Url.Action("GetTeamMemberList", "EmployeeAdmin")';
+            employeeTable = new Tabulator("#employee-table", {
+                //height: "350px",
+              
+                layout: "fitDataTable",
+                selectable: 1,
+                filterMode: "remote",
+                selectableRows: true,
+                ajaxURL: EMPURL,
+                ajaxConfig: "get",
+                ajaxContentType: "json",
+
+                ajaxResponse: function (url, params, response) {
+                    employeeTable.setMaxPage(response.pageCount);
+                    //console.log("response.last_page", response.last_page); setPageCount
+
+                    if (Array.isArray(response.data)) {
+                        console.log("Data loaded successfully:", response.data);
+                        return response.data; // Pass the array directly
+                    } else {
+                        console.error("Data loading error: expected an array, received something else.");
+                        return []; // Return an empty array if the data isn't correct
+                    }
+                },
+
+                columns: EmployeeFields,
+                // ajaxURLGenerator: function (url, config, params) {
+                //     //return request url
+                //     return url + "&searchquery=" + encodeURIComponent(JSON.stringify(params)); //encode parameters as a json object
+                // },
+               
+            });
+
+        }
+
+        $('#TeamSave').click(function () {
+            var comid = '@ViewBag.CompanyId';
+            var userid = '@ViewBag.UserId';
+            var updateId = $('#updateId').val();
+
+            // if (!updateId) {
+            //     alert("updateId is empty or null.");
+            //     return;
+            // }
+
+            var selectedData = employeeTable.getSelectedData();
+            var rowData = selectedData[0];
+
+            var currentDate = new Date().toISOString();
+
+            var Model =
+            {
+                CompanyId: comid,
+                UserId: userid,
+                IsTeamHead: true,
+                JoinedDate: currentDate,
+                EmployeeId: rowData.id, 
+                MemberId: rowData.id
+            };
+
+            console.log("after save console", Model)
+            var IdAbc = 0;
+
+            $.ajax({
+
+                type: "POST",
+                url: '@Url.Action("SaveTeamMember", "EmployeeAdmin")?updateId=' + updateId,
+                data: JSON.stringify(Model),               
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //console.log("after save console::", response);
+                    if (response.error) {
+                        toastr.error(response.message, "", {
+                            "toastClass": "toast-red",
+                            "positionClass": "toast-bottom-center"
+                        });
+                    } else {
+                        IdAbc = response.Id;
+                        toastr.success(response.message, "", {
+                            "toastClass": "toast-green",
+                            "positionClass": "toast-bottom-center"
+                        });
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("EmployeeOrganization", "EmployeeAdmin")';
+                        }, 3000)
+                    }
+
+                },
+                error: function (response) {
+                }
+            });
+
+        });
+
+        var teamMemberTable;
+        var TeamMemberFields = [
+            {
+                title: "", field: "employee.firstName", headerHozAlign: "center", headerSort: false, width: 210,
+                formatter: function (cell, formatterParams) {
+                    // Return the value wrapped in <strong> tag to make it bold
+                    return "<strong>" + cell.getValue() + "</strong>";
+                }
+            },
+        ];
+
+        ValidateTeamMember();
+        function ValidateTeamMember() {
+
+            var EMPURL = '@Url.Action("ValidateTeamMemberList", "EmployeeAdmin")';
+            teamMemberTable = new Tabulator("#teamMember-table", {
+                //height: "350px",
+                
+                layout: "fitDataTable",
+                selectable: 1,
+                filterMode: "remote",
+                selectableRows: true,
+                ajaxURL: EMPURL,
+                ajaxConfig: "get",
+                ajaxContentType: "json",
+                headerVisible: false,
+                ajaxResponse: function (url, params, response) {
+                    teamMemberTable.setMaxPage(response.pageCount);
+                    //console.log("response.last_page", response.last_page); setPageCount
+
+                    if (Array.isArray(response.data)) {
+                        console.log("Team Member Data:", response.data);
+                        return response.data; // Pass the array directly
+                    } else {
+                        console.error("Data loading error: expected an array, received something else.");
+                        return []; // Return an empty array if the data isn't correct
+                    }
+                },
+
+                columns: TeamMemberFields,
+                // ajaxURLGenerator: function (url, config, params) {
+                //     //return request url
+                //     return url + "&searchquery=" + encodeURIComponent(JSON.stringify(params)); //encode parameters as a json object
+                // },
+
+            });
+             
+        }
+
+        LoadJobInformation();
+        function LoadJobInformation() {
+            //if ('@ViewBag.ActionType' == "Edit") { }
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetEmployeeData", "EmployeeAdmin")",
+                data: { "employeeId": '@ViewBag.employeeId' },
+                dataType: "json",
+                success: function (response) {
+                    console.log("edit mode er data dekhi:", response);
+
+                    $("#joiningDateList").empty();
+                    $("#employeeTypeList").empty();
+                    $("#designationList").empty();
+                    $("#departmentList").empty();
+                    $("#employeeCodeList").empty();
+                    $("#genderList").empty();
+                    $("#locationList").empty();
+
+                    $("#joiningDateList").append(`<ul style=" padding-left: 0rem; ">${response.joiningDate}</ul>`);
+                    $("#employeeTypeList").append(`<ul style=" padding-left: 0rem; ">${response.employeeType}</ul>`);
+                    $("#designationList").append(`<ul style=" padding-left: 0rem; ">${response.desigName}</ul>`);
+                    $("#departmentList").append(`<ul style=" padding-left: 0rem; ">${response.deptName}</ul>`);
+                    $("#employeeCodeList").append(`<ul style=" padding-left: 0rem; ">${response.employeeCode}</ul>`);
+                    $("#genderList").append(`<ul style=" padding-left: 0rem; ">${response.gender}</ul>`);
+                    $("#locationList").append(`<ul style=" padding-left: 0rem; ">${response.location}</ul>`);
+
+                    $("#JoiningDate").val(response.joiningDate);
+                    $("#EmployeeCode").val(response.employeeCode);
+                    $("#EmployeeType").val(response.employeeType);
+                    DefaultSelected("#Designation", response.designationId, response.desigName)
+                    DefaultSelected("#Department", response.departmentId, response.deptName)
+                    DefaultSelected("#Gender", response.gender, response.gender)
+                    $("#Location").val(response.location);
+                        
+
+                },
+                error: function (error) {
+                    console.error("Error fetching data: " + error);
+                }
+            });
+
+            
+        }
+
+        $('#SaveJobInfo').click(function () {
+            var comid = '@ViewBag.CompanyId';
+            var userid = '@ViewBag.UserId';
+            var updateId = $('#empJobInfoId').val();
+
+            // if (!updateId) {
+            //     alert("updateId is empty or null.");
+            //     return;
+            // }
+
+            var Model =
+            {
+                CompanyId: comid,
+                UserId: userid,
+                EmployeeCode: $("#EmployeeCode").val(),
+                EmployeeType: $("#EmployeeType").val(),
+                JoiningDate: new Date($("#JoiningDate").val()).toISOString(),
+                Location: $("#Location  option:selected").text(),
+                designationid: $("#Designation  option:selected").val() || null,
+                departmentid: $("#Department  option:selected").val() || null,
+                Gender: $("#Gender  option:selected").text()
+               
+            };
+
+            console.log("after save console", Model)
+            var IdAbc = 0;
+
+            $.ajax({
+
+                type: "POST",
+                url: '@Url.Action("SaveJobInformation", "EmployeeAdmin")?updateId=' + updateId,
+                data: JSON.stringify(Model),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //console.log("after save console::", response);
+                    if (response.error) {
+                        toastr.error(response.message, "", {
+                            "toastClass": "toast-red",
+                            "positionClass": "toast-bottom-center"
+                        });
+                    } else {
+                        IdAbc = response.Id;
+                        toastr.success(response.message, "", {
+                            "toastClass": "toast-green",
+                            "positionClass": "toast-bottom-center"
+                        });
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("EmployeeOrganization", "EmployeeAdmin")?updateId=' + updateId;
+                        }, 3000)
+                    }
+
+                },
+                error: function (response) {
+                }
+            });
+
+        });
+
+
+        LoadBankDetail();
+        function LoadBankDetail() {
+            //if ('@ViewBag.ActionType' == "Edit") { }
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetBankDetailData", "EmployeeAdmin")",
+                data: { "employeeId": '@ViewBag.employeeId' },
+                dataType: "json",
+                success: function (response) {
+                    console.log("edit mode er data dekhi:", response);
+
+                    $("#AccHolderNameDisplay").text(response.accHolderName);
+                    $("#AccTypeDisplay").text(response.accTypeText); 
+                    $("#BankNameDisplay").text(response.bankName);
+                    $("#BankNumberDisplay").text(response.bankNumber);
+                    $("#AccNumberDisplay").text(response.accNumber);
+                    $("#RoutingNumberDisplay").text(response.routingNumber);
+                    $("#ReAccNumberDisplay").text(response.reAccNumber);
+
+                    $("#AccHolderName").val(response.accHolderName);
+                    $("#AccType").val(response.accType);
+                    $("#BankName").val(response.bankName);
+                    $("#BankNumber").val(response.bankNumber);
+                    $("#AccNumber").val(response.accNumber);
+                    $("#RoutingNumber").val(response.routingNumber);
+                    $("#ReAccNumber").val(response.reAccNumber);
+                    //DefaultSelected("#AccType", response.accType, response.accType)
+                    
+
+                },
+                error: function (error) {
+                    console.error("Error fetching data: " + error);
+                }
+            });
+
+
+        }
+
+        $(document).ready(function () {
+            var isEditMode = false;
+
+            $('#AccHolderName, #BankName, #BankNumber, #RoutingNumber, #AccNumber, #ReAccNumber,#AccType').addClass('d-none'); // Hide input fields
+            $('#AccType').next('.select2-container').addClass('d-none');
+
+            $('#editBankDetail').click(function () {
+                isEditMode = !isEditMode;
+
+                // Toggle visibility of input fields
+                $('#AccHolderName, #BankName, #BankNumber, #RoutingNumber, #AccNumber, #ReAccNumber,#AccType').toggleClass('d-none', !isEditMode);
+                $('#AccType').next('.select2-container').toggleClass('d-none', !isEditMode);
+
+                $('.display-value').toggleClass('d-none', isEditMode);                
+
+                // Change the button text based on the mode
+                $(this).html(isEditMode ? 'Cancel' : 'Edit <i class="bi bi-pen ms-1"></i>');
+            });
+
+            $('#SaveBankDetail').click(function () {
+                $('.display-value').addClass('d-none');
+
+                $('#AccHolderName, #BankName, #BankNumber, #RoutingNumber, #AccNumber, #ReAccNumber,#AccType').addClass('d-none');
+                $('#AccType').next('.select2-container').addClass('d-none');
+               
+                $(this).addClass('d-none');
+
+                // Optionally reset the edit button text
+                $('#editBankDetail').html('Edit <i class="bi bi-pen ms-1"></i>');
+
+                var comid = '@ViewBag.CompanyId';
+                var userid = '@ViewBag.UserId';
+                var updateId = $('#empBankId').val();
+
+                // if (!updateId) {
+                //     alert("updateId is empty or null.");
+                //     return;
+                // }
+
+           
+                var Model =
+                {
+                    CompanyId: comid,
+                    UserId: userid,
+                    EmployeeId: updateId,
+                    AccHolderName: $("#AccHolderName").val(),
+                    AccType: parseInt($("#AccType").val()),
+                    AccNumber: $("#AccNumber").val(),
+                    ReAccNumber: $("#ReAccNumber").val(),
+                    BankName: $("#BankName").val(),
+                    BankNumber: $("#BankNumber").val(),
+                    RoutingNumber: $("#RoutingNumber").val()                
+                
+                };
+
+                console.log("after save console", Model)
+                var IdAbc = 0;
+
+                $.ajax({
+
+                    type: "POST",
+                    url: '@Url.Action("SaveBankDetails", "EmployeeAdmin")?updateId=' + updateId,
+                    data: JSON.stringify(Model),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        //console.log("after save console::", response);
+                        if (response.error) {
+                            toastr.error(response.message, "", {
+                                "toastClass": "toast-red",
+                                "positionClass": "toast-bottom-center"
+                            });
+                        } else {
+                            IdAbc = response.Id;
+                            toastr.success(response.message, "", {
+                                "toastClass": "toast-green",
+                                "positionClass": "toast-bottom-center"
+                            });
+                            setTimeout(function () {
+                                window.location.href = '@Url.Action("EmployeeOrganization", "EmployeeAdmin")';
+                            }, 3000)
+                        }
+
+                    },
+                    error: function (response) {
+                    }
+                });
+
+            });
+        });
+
+
+        $(document).ready(function () {
+            var isEditMode = false;
+
+            $('#TaxYear, #AcknowledgmentSlipRecDate, #TaxCertificateReceive, #ReturnSubmit, #TaxExtension, #ReturnSubmitDate,#Name').addClass('d-none'); // Hide input fields
+            //$('#AccType').next('.select2-container').addClass('d-none');
+
+            $('#editTaxDetail').click(function () {
+                isEditMode = !isEditMode;
+
+                // Toggle visibility of input fields
+                $('#TaxYear, #AcknowledgmentSlipRecDate, #TaxCertificateReceive, #ReturnSubmit, #TaxExtension, #ReturnSubmitDate,#Name').toggleClass('d-none', !isEditMode);
+                //$('#AccType').next('.select2-container').toggleClass('d-none', !isEditMode);
+
+                $('.Taxdisplay-value').toggleClass('d-none', isEditMode);
+
+                // Change the button text based on the mode
+                $(this).html(isEditMode ? 'Cancel' : 'Edit <i class="bi bi-pen ms-1"></i>');
+            });
+
+            $('#SaveTaxDetail').click(function () {
+
+                $('.Taxdisplay-value').addClass('d-none');
+
+                $('#TaxYear, #AcknowledgmentSlipRecDate, #TaxCertificateReceive, #ReturnSubmit, #TaxExtension, #ReturnSubmitDate,#Name').addClass('d-none');
+                //$('#AccType').next('.select2-container').addClass('d-none');
+
+                $(this).addClass('d-none');
+
+                // Optionally reset the edit button text
+                $('#editTaxDetail').html('Edit <i class="bi bi-pen ms-1"></i>');
+
+                var comid = '@ViewBag.CompanyId';
+                var userid = '@ViewBag.UserId';
+                var updateId = $('#empTaxId').val();
+
+                // if (!updateId) {
+                //     alert("updateId is empty or null.");
+                //     return;
+                // }
+
+
+                var Model =
+                {
+                    CompanyId: comid,
+                    UserId: userid,
+                    EmployeeId: updateId,
+                    TaxYear: $("#TaxYear").val(),
+                    Name: $("#Name").val(),
+                    AcknowledgmentSlipRecDate: new Date($("#AcknowledgmentSlipRecDate").val()).toISOString(),
+                    TaxCertificateReceive: JSON.parse($("#TaxCertificateReceive").val()),
+                    TaxExtension: JSON.parse($("#TaxExtension").val()),
+                    ReturnSubmit: JSON.parse($("#ReturnSubmit").val()),
+                    ReturnSubmitDate: new Date($("#ReturnSubmitDate").val()).toISOString()
+
+                };
+
+                console.log("after save console", Model)
+                var IdAbc = 0;
+
+                $.ajax({
+
+                    type: "POST",
+                    url: '@Url.Action("SaveTaxDetails", "EmployeeAdmin")?updateId=' + updateId,
+                    data: JSON.stringify(Model),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        //console.log("after save console::", response);
+                        if (response.error) {
+                            toastr.error(response.message, "", {
+                                "toastClass": "toast-red",
+                                "positionClass": "toast-bottom-center"
+                            });
+                        } else {
+                            IdAbc = response.Id;
+                            toastr.success(response.message, "", {
+                                "toastClass": "toast-green",
+                                "positionClass": "toast-bottom-center"
+                            });
+                            setTimeout(function () {
+                                window.location.href = '@Url.Action("EmployeeOrganization", "EmployeeAdmin")';
+                            }, 3000)
+                        }
+
+                    },
+                    error: function (response) {
+                    }
+                });
+
+            });
+        });
+
+        LoadTaxDetail();
+        function LoadTaxDetail() {
+            //if ('@ViewBag.ActionType' == "Edit") { }
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetTaxDetailData", "EmployeeAdmin")",
+                data: { "employeeId": '@ViewBag.employeeId' },
+                dataType: "json",
+                success: function (response) {
+                    console.log("edit mode er data dekhi:", response);
+
+                    $("#TaxYearDisplay").text(response.taxYear);
+                    $("#NameDisplay").text(response.name);
+                    $("#TaxCertificateReceiveDisplay").text(response.taxCertificateReceive);
+                    $("#ReturnSubmitDisplay").text(response.returnSubmit);
+                    $("#TaxExtensionDisplay").text(response.taxExtension);
+                    $("#AcknowledgmentSlipRecDateDisplay").text(response.acknowledgmentSlipRecDate);
+                    $("#ReturnSubmitDateDisplay").text(response.returnSubmitDate);
+
+                    $("#TaxYear").val(response.taxYear);
+                    $("#Name").val(response.name);
+                    $("#TaxCertificateReceive").val(response.taxCertificateReceive.toString());
+                    $("#ReturnSubmit").val(response.returnSubmit.toString());
+                    $("#TaxExtension").val(response.taxExtension.toString());
+                    $("#AcknowledgmentSlipRecDate").val(response.acknowledgmentSlipRecDate);
+                    $("#ReturnSubmitDate").val(response.returnSubmitDate);
+                    
+
+
+                },
+                error: function (error) {
+                    console.error("Error fetching data: " + error);
+                }
+            });
+
+
+        }
+
+        //Resume
+        $('#file-drop-area').on('click', function (e) {
+            e.preventDefault();
+            $('#image-uploadify').click();
+        });
+        $('#image-uploadify').on('change', function () {
+            var files = $(this)[0].files;
+
+            updateSelectedFilesList(files);
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                if (file.size > 20 * 1024 * 1024) {
+                    alert('File "' + file.name + '" exceeds the maximum allowed size of 20MB.');
+                    $(this).val('');
+                    updateSelectedFilesList([]);
+                    return;
+                }
+
+            }
+        });
+
+        function updateSelectedFilesList(files) {
+            var filesList = $('#selected-files-list');
+            filesList.empty();
+
+            if (files.length > 0) {
+                for (var i = 0; i < files.length; i++) {
+                    var listItem = $('<span>').text(files[i].name);
+                    filesList.append(listItem);
+                }
+
+                $('#file-drop-area p').text(''); // Clear the original message
+            } else {
+                $('#file-drop-area p').text('Drag and drop files here or click to select files.');
+            }
+        }
+        //Resume
+
+        //Offer letter
+        $('#file-drop-area1').on('click', function (e) {
+            e.preventDefault();
+            $('#image-uploadify1').click();
+        });
+        $('#image-uploadify1').on('change', function () {
+            var files = $(this)[0].files;
+
+            updateSelectedFilesList1(files);
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                if (file.size > 20 * 1024 * 1024) {
+                    alert('File "' + file.name + '" exceeds the maximum allowed size of 20MB.');
+                    $(this).val('');
+                    updateSelectedFilesList1([]);
+                    return;
+                }
+
+            }
+        });
+
+        function updateSelectedFilesList1(files) {
+            var filesList = $('#selected-files-list1');
+            filesList.empty();
+
+            if (files.length > 0) {
+                for (var i = 0; i < files.length; i++) {
+                    var listItem = $('<span>').text(files[i].name);
+                    filesList.append(listItem);
+                }
+
+                $('#file-drop-area1 p').text(''); // Clear the original message
+            } else {
+                $('#file-drop-area1 p').text('Drag and drop files here or click to select files.');
+            }
+        }
+        //Offer letter
+
+        //Pay-slip
+        $('#file-drop-area2').on('click', function (e) {
+            e.preventDefault();
+            $('#image-uploadify2').click();
+        });
+        $('#image-uploadify2').on('change', function () {
+            var files = $(this)[0].files;
+
+            updateSelectedFilesList2(files);
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                if (file.size > 20 * 1024 * 1024) {
+                    alert('File "' + file.name + '" exceeds the maximum allowed size of 20MB.');
+                    $(this).val('');
+                    updateSelectedFilesList2([]);
+                    return;
+                }
+
+            }
+        });
+
+        function updateSelectedFilesList2(files) {
+            var filesList = $('#selected-files-list2');
+            filesList.empty();
+
+            if (files.length > 0) {
+                for (var i = 0; i < files.length; i++) {
+                    var listItem = $('<span>').text(files[i].name);
+                    filesList.append(listItem);
+                }
+
+                $('#file-drop-area2 p').text(''); // Clear the original message
+            } else {
+                $('#file-drop-area2 p').text('Drag and drop files here or click to select files.');
+            }
+        }
+        //Pay-slip
+
+        //Birth Certificate
+        $('#file-drop-area3').on('click', function (e) {
+            e.preventDefault();
+            $('#image-uploadify3').click();
+        });
+        $('#image-uploadify3').on('change', function () {
+            var files = $(this)[0].files;
+
+            updateSelectedFilesList3(files);
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                if (file.size > 20 * 1024 * 1024) {
+                    alert('File "' + file.name + '" exceeds the maximum allowed size of 20MB.');
+                    $(this).val('');
+                    updateSelectedFilesList3([]);
+                    return;
+                }
+
+            }
+        });
+
+        function updateSelectedFilesList3(files) {
+            var filesList = $('#selected-files-list3');
+            filesList.empty();
+
+            if (files.length > 0) {
+                for (var i = 0; i < files.length; i++) {
+                    var listItem = $('<span>').text(files[i].name);
+                    filesList.append(listItem);
+                }
+
+                $('#file-drop-area3 p').text(''); // Clear the original message
+            } else {
+                $('#file-drop-area3 p').text('Drag and drop files here or click to select files.');
+            }
+        }
+        //Birth Certificate
+
+        //Font side
+        $('#file-drop-area4').on('click', function (e) {
+            e.preventDefault();
+            $('#image-uploadify4').click();
+        });
+        $('#image-uploadify4').on('change', function () {
+            var files = $(this)[0].files;
+
+            updateSelectedFilesList4(files);
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                if (file.size > 20 * 1024 * 1024) {
+                    alert('File "' + file.name + '" exceeds the maximum allowed size of 20MB.');
+                    $(this).val('');
+                    updateSelectedFilesList4([]);
+                    return;
+                }
+
+            }
+        });
+
+        function updateSelectedFilesList4(files) {
+            var filesList = $('#selected-files-list4');
+            filesList.empty();
+
+            if (files.length > 0) {
+                for (var i = 0; i < files.length; i++) {
+                    var listItem = $('<span>').text(files[i].name);
+                    filesList.append(listItem);
+                }
+
+                $('#file-drop-area4 p').text(''); // Clear the original message
+            } else {
+                $('#file-drop-area4 p').text('Drag and drop files here or click to select files.');
+            }
+        }
+        //Font side
+
+        //Back side
+        $('#file-drop-area5').on('click', function (e) {
+            e.preventDefault();
+            $('#image-uploadify5').click();
+        });
+        $('#image-uploadify5').on('change', function () {
+            var files = $(this)[0].files;
+
+            updateSelectedFilesList5(files);
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                if (file.size > 20 * 1024 * 1024) {
+                    alert('File "' + file.name + '" exceeds the maximum allowed size of 20MB.');
+                    $(this).val('');
+                    updateSelectedFilesList5([]);
+                    return;
+                }
+
+            }
+        });
+
+        function updateSelectedFilesList5(files) {
+            var filesList = $('#selected-files-list5');
+            filesList.empty();
+
+            if (files.length > 0) {
+                for (var i = 0; i < files.length; i++) {
+                    var listItem = $('<span>').text(files[i].name);
+                    filesList.append(listItem);
+                }
+
+                $('#file-drop-area5 p').text(''); // Clear the original message
+            } else {
+                $('#file-drop-area5 p').text('Drag and drop files here or click to select files.');
+            }
+        }
+        //Back side
+
+        //Passport
+        $('#file-drop-area6').on('click', function (e) {
+            e.preventDefault();
+            $('#image-uploadify6').click();
+        });
+        $('#image-uploadify6').on('change', function () {
+            var files = $(this)[0].files;
+
+            updateSelectedFilesList6(files);
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                if (file.size > 20 * 1024 * 1024) {
+                    alert('File "' + file.name + '" exceeds the maximum allowed size of 20MB.');
+                    $(this).val('');
+                    updateSelectedFilesList6([]);
+                    return;
+                }
+
+            }
+        });
+
+        function updateSelectedFilesList6(files) {
+            var filesList = $('#selected-files-list6');
+            filesList.empty();
+
+            if (files.length > 0) {
+                for (var i = 0; i < files.length; i++) {
+                    var listItem = $('<span>').text(files[i].name);
+                    filesList.append(listItem);
+                }
+
+                $('#file-drop-area6 p').text(''); // Clear the original message
+            } else {
+                $('#file-drop-area6 p').text('Drag and drop files here or click to select files.');
+            }
+        }
+        //Passport
+
+
+        $('#SaveDocument').click(function () {
+            var comid = '@ViewBag.CompanyId';
+            var userid = '@ViewBag.UserId';
+            var updateId = $('#empDocumentId').val();
+            var docDeclaration = $('#DocDeclaration').val();
+
+            // Create FormData to store all document files and types
+            var formData = new FormData();
+            formData.append('CompanyId', comid);
+            formData.append('UserId', userid);
+            formData.append('updateId', updateId);
+            formData.append('Declaration', docDeclaration);
+
+            // Collect files and types for each document type
+            var fileInputs = [
+                { id: '#image-uploadify', type: '#fileType' },
+                { id: '#image-uploadify1', type: '#fileType1' },
+                { id: '#image-uploadify2', type: '#fileType2' },
+                { id: '#image-uploadify3', type: '#fileType3' },
+                { id: '#image-uploadify4', type: '#fileType4' },
+                { id: '#image-uploadify5', type: '#fileType5' },
+                { id: '#image-uploadify6', type: '#fileType6' }
+            ];           
+
+            fileInputs.forEach(function (input, index) {
+                var files = $(input.id)[0].files;
+                var type = $(input.type).val();
+
+                if (files.length > 0 && type) {
+                    for (var i = 0; i < files.length; i++) {
+                        formData.append('files', files[i]); 
+                        formData.append('types', type);     
+                    }
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SaveDocuments", "EmployeeAdmin")?updateId=' + updateId,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.error) {
+                        toastr.error(response.message, "", {
+                            "toastClass": "toast-red",
+                            "positionClass": "toast-bottom-center"
+                        });
+                    } else {
+                        toastr.success(response.message, "", {
+                            "toastClass": "toast-green",
+                            "positionClass": "toast-bottom-center"
+                        });
+                        setTimeout(function () {
+                            window.location.href = '@Url.Action("EmployeeOrganization", "EmployeeAdmin")?updateId=' + updateId;
+                        }, 3000);
+                    }
+                },
+                error: function (response) {
+                    alert('Error uploading file.');
+                }
+            });
+        });
+
+
+        GetDocuments();
+        function GetDocuments() {
+            $.ajax({
+
+                url: '@Url.Action("GetEmpDocumentList", "EmployeeAdmin")',               
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //console.log("after save console::", response);
+                    if (response.success) {
+                        var documentListHtml = '<div style="display: flex; gap: 20px;margin-left: 20px;">';
+
+                        // Loop through the employee documents list
+                        response.data.forEach(function (document) {
+                            var fileIcon = ''; 
+
+                            // Check if the docPath ends with .xlsx or .pdf
+                            if (document.docPath.endsWith('.xlsx') || document.docPath.endsWith('.xls')) {
+                                fileIcon = '<i class="bi bi-filetype-xls doc-icon" data-doc="' + document.docPath + '" style="font-size: 60px; cursor: pointer;"></i>';
+                            } else if (document.docPath.endsWith('.pdf')) {
+                                fileIcon = '<i class="bi bi-filetype-pdf doc-icon" data-doc="' + document.docPath + '" style="font-size: 60px; cursor: pointer;"></i>';
+                            }
+
+                            // Append the icon and document type in a side-by-side layout
+                            documentListHtml += '<div style="text-align: center;">' + fileIcon + '<br>' + document.type + '</div>';
+                        });
+
+                        documentListHtml += '</div>'; // Close the flex container
+
+                        // Set the HTML content inside the span with id "documentlist"
+                        $('#documentlist').html(documentListHtml);
+
+                        $('.doc-icon').on('click', function () {
+                            var docPath = $(this).data('doc');
+
+                            // Trigger the download by redirecting to the download URL
+                            window.location.href = '@Url.Action("GetDocDownload", "EmployeeAdmin")?docPath=' + encodeURIComponent(docPath);
+                        });
+
+                    } else {
+                        // Handle the case when no data is returned
+                        $('#documentlist').html('<p>' + response.message + '</p>');
+                    }
+
+                },
+                error: function (response) {
+                }
+            });
+        }
+
+    </script>
+
+}
+
+
+
+

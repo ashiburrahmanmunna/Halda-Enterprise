@@ -1,0 +1,225 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+<style>
+    /* General dropdown styling */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-toggle {
+        background-color: #FFFFFF; /* White background */
+        border: 1px solid #D0D5DD; /* Border color */
+        padding: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #5C5C5C; /* Icon color */
+        border-radius: 8px;
+    }
+
+        .dropdown-toggle i {
+            font-size: 20px;
+            color: #5C5C5C; /* Icon color */
+        }
+
+    .dropdown-menu {
+        display: none; /* Hide by default */
+        position: absolute;
+        background-color: white;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        padding: 10px 0;
+        z-index: 1;
+        border: 1px solid #D0D5DD;
+        border-radius: 4px;
+        min-width: 150px;
+        top: 100%; /* Position below the button */
+        right: 0; /* Align to the right */
+    }
+
+    .dropdown-item {
+        padding: 8px 15px;
+        color: #5C5C5C;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+    .dropdown.open .dropdown-menu {
+        display: block;
+    }
+
+</style>
+
+<div class="container-fluid rounded-4 border border-muted p-3 mt-2 border-1">
+
+    <div class="row mx-0 mb-2" style="background-color: #FFFFFF; border-radius: 8px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+       
+        <h5 class="mt-3 pb-2" style="    font-weight: 700; font-size: 20px; padding-top: 10px;">
+            Daily  Summary List
+        </h5>
+        <div id="dailysummrytable"></div>
+
+    </div>
+
+    <div class="row mx-0 mb-2" style="background-color: #FFFFFF; border-radius: 8px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+
+        <h5 class="mt-3 pb-2" style="    font-weight: 700; font-size: 20px; padding-top: 10px;">
+            Daily  Attendance List
+        </h5>
+        <div class="row mb-2">
+            <div class="col-md-4 pt-1 d-flex align-items-center gap-2">
+                <div class="input-group" style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                    <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                    <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                        <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                    </span>
+                </div>
+            </div>
+
+            <!-- Dropdown container placed at the end -->
+            <div class="col-md-8 d-flex justify-content-end align-items-center">
+                
+
+                <div class="dropdown">
+                    <button class="dropdown-toggle py-1" id="dropdownMenuButton">
+                        <i class="ri-printer-line fs-4"></i> <!-- Printer icon as default selection -->
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item"><i class="ri-printer-line fs-4"></i> Print</a>
+                        <a href="#" class="dropdown-item"><i class="ri-download-2-line fs-4"></i> Dowanload </a>
+                        <a href="#" class="dropdown-item"><i class="ri-file-copy-line fs-4"></i> Copt </a>
+                        <a href="#" class="dropdown-item"><i class="ri-refresh-line fs-4"></i> Refresh </a>
+                    </div>
+                </div>
+                <button class="ms-2" style="background-color: #D3F6D2; color: #414042; padding: 10px 20px; border: none; border-radius: 7px; font-size: 16px; cursor: pointer;">
+                    Custom View
+                </button>
+            </div>
+
+        </div>
+
+        <div id="dailyattendencelist"></div>
+    </div>
+
+</div>
+
+<script>
+    // Toggle dropdown visibility
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdownToggle = document.querySelector('.dropdown-toggle');
+        const dropdownMenu = document.querySelector('.dropdown-menu');
+
+        dropdownToggle.addEventListener('click', function (event) {
+            event.stopPropagation(); // Prevent clicks from bubbling up
+            dropdownMenu.classList.toggle('open'); // Toggle the 'open' class
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close the dropdown if clicked outside
+        document.addEventListener('click', function () {
+            dropdownMenu.style.display = 'none';
+        });
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to initialize Tabulator
+        function initializeTabulator() {
+            var tabledata = getTableData();
+            var table = new Tabulator("#dailysummrytable", {
+                data: tabledata,
+                layout: "fitColumns",
+                columns: getColumns(),
+            });
+        }
+
+        // Function to get the table data
+        function getTableData() {
+            return [
+                { Department: "Admin", Employee: 62, Male: 12, Female: 33, Present: 62, PresentPerc: "100%", Late: 62, LatePerc: "100%", Absent: 62, AbsentPerc: "100%", Leave: 62, LeavePerc: "100%", Offday: 62, OffdayPerc: "100%" },
+                { Department: "Admin & HR", Employee: 62, Male: 14, Female: 43, Present: 62, PresentPerc: "75%", Late: 62, LatePerc: "75%", Absent: 62, AbsentPerc: "75%", Leave: 62, LeavePerc: "75%", Offday: 62, OffdayPerc: "75%" },
+                { Department: "Business operation", Employee: 62, Male: 15, Female: 32, Present: 62, PresentPerc: "87.2%", Late: 62, LatePerc: "87.2%", Absent: 62, AbsentPerc: "87.2%", Leave: 62, LeavePerc: "87.2%", Offday: 62, OffdayPerc: "87.2%" },
+                { Department: "Software implementation", Employee: 62, Male: 18, Female: 44, Present: 62, PresentPerc: "92%", Late: 62, LatePerc: "92%", Absent: 62, AbsentPerc: "92%", Leave: 62, LeavePerc: "92%", Offday: 62, OffdayPerc: "92%" },
+                { Department: "Maintenance", Employee: 62, Male: 18, Female: 44, Present: 62, PresentPerc: "87.2%", Late: 62, LatePerc: "87.2%", Absent: 62, AbsentPerc: "87.2%", Leave: 62, LeavePerc: "100%", Offday: 62, OffdayPerc: "100%" },
+                { Department: "IR & Compliance", Employee: 62, Male: 18, Female: 32, Present: 62, PresentPerc: "92%", Late: 62, LatePerc: "92%", Absent: 62, AbsentPerc: "92%", Leave: 62, LeavePerc: "75%", Offday: 62, OffdayPerc: "75%" }
+            ];
+        }
+
+        // Function to get the columns configuration
+        function getColumns() {
+            return [
+                { title: "Department", width: 150, field: "Department"  },
+                { title: "Employee", width: 100, field: "Employee", bottomCalc: "sum" },
+                { title: "Male", width: 100, field: "Male", bottomCalc: "sum" },
+                { title: "Female", width: 120, field: "Female", bottomCalc: "sum" },
+                { title: "Present", width: 120, field: "Present", bottomCalc: "sum" },
+                { title: "Present%", width: 130, field: "PresentPerc", formatter: "percent", formatterParams: { min: 0, max: 100 } },
+                { title: "Late", width: 100, field: "Late", bottomCalc: "sum" },
+                { title: "Late%", width: 120, field: "LatePerc", formatter: "percent", formatterParams: { min: 0, max: 100 } },
+                { title: "Absent", width: 110, field: "Absent", bottomCalc: "sum" },
+                { title: "Absent%", width: 120, field: "AbsentPerc", formatter: "percent", formatterParams: { min: 0, max: 100 } },
+                { title: "Leave", width: 100, field: "Leave", bottomCalc: "sum" },
+                { title: "Leave%", width: 110, field: "LeavePerc", formatter: "percent", formatterParams: { min: 0, max: 100 } },
+                { title: "Offday", width: 105, field: "Offday", bottomCalc: "sum" },
+                { title: "Offday%", width: 120, field: "OffdayPerc", formatter: "percent", formatterParams: { min: 0, max: 100 } }
+            ];
+        }
+
+        // Call the initialize function
+        initializeTabulator();
+    });
+
+    // Define the table data
+    var tabledata = [
+        { id: 1, name: "Robin", image: "/User/img/robin.png", name: "Robin Ahmad", designation: "Software Developer", status: "Present", checkIn: "9:00am", checkOut: "3:00pm", shift: "9 am - 6 pm", worked: "69 hr 00 min", remarks: "Fixed Attendance" },
+        { id: 2, name: "Nipa", image: "/User/img/robin.png", name: "Robin Ahmad", designation: "Software Developer", status: "Absent", checkIn: "Null", checkOut: "Null", shift: "9 am - 6 pm", worked: "68 hr 40 min", remarks: "Fixed Attendance" },
+        { id: 3, name: "Shikha", image: "/User/img/robin.png", name: "Robin Ahmad", designation: "Software Developer", status: "Late", checkIn: "9:05am", checkOut: "3:00pm", shift: "9 am - 6 pm", worked: "79 hr 30 min", remarks: "Fixed Attendance" },
+        { id: 4, name: "Asiq", image: "/User/img/robin.png", name: "Robin Ahmad", designation: "Software Developer", status: "Overtime", checkIn: "3pm", checkOut: "6:00pm", shift: "9 am - 6 pm", worked: "58 hr 40 min", remarks: "Fixed Attendance" },
+        { id: 5, name: "Robin", image: "/User/img/robin.png", name: "Robin Ahmad", designation: "Software Developer", status: "Present", checkIn: "9:00am", checkOut: "3:00pm", shift: "9 am - 6 pm", worked: "59 hr 30 min", remarks: "Fixed Attendance" },
+        { id: 7, name: "Bipa", image: "/User/img/robin.png", name: "Robin Ahmad", designation: "Software Developer", status: "Leave", checkIn: "Null", checkOut: "Null", shift: "9 am - 6 pm", worked: "58 hr 40 min", remarks: "Fixed Attendance" }
+    ];
+
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        // Create the Tabulator table after the DOM is loaded
+        var table = new Tabulator("#dailyattendencelist", {
+            data: tabledata, // Load the data into the table
+            layout: "fitColumns", // Fit columns to width of the table
+            columns: [
+                { title: "ID", field: "id", sorter: "number", width: 70, headerHozAlign: "center" },
+                {
+                    title: "Employee", field: "name", headerHozAlign: "center", width: 190, formatter: function (cell, formatterParams, onRendered) {
+                        var row = cell.getRow().getData();
+                        return `<div style="display: flex; align-items: center;">
+                                    <img src="${row.image}" class="employee-image" alt="${row.name}">
+                                    <div class="employee-info" style="margin-left: 10px;">
+                                            <span class="employee-name" style="text-align: start;">${row.name}</span>
+                                        <span class="employee-designation" style="text-align: start;">${row.designation}</span>
+                                    </div>
+                                </div>`;
+                    }
+                },
+                { title: "Status", field: "status", formatter: "textarea", headerHozAlign: "center" },
+                { title: "Check In", field: "checkIn", headerHozAlign: "center" },
+                { title: "Check Out", field: "checkOut", width: 135, headerHozAlign: "center" },
+                { title: "Shift", field: "shift", headerHozAlign: "center" },
+                { title: "Worked", field: "worked", headerHozAlign: "center" },
+                { title: "Remarks", field: "remarks", headerHozAlign: "center" },
+            ],
+            pagination: "local",
+            paginationSize: 7,
+            paginationButtonCount: 4,
+            paginationSizeSelector: [10, 25, 50, 100],
+        });
+    });
+
+</script>

@@ -1,0 +1,542 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] Halda</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+ 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/6.2.0/css/tabulator_bootstrap5.min.css" rel="stylesheet">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+   
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/tabulator.css" asp-append-version="true" />
+   
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+    <!-- start: Sidebar -->
+    <div class="sidebar position-fixed top-0 bottom-0 bg-white border-end" style="box-shadow: 2px 0px 2px rgba(0, 0, 0, 0.1); z-index: 199;">
+        <div class="d-flex align-items-center m-0 pt-2 pb-2 px-3" style="padding-bottom: 2px !important; border-bottom: 0.52px solid #E5E3E3">
+            <a href="~/Home/Index" class="sidebar-logo text-uppercase fw-bold text-decoration-none text-indigo fs-4">
+                <img id="group-img" alt="site logo" src="~/User/img/HRM LOGO.svg" style="max-width: 100px;">
+            </a>
+
+            <i class="sidebar-toggle bi bi-bar-chart-steps  ms-auto fs-3 d-none d-md-block"></i> @* bi bi-grid-1x2  bi bi-amd bi bi-bar-chart-steps bi bi-text-indent-right *@
+        </div>
+        <ul class="sidebar-menu p-3 pt-1 m-0 mb-0">
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                    @* <i class="ri-dashboard-horizontal-line sidebar-icon-remix" style="background-color: #1097FA; border-radius: 5px; color: #FFFFFF; padding: 0px 5px; "></i> *@
+
+                    <img src="~/User/img/Dashboard.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Dashboard
+                    <i class="ri-arrow-down-s-line sidebar-menu-item-accordion ms-auto fs-4"></i>
+                </a>
+                <ul class="sidebar-dropdown-menu">
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                   @*  <i class="ri-user-line sidebar-icon-remix"></i> *@
+                    <img src="~/User/img/Pre-Onboarding.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Pre-onboarding
+                    <i class="ri-arrow-down-s-line sidebar-menu-item-accordion ms-auto fs-4"></i>
+                </a>
+                <ul class="sidebar-dropdown-menu">
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Recruitment" asp-action="JobTemplate">Job</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Recruitment" asp-action="Assignment">Assignment</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="JobApplication" asp-action="JobDashboard">Applicant Dashboard</a></li>
+
+                </ul>
+            </li>
+
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                    @* <i class="ri-file-chart-line sidebar-icon-remix"></i> *@
+                    <img src="~/User/img/Onboarding.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Onboarding
+                    <i class="ri-arrow-down-s-line sidebar-menu-item-accordion ms-auto fs-4"></i>
+                </a>
+                <ul class="sidebar-dropdown-menu">
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Employee" asp-action="UserInfo">User Information</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Employee" asp-action="Index">Personal Information</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Home" asp-action="EmployeeList">Employee Management</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Home" asp-action="Add_information">Add-Information</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="EmployeeAdmin" asp-action="AdminEmployeeList">Employee Admin Info.</a></li>
+                   
+                </ul>
+            </li>
+
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                   @*  <i class="ri-calendar-line sidebar-icon-remix"></i> *@
+                    <img src="~/User/img/Onboarding.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Manpower & Budge..
+                    <i class="ri-arrow-down-s-line sidebar-menu-item-accordion ms-auto fs-4"></i>
+                </a>
+                <ul class="sidebar-dropdown-menu">
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Forecasting" asp-action="Index">Forecasting</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Forecasting" asp-action="Simulation">Forecasting Simulation</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Requisition</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Time Cost</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Template</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-controller="Budgeting" asp-action="Index">Budgeting</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                    @* <i class="ri-user-received-line sidebar-icon-remix"></i> *@
+                    <img src="~/User/img/Attendance & Leave.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Attendance & Leave
+                    <i class="ri-arrow-down-s-line sidebar-menu-item-accordion ms-auto fs-4"></i>
+                </a>
+                <ul class="sidebar-dropdown-menu">
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Attendance" asp-action="DailySummaryList">Daily Summary List</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Attendance" asp-action="TimeCard">View Time Card </a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Attendance" asp-action="Leaves">Leaves </a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Attendance" asp-action="Attendance">Attendances </a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Attendance" asp-action="HolidaySetup">Work & Holidays </a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Attendance" asp-action="Shift">Shift </a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Attendance" asp-action="DataImport">Data Import </a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Attendance" asp-action="LeaveSetup">Leave Setup </a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Attendance" asp-action="TimeCardView">Single Time Card View </a></li>
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Attendance" asp-action="UserProfile">User</a></li>
+                </ul>
+            </li>
+
+
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                   @*  <i class="ri-money-dollar-circle-line sidebar-icon-remix"></i> *@
+                    <img src="~/User/img/Payroll & Finance.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Payroll & Finance
+                    <i class="ri-arrow-down-s-line sidebar-menu-item-accordion ms-auto fs-4"></i>
+                </a>
+                <ul class="sidebar-dropdown-menu">
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Payroll" asp-action="Index">Payroll</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                    @* <i class="ri-book-open-line sidebar-icon-remix"></i> *@
+                    <img src="~/User/img/Learning & Development.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Learning & Develop..
+                    <i class="ri-arrow-down-s-line sidebar-menu-item-accordion ms-auto fs-4"></i>
+                </a>
+                <ul class="sidebar-dropdown-menu">
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Recruitment" asp-action="JobTemplate">Job</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                    @* <i class="ri-team-line sidebar-icon-remix"></i> *@
+                    <img src="~/User/img/Performance Management.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Performance Manag..
+                    <i class="ri-arrow-down-s-line sidebar-menu-item-accordion ms-auto fs-4"></i>
+                </a>
+                <ul class="sidebar-dropdown-menu">
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Recruitment" asp-action="JobTemplate">Job</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                </ul>
+            </li>
+
+
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                   @*  <i class="ri-calendar-todo-fill sidebar-icon-remix"></i> *@
+                    <img src="~/User/img/Offboarding.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Offboarding
+                    <i class="ri-arrow-down-s-line sidebar-menu-item-accordion ms-auto fs-4"></i>
+                </a>
+                <ul class="sidebar-dropdown-menu">
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Recruitment" asp-action="JobTemplate">Job</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                </ul>
+            </li>
+
+
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                   @*  <i class="ri-shield-line sidebar-icon-remix"></i> *@
+                    <img src="~/User/img/Administration.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Administration
+                    <i class="ri-arrow-down-s-line sidebar-menu-item-accordion ms-auto fs-4"></i>
+                </a>
+                <ul class="sidebar-dropdown-menu">
+                    <li class="sidebar-dropdown-menu-item"><a asp-area="" asp-controller="Recruitment" asp-action="JobTemplate">Job</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                    <li class="sidebar-dropdown-menu-item"><a href="#">Blank Page</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-menu-item has-dropdown">
+                <a href="#" class="sidebar-menu-link">
+                   @*  <i class="ri-app-store-line sidebar-icon-remix"></i> *@
+                    <img src="~/User/img/Apps Store.svg" alt="Image 1" class="img-fluid sidebar-menu-item-image">
+                    Apps Store
+                    
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <!-- end: Sidebar -->
+    <!-- start: Main Content -->
+    <main role="main" class=" " style="background-color: #FFFFFF;">
+        <nav class="navbar navbar-light   m-0 pt-1 pb-1  sticky-top" style=" z-index: 33; background-color: #FFFFFF; border-bottom: 0.52px solid #E5E3E3 ">
+
+            <button id="sidebar-mobile-toggle" class="btn custom-button-halda d-block d-md-none ms-3" style="border: none;">
+                <i class="bi bi-justify fs-3"></i>
+            </button>
+            <div>
+                <span class="greeting-heading px-2">
+                    Good day <span class="greeting-name">Robin</span>
+                </span>
+            </div>
+
+            <div class="ms-auto d-flex">
+                <!-- Search Bar: hidden on small devices, visible on larger devices -->
+                <div class="input-group custom-input-group-halda d-none d-sm-flex">
+                    <input type="text" class="form-control search-input-halda" placeholder="Search" aria-label="Search">
+                    <span class="input-group-text search-icon-container-halda">
+                        <img alt="search" src="/User/img/search.png" class="search-icon-halda">
+                    </span>
+                </div>
+
+                <!-- Dropdown Menu -->
+                <div class="dropdown px-2">
+                    <a href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i style="color: #52a167; font-size: 30px;" class="bi bi-person-circle"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end p-1" aria-labelledby="userDropdown" style="min-width: 150px;">
+                        <li><a class="dropdown-item py-1 px-2" href="#">Notifications</a></li>
+                        <li><a class="dropdown-item py-1 px-2" href="#">Settings</a></li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                        <li><a class="dropdown-item py-1 px-2" href="~/Account/Logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </nav>
+
+
+        <div class="container-fluid">
+
+            @RenderBody()
+
+        </div>
+
+    </main>
+    <!-- end: Main Content -->
+    <!-- start: Sidebar Overlay -->
+    <div class="sidebar-overlay"></div>
+    <!-- end: Sidebar Overlay -->
+
+    
+
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>   
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.2.5/dist/js/tabulator.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.20/jspdf.plugin.autotable.min.js"></script>   
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    @* <script src="~/js/site.js" asp-append-version="true"></script> *@
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Sidebar dropdown menu behavior
+            document.querySelectorAll('.sidebar-menu-item.has-dropdown > a, .sidebar-dropdown-menu-item.has-dropdown > a').forEach(function (dropdownLink) {
+                dropdownLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    let parentItem = this.parentElement;
+                    let dropdownMenu = parentItem.querySelector('.sidebar-dropdown-menu');
+                    if (!parentItem.classList.contains('focused')) {
+                        closeAllDropdowns();
+                    }
+                    toggleDropdown(parentItem, dropdownMenu);
+                });
+
+                // Close dropdown on mouseout
+                let parentItem = dropdownLink.parentElement;
+                parentItem.addEventListener('mouseleave', function () {
+                    let dropdownMenu = parentItem.querySelector('.sidebar-dropdown-menu');
+                    dropdownMenu.style.display = 'none';
+                    parentItem.classList.remove('focused');
+                });
+            });
+
+            // Get sidebar element
+            let sidebar = document.querySelector('.sidebar');
+
+            // Load saved sidebar state from cookies
+            let sidebarState = getCookie('sidebarState');
+            if (sidebarState === 'collapsed') {
+                sidebar.classList.add('collapsed');
+            }
+
+            // Sidebar toggle button
+            document.querySelector('.sidebar-toggle').addEventListener('click', function () {
+                sidebar.classList.toggle('collapsed');
+                if (sidebar.classList.contains('collapsed')) {
+                    setCookie('sidebarState', 'collapsed', 7); // Save state as collapsed
+                    closeAllDropdowns();
+                } else {
+                    setCookie('sidebarState', 'expanded', 7); // Save state as expanded
+                }
+            });
+
+            // Sidebar mobile toggle
+            document.getElementById('sidebar-mobile-toggle').addEventListener('click', function () {
+                sidebar.classList.toggle('collapsed');
+                if (sidebar.classList.contains('collapsed')) {
+                    setCookie('sidebarState', 'collapsed', 7); // Save state as collapsed
+                    closeAllDropdowns();
+                } else {
+                    setCookie('sidebarState', 'expanded', 7); // Save state as expanded
+                }
+            });
+
+            // Sidebar overlay click behavior
+            document.querySelector('.sidebar-overlay').addEventListener('click', function () {
+                sidebar.classList.add('collapsed');
+                setCookie('sidebarState', 'collapsed', 7); // Save state as collapsed
+                closeAllDropdowns();
+            });
+
+            // Collapse sidebar on small screens by default
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('collapsed');
+                setCookie('sidebarState', 'collapsed', 7); // Save state as collapsed
+            }
+
+            // Helper functions
+            function closeAllDropdowns() {
+                document.querySelectorAll('.sidebar-dropdown-menu').forEach(function (menu) {
+                    menu.style.display = 'none';
+                });
+                document.querySelectorAll('.sidebar-menu-item, .sidebar-dropdown-menu-item').forEach(function (item) {
+                    item.classList.remove('focused');
+                });
+            }
+
+            function toggleDropdown(parentItem, dropdownMenu) {
+                if (dropdownMenu.style.display === 'block') {
+                    dropdownMenu.style.display = 'none';
+                    parentItem.classList.remove('focused');
+                } else {
+                    dropdownMenu.style.display = 'block';
+                    parentItem.classList.add('focused');
+                }
+            }
+
+            // Cookie functions
+            function setCookie(name, value, days) {
+                let expires = "";
+                if (days) {
+                    let date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+
+            function getCookie(name) {
+                let nameEQ = name + "=";
+                let ca = document.cookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                    if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+                }
+                return null;
+            }
+
+            function eraseCookie(name) {
+                document.cookie = name + '=; Max-Age=-99999999;';
+            }
+        });
+
+        document.querySelectorAll('input[type="date"]').forEach(function (input) {
+            flatpickr(input, {
+                dateFormat: "Y-m-d",  // Change this format to what you prefer
+                allowInput: true      // Optional: Allows manual input if needed
+            });
+        });
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     // Sidebar dropdown menu behavior
+        //     document.querySelectorAll('.sidebar-menu-item.has-dropdown > a, .sidebar-dropdown-menu-item.has-dropdown > a').forEach(function (dropdownLink) {
+        //         dropdownLink.addEventListener('click', function (e) {
+        //             e.preventDefault();
+        //             let parentItem = this.parentElement;
+        //             let dropdownMenu = parentItem.querySelector('.sidebar-dropdown-menu');
+        //             if (!parentItem.classList.contains('focused')) {
+        //                 closeAllDropdowns();
+        //             }
+        //             toggleDropdown(parentItem, dropdownMenu);
+        //         });
+
+        //         // Close dropdown on mouseout
+        //         let parentItem = dropdownLink.parentElement;
+        //         parentItem.addEventListener('mouseleave', function () {
+        //             let dropdownMenu = parentItem.querySelector('.sidebar-dropdown-menu');
+        //             dropdownMenu.style.display = 'none';
+        //             parentItem.classList.remove('focused');
+        //         });
+        //     });
+
+        //     // Collapse the sidebar by default
+        //     let sidebar = document.querySelector('.sidebar');
+        //     sidebar.classList.add('collapsed');
+
+        //     // Sidebar toggle button
+        //     document.querySelector('.sidebar-toggle').addEventListener('click', function () {
+        //         sidebar.classList.toggle('collapsed');
+        //         if (sidebar.classList.contains('collapsed')) {
+        //             closeAllDropdowns();
+        //         }
+        //         sidebar.addEventListener('mouseleave', function () {
+        //             if (sidebar.classList.contains('collapsed')) {
+        //                 closeAllDropdowns();
+        //             }
+        //         });
+        //     });
+
+        //     // Sidebar mobile toggle
+        //     document.getElementById('sidebar-mobile-toggle').addEventListener('click', function () {
+        //         sidebar.classList.toggle('collapsed');
+        //         if (sidebar.classList.contains('collapsed')) {
+        //             closeAllDropdowns();
+        //         }
+        //     });
+
+        //     // Sidebar overlay click behavior
+        //     document.querySelector('.sidebar-overlay').addEventListener('click', function () {
+        //         sidebar.classList.add('collapsed');
+        //         closeAllDropdowns();
+        //     });
+
+        //     // Collapse sidebar on small screens by default
+        //     if (window.innerWidth < 768) {
+        //         sidebar.classList.add('collapsed');
+        //     }
+
+        //     // Helper functions
+        //     function closeAllDropdowns() {
+        //         document.querySelectorAll('.sidebar-dropdown-menu').forEach(function (menu) {
+        //             menu.style.display = 'none';
+        //         });
+        //         document.querySelectorAll('.sidebar-menu-item, .sidebar-dropdown-menu-item').forEach(function (item) {
+        //             item.classList.remove('focused');
+        //         });
+        //     }
+
+        //     function toggleDropdown(parentItem, dropdownMenu) {
+        //         if (dropdownMenu.style.display === 'block') {
+        //             dropdownMenu.style.display = 'none';
+        //             parentItem.classList.remove('focused');
+        //         } else {
+        //             dropdownMenu.style.display = 'block';
+        //             parentItem.classList.add('focused');
+        //         }
+        //     }
+        // });
+
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     // Sidebar dropdown menu behavior
+        //     document.querySelectorAll('.sidebar-menu-item.has-dropdown > a, .sidebar-dropdown-menu-item.has-dropdown > a').forEach(function (dropdownLink) {
+        //         dropdownLink.addEventListener('click', function (e) {
+        //             e.preventDefault();
+        //             let parentItem = this.parentElement;
+        //             let dropdownMenu = parentItem.querySelector('.sidebar-dropdown-menu');
+        //             if (!parentItem.classList.contains('focused')) {
+        //                 closeAllDropdowns();
+        //             }
+        //             toggleDropdown(parentItem, dropdownMenu);
+        //         });
+        //     });
+        //     document.querySelector('.sidebar-toggle').addEventListener('click', function () {
+        //         let sidebar = document.querySelector('.sidebar');
+        //         sidebar.classList.toggle('collapsed');
+        //         if (sidebar.classList.contains('collapsed')) {
+        //             closeAllDropdowns();
+        //         }
+        //         sidebar.addEventListener('mouseleave', function () {
+        //             if (sidebar.classList.contains('collapsed')) {
+        //                 closeAllDropdowns();
+        //             }
+        //         });
+        //     });
+        //     document.getElementById('sidebar-mobile-toggle').addEventListener('click', function () {
+        //         let sidebar = document.querySelector('.sidebar');
+        //         sidebar.classList.toggle('collapsed');
+        //         if (sidebar.classList.contains('collapsed')) {
+        //             closeAllDropdowns();
+        //         }
+        //     });
+        //     document.querySelector('.sidebar-overlay').addEventListener('click', function () {
+        //         let sidebar = document.querySelector('.sidebar');
+        //         sidebar.classList.add('collapsed');
+        //         closeAllDropdowns();
+        //     });
+        //     if (window.innerWidth < 768) {
+        //         document.querySelector('.sidebar').classList.add('collapsed');
+        //     }
+        //     function closeAllDropdowns() {
+        //         document.querySelectorAll('.sidebar-dropdown-menu').forEach(function (menu) {
+        //             menu.style.display = 'none';
+        //         });
+        //         document.querySelectorAll('.sidebar-menu-item, .sidebar-dropdown-menu-item').forEach(function (item) {
+        //             item.classList.remove('focused');
+        //         });
+        //     }
+        //     function toggleDropdown(parentItem, dropdownMenu) {
+        //         if (dropdownMenu.style.display === 'block') {
+        //             dropdownMenu.style.display = 'none';
+        //             parentItem.classList.remove('focused');
+        //         } else {
+        //             dropdownMenu.style.display = 'block';
+        //             parentItem.classList.add('focused');
+        //         }
+        //     }
+        // });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

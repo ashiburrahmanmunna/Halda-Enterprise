@@ -1,0 +1,270 @@
+﻿@{
+    ViewData["Title"] = "Job Details";
+    Layout = "_LayoutJobView";
+}
+
+<input id="JobId" hidden />
+<div class="container">
+    <div class="stepper-wrapper">
+        <div class="stepper-item completed" onclick="showStep(1)">
+            <div class="step-counter"></div>
+            <div class="step-name">Information</div>
+        </div>
+        <div class="stepper-item" onclick="showStep(3)">
+            <div class="step-counter"></div>
+            <div class="step-name">Preview</div>
+        </div>
+        <div class="stepper-item" onclick="showStep(4)">
+            <div class="step-counter"></div>
+            <div class="step-name">Submit</div>
+        </div>
+    </div>
+    <div class="content">
+        <form id="jobApplicationForm" enctype="multipart/form-data">
+            <!-- Step 1: Information -->
+            <div id="content-1" class="step-content">
+                <div class="container px-5 rounded-4 border border-muted p-2 border-1" style="background: #FBFBFB;">
+                    <div class="form-group">
+                        <label style="font-weight: 600;" class="mb-2" for="howDidYouKnow">How did you know about us?</label>
+                        <div id="howDidYouKnowGroup" class="btn-radio pt-2 mb-3">
+                            <input type="radio" id="facebook" name="howDidYouKnow" value="Facebook" required>
+                            <label for="facebook" class="howDidYouKnowGroup_custom">Facebook</label>
+                            <input type="radio" id="linkedin" name="howDidYouKnow" value="LinkedIn" required>
+                            <label for="linkedin" class="howDidYouKnowGroup_custom">LinkedIn</label>
+                            <input type="radio" id="bdJobs" name="howDidYouKnow" value="Bd Jobs" required>
+                            <label for="bdJobs" class="howDidYouKnowGroup_custom">Bd Jobs</label>
+                            <input type="radio" id="googleWeb" name="howDidYouKnow" value="Google Web" required>
+                            <label for="googleWeb" class="howDidYouKnowGroup_custom">Google Web</label>
+                            <input type="radio" id="others" name="howDidYouKnow" value="Others" required>
+                            <label for="others" class="howDidYouKnowGroup_custom">Others</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h6>Personal Details</h6>
+                        <div class="form-group col-md-6">
+                            <label for="name" class="howDidYouKnowGroup_label">Name</label>
+                            <input type="text" class="form-control job-app-form-input" id="name" name="name" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="university" class="howDidYouKnowGroup_label">University</label>
+                            <input type="text" class="form-control job-app-form-input" id="university" name="university" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="phoneNumber" class="howDidYouKnowGroup_label">Phone Number</label>
+                            <input type="tel" class="form-control job-app-form-input" id="phoneNumber" name="phoneNumber" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="skills" class="howDidYouKnowGroup_label">Skills</label>
+                            <input type="text" class="form-control job-app-form-input" id="skills" name="skills" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="email" class="howDidYouKnowGroup_label">Email</label>
+                            <input type="email" class="form-control job-app-form-input" id="email" name="email" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="currentLocation" class="howDidYouKnowGroup_label">Current Location</label>
+                            <input type="text" class="form-control job-app-form-input" id="currentLocation" name="currentLocation" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="applyingPosition" class="howDidYouKnowGroup_label">Applying Position</label>
+                            <input type="text" class="form-control job-app-form-input" id="applyingPosition" name="applyingPosition" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="experience" class="howDidYouKnowGroup_label">Experience</label>
+                            <input type="text" class="form-control job-app-form-input" id="experience" name="experience" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="linkedinProfileLink" class="howDidYouKnowGroup_label">LinkedIn Profile Link</label>
+                            <input type="url" class="form-control job-app-form-input" id="linkedinProfileLink" name="linkedinProfileLink" required>
+                        </div>
+                        <div class="form-group col-md-12">
+                            <label for="previousJob" class="howDidYouKnowGroup_label">Previous or Current Job Company Name (If Any)</label>
+                            <input type="text" class="form-control" id="previousJob" name="previousJob">
+                        </div>
+                        <div class="form-group col-md-6 mt-3">
+                            <label for="currentSalary" class="howDidYouKnowGroup_label">Current Salary</label>
+                            <input type="text" class="form-control job-app-form-input" id="currentSalary" name="currentSalary">
+                        </div>
+                        <div class="form-group col-md-6 mt-3">
+                            <label for="expectedSalary" class="howDidYouKnowGroup_label">Expected Salary</label>
+                            <input type="text" class="form-control job-app-form-input" id="expectedSalary" name="expectedSalary">
+                        </div>
+                        <div class="form-group">
+                            <label for="coverLetter" class="howDidYouKnowGroup_label">Cover Letter</label>
+                            <textarea class="form-control" id="coverLetter" name="coverLetter" rows="5"></textarea>
+                        </div>
+                        <!-- File input for CV/Resume -->
+                        <div class="form-group mt-3">
+                            <label for="resume" class="howDidYouKnowGroup_label">Upload Your CV/Resume</label>
+                            <input type="file" class="form-control" id="resume" name="resume" required>
+                        </div>
+                        <div class="d-flex justify-content-between mt-5">
+                            <button type="button" onclick="showStep(1)" class="btn btn-secondary ps-3 pe-3" hidden>Previous</button>
+                            <button type="button" onclick="collectAndDisplayData();" class="btn btn-success ps-3 pe-3" style="background-color: #4AA147; border-color: #4AA147; position: revert;">Next</button>
+                            <button type="button" onclick="submitApplication();" class="btn btn-success ps-3 pe-3" style="background-color: #4AA147; border-color: #4AA147; position: revert;">Submit</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- Step 3: Preview -->
+        <div id="content-3" class="step-content d-none">
+            <div class="container mx-3">
+                <div style="color: #414042" class="row mx-3">
+                    <div class="col-md-12 col-12 mb-3">
+                        <h6>How did You Know Us?</h6>
+                        <p id="previewHowDidYouKnow"></p>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        Name
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewName"></h6>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        University
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewUniversity"></h6>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        Phone Number
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewPhoneNumber"></h6>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        Skills
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewSkills"></h6>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        Email
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewEmail"></h6>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        Current Location
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewCurrentLocation"></h6>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        Applying Position
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewApplyingPosition"></h6>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        Experience
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewExperience"></h6>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        LinkedIn Profile Link
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewLinkedinProfileLink"></h6>
+                    </div>
+                    <div class="col-md-12 col-12 mb-3">
+                        Previous or Current Job Company Name
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewPreviousJob"></h6>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        Current Salary
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewCurrentSalary"></h6>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        Expected Salary
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewExpectedSalary"></h6>
+                    </div>
+                    <div class="col-md-12 col-12 mb-3">
+                        Cover Letter
+                        <h6 style="font-weight: 700; margin-top: 5px;" id="previewCoverLetter"></h6>
+                    </div>
+                    <div class="col-md-12 col-12 mb-3">
+                        Uploaded CV/Resume
+                        <a id="previewResume" href="#" target="_blank">Download</a>
+                    </div>
+                    <div class="d-flex justify-content-between mt-5">
+                        <button type="button" onclick="showStep(1)" class="btn btn-secondary ps-3 pe-3">Previous</button>
+                        <button type="button" onclick="showStep(4)" class="btn btn-success ps-3 pe-3" style="background-color: #4AA147; border-color: #4AA147; position: revert;">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Step 4: Submit -->
+        <div id="content-4" class="step-content d-none">
+            <div class="container mx-3">
+                <div style="color: #414042" class="row mx-3">
+                    <h5>Submit Your Application</h5>
+                    <p>Please review the information above and click "Submit" to send your application.</p>
+                    <div class="d-flex justify-content-between mt-5">
+                        <button type="button" onclick="showStep(3)" class="btn btn-secondary ps-3 pe-3">Previous</button>
+                        <button type="button" onclick="submitApplication()" class="btn btn-success ps-3 pe-3" style="background-color: #4AA147; border-color: #4AA147; position: revert;">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showStep(step) {
+            document.querySelectorAll('.step-content').forEach(content => content.classList.add('d-none'));
+            document.getElementById('content-' + step).classList.remove('d-none');
+            document.querySelectorAll('.stepper-item').forEach(item => item.classList.remove('completed'));
+            for (let i = 1; i <= step; i++) {
+                document.querySelector('.stepper-item:nth-child(' + i + ')').classList.add('completed');
+            }
+        }
+
+        function collectAndDisplayData() {
+            // Collecting data
+            const howDidYouKnow = document.querySelector('input[name="howDidYouKnow"]:checked').value;
+            const name = document.getElementById('name').value;
+            const university = document.getElementById('university').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const skills = document.getElementById('skills').value;
+            const email = document.getElementById('email').value;
+            const currentLocation = document.getElementById('currentLocation').value;
+            const applyingPosition = document.getElementById('applyingPosition').value;
+            const experience = document.getElementById('experience').value;
+            const linkedinProfileLink = document.getElementById('linkedinProfileLink').value;
+            const previousJob = document.getElementById('previousJob').value;
+            const currentSalary = document.getElementById('currentSalary').value;
+            const expectedSalary = document.getElementById('expectedSalary').value;
+            const coverLetter = document.getElementById('coverLetter').value;
+            const resumeFile = document.getElementById('resume').files[0];
+
+            // Displaying data in preview
+            document.getElementById('previewHowDidYouKnow').innerText = howDidYouKnow;
+            document.getElementById('previewName').innerText = name;
+            document.getElementById('previewUniversity').innerText = university;
+            document.getElementById('previewPhoneNumber').innerText = phoneNumber;
+            document.getElementById('previewSkills').innerText = skills;
+            document.getElementById('previewEmail').innerText = email;
+            document.getElementById('previewCurrentLocation').innerText = currentLocation;
+            document.getElementById('previewApplyingPosition').innerText = applyingPosition;
+            document.getElementById('previewExperience').innerText = experience;
+            document.getElementById('previewLinkedinProfileLink').innerText = linkedinProfileLink;
+            document.getElementById('previewPreviousJob').innerText = previousJob;
+            document.getElementById('previewCurrentSalary').innerText = currentSalary;
+            document.getElementById('previewExpectedSalary').innerText = expectedSalary;
+            document.getElementById('previewCoverLetter').innerText = coverLetter;
+            if (resumeFile) {
+                document.getElementById('previewResume').href = URL.createObjectURL(resumeFile);
+            }
+
+            // Showing the preview step
+            showStep(3);
+        }
+
+        function submitApplication() {
+            const form = document.getElementById('jobApplicationForm');
+            const formData = new FormData(form);
+
+            fetch('/path/to/your/submit/endpoint', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    alert('Application submitted successfully!');
+                    // Redirect or show success message
+                } else {
+                    alert('Error submitting application.');
+                }
+            }).catch(error => {
+                alert('Error submitting application.');
+                console.error('Error:', error);
+            });
+        }
+    </script>
+}

@@ -1,0 +1,697 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+<style>
+    .button-custom {
+        background-color: #4AA147;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 0px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px 8px 8px 8px;
+        cursor: pointer;
+        opacity: 1; /* Fully visible */
+        transform: rotate(0deg); /* No rotation */
+    }
+
+        .button-custom i {
+            margin-right: 5px; /* Space between icon and text */
+        }
+
+    .info-icon {
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .offcanvas-body label {
+        font-weight: 500;
+    }
+
+    .input-group {
+        margin-bottom: 10px;
+    }
+
+</style>
+
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2 border-1">
+
+    <div class="row mx-0 " style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+
+        <div class="pt-2 pb-2" style="/* border-bottom: 1px solid #D4D4D4; */ display: flex; justify-content: space-between; align-items: center;">
+            <span class="mt-2" style="font-weight: 600; font-size: 20px;">Setup Leaves</span>
+            <button class="button-custom" data-bs-toggle="offcanvas" data-bs-target="#offcanvasForm" aria-controls="offcanvasForm">
+                <i class="fas fa-plus"></i> Create New
+            </button>
+        </div>
+
+        <div id="leaveTable" class=" pt-2""></div>
+
+        
+
+
+    </div>
+
+</div>
+
+
+<!-- Offcanvas Structure -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasForm" aria-labelledby="offcanvasFormLabel" style="width: 800px;">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasFormLabel">Leave Rules And Policy</h5>
+        <button type="button" class="btn-close" id="closeButton" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+        <div class="row">
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="leaveName" class="col-md-6 col-form-label">Leave Name:</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="leaveName" placeholder="Enter Leave Name" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6">
+                <div class="row">
+                    <label for="displayName" class="col-md-6 col-form-label">Display Name:</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="displayName" placeholder="Enter Display Name" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 col-md-6">
+                <div class="row">
+                    <label for="definition" class="col-md-6 col-form-label">Definition:</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="definition" placeholder="Enter Definition" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="employeeStatus" class="col-md-6 col-form-label">Employee Status:</label>
+                    <div class="col-md-6">
+                        <select class="form-select" id="employeeStatus" required>
+                            
+                            <option value="Active" selected>Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="leavePerPeriod" class="col-md-6 col-form-label">Leave Per Period:</label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" id="leavePerPeriod" value="" required min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="employeePreApply" class="col-md-6 col-form-label">Employee Pre Apply:</label>
+                    <div class="col-md-6">
+                        <select class="form-select" id="employeePreApply" required>
+                           
+                            <option value="true" selected>Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 col-md-6">
+                <div class="row">
+                    <label for="color" class="col-md-6 col-form-label">Color:</label>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="color" placeholder="Enter Color Name" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="maximumDays" class="col-md-6 col-form-label">Maximum Days:</label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" id="maximumDays" value="" required min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="futureAdjustable" class="col-md-6 col-form-label">Future Adjustable:</label>
+                    <div class="col-md-6">
+                        <select class="form-select" id="futureAdjustable" required>
+                           
+                            <option value="true" selected>Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6">
+                <div class="row">
+                    <label for="withinDays" class="col-md-6 col-form-label">Within Days:</label>
+                    <div class="col-md-6">
+                        <input type="number" class="form-control" id="withinDays" value="" required min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="percentageLeave" class="col-md-8 col-form-label">Leave Carried Forward (%):</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="percentageLeave" value="" min="0" max="100" step="1" placeholder="Enter percentage" required>
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-6"></div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="eligibleFor" class="col-md-6 col-form-label">Eligible for:</label>
+                    <div class="col-md-6">
+                        <select class="form-select" id="eligibleFor" required>
+                            
+                            <option value="AfterConfirmation" selected>After Confirmation</option>
+                            <option value="60Days">60 Days</option>
+                            <option value="30Days">30 Days</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="adminAssignToEmployee" class="col-md-8 col-form-label">Admin Assign to Employee:</label>
+                    <div class="col-md-4">
+                        <select class="form-select" id="adminAssignToEmployee" required>
+                            
+                            <option value="true" selected> Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="leaveOptions" class="col-md-6 col-form-label">Leave Options:</label>
+                    <div class="col-md-6">
+                        <select class="form-select" id="leaveOptions" required>
+                           
+                            <option value="FullDay">Full Day</option>
+                            <option value="HalfDay">Half Day</option>
+                            <option value="Hourly" selected>Hourly</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="maximumHours" class="col-md-8 col-form-label">Maximum Hours:</label>
+                    <div class="col-md-4">
+                        <input type="number" class="form-control" id="maximumHours" value="" required min="0">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="paidTimeOff" class="col-md-6 col-form-label">Paid Time Off (PTO):</label>
+                    <div class="col-md-6">
+                        <select class="form-select" id="paidTimeOff" required>
+                            <option value="true" selected>Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4 col-md-6 ">
+                <div class="row">
+                    <label for="allowedFor" class="col-md-8 col-form-label">Allowed for:</label>
+                    <div class="col-md-4">
+                        <select class="form-select" id="allowedFor" required>
+                           
+                            <option value="AfterConfirmation">After Confirmation</option>
+                            <option value="60Days">60 Days</option>
+                            <option value="30Days" selected>30 Days</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" id="cancelButton" data-bs-dismiss="offcanvas">Cancel</button>
+                <button type="submit" class="btn button-custom" id="createLeaveButton">Create</button>
+                <button type="button" class="btn button-custom" id="updateLeaveButton" style="display: none;">Update</button>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+
+            loadLeaveData();
+        });
+
+        // Assuming comid and userid are already defined
+        var comid = '@ViewBag.CompanyId';
+        var userid = '@ViewBag.UserId';
+        var editingLeaveId = null;
+
+        // Create Leave Button Logic
+        $("#createLeaveButton").on("click", function () {
+            // Clear previous error messages and invalid classes
+            const errorElements = document.querySelectorAll('.invalid-feedback');
+            errorElements.forEach(element => {
+                element.remove(); // Remove any previous error message elements
+            });
+
+            const inputs = document.querySelectorAll('.form-control, .form-select');
+            inputs.forEach(input => {
+                input.classList.remove('is-invalid'); // Remove invalid class
+            });
+
+            // Retrieve values from inputs
+            var model = {
+                id: null, // For new shifts, id is null
+                CompanyId: comid,
+                UserId: userid,
+                LeaveName: $("#leaveName").val().trim(),
+                DisplayName: $("#displayName").val().trim(),
+                Definition: $("#definition").val().trim(),
+                EmployeeStatus: $("#employeeStatus").val(),
+                LeavePerPeriod: parseInt($("#leavePerPeriod").val(), 10),
+                EmployeePreApply: $("#employeePreApply").val() === "true",
+                MaximumDay: parseInt($("#maximumDays").val(), 10),
+                FutureAdjustable: $("#futureAdjustable").val() === "true",
+                PercentageLeaveCarriedForward: parseFloat($("#percentageLeave").val()),
+                EligibleFor: $("#eligibleFor").val(),
+                AdminAssignToEmployee: $("#adminAssignToEmployee").val() === "true",
+                LeaveOptions: $("#leaveOptions").val(),
+                PaidTimeOff: $("#paidTimeOff").val() === "true",
+                WithinDays: parseInt($("#withinDays").val(), 10),
+                MaximumHours: parseInt($("#maximumHours").val(), 10),
+                Allowedfor: $("#allowedFor").val(),
+                Color: $("#color").val().trim()
+            };
+
+            // Validation function
+            function addErrorMessage(elementId, message) {
+                const element = $(`#${elementId}`);
+                element.addClass('is-invalid');
+                element.after(`<div class="invalid-feedback">${message}</div>`);
+                return false;
+            }
+
+            // Validation checks
+            let isValid = true;
+
+            if (!model.LeaveName) {
+                isValid = addErrorMessage('leaveName', 'Leave name is required.');
+            }
+
+            if (!model.DisplayName) {
+                isValid = addErrorMessage('displayName', 'Display name is required.');
+            }
+
+            if (!model.Definition) {
+                isValid = addErrorMessage('definition', 'Definition is required.');
+            }
+
+            if (!model.EmployeeStatus) {
+                isValid = addErrorMessage('employeeStatus', 'Employee status is required.');
+            }
+
+            if (!model.LeavePerPeriod || model.LeavePerPeriod < 0) {
+                isValid = addErrorMessage('leavePerPeriod', 'Leave per period must be a non-negative number.');
+            }
+
+            if (!model.MaximumDay || model.MaximumDay < 0) {
+                isValid = addErrorMessage('maximumDays', 'Maximum days must be a non-negative number.');
+            }
+
+            if (!model.EligibleFor) {
+                isValid = addErrorMessage('eligibleFor', 'Eligibility criteria is required.');
+            }
+
+            if (!model.LeaveOptions) {
+                isValid = addErrorMessage('leaveOptions', 'Leave options must be selected.');
+            }
+
+            if (!model.Allowedfor) {
+                isValid = addErrorMessage('allowedFor', 'Allowed for criteria is required.');
+            }
+
+            if (!model.Color) {
+                isValid = addErrorMessage('color', 'Color is required.');
+            }
+
+            if (isNaN(model.PercentageLeaveCarriedForward) || model.PercentageLeaveCarriedForward < 0 || model.PercentageLeaveCarriedForward > 100) {
+                isValid = addErrorMessage('percentageLeave', 'Percentage must be between 0 and 100.');
+            }
+
+            if (isNaN(model.WithinDays) || model.WithinDays < 0) {
+                isValid = addErrorMessage('withinDays', 'Within days must be a non-negative number.');
+            }
+
+            if (isNaN(model.MaximumHours) || model.MaximumHours < 0) {
+                isValid = addErrorMessage('maximumHours', 'Maximum hours must be a non-negative number.');
+            }
+
+            // Only proceed if form is valid
+            if (isValid) {
+                $.ajax({
+                    url: "/Attendance/SaveLeave", // The endpoint for saving the leave
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(model),
+                    success: function (response) {
+                        if (response.error) {
+                            alert(response.message);
+                        } else {
+                            alert("Leave saved successfully.");
+                            clearFormAndCloseOffcanvas();
+                            loadLeaveData();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error: " + xhr.responseText);
+                    }
+                });
+            }
+        });
+
+        $("#updateLeaveButton").on("click", function () {
+            // Clear previous error messages and invalid classes
+            const errorElements = document.querySelectorAll('.invalid-feedback');
+            errorElements.forEach(element => {
+                element.remove(); // Remove previous error messages
+            });
+
+            const inputs = document.querySelectorAll('.form-control, .form-select');
+            inputs.forEach(input => {
+                input.classList.remove('is-invalid'); // Remove invalid class
+            });
+
+            // Retrieve updated values from inputs
+            var model = {
+                id: editingLeaveId, // Use the ID stored when the "Edit" button was clicked
+                CompanyId: comid,
+                UserId: userid,
+                LeaveName: $("#leaveName").val().trim(),
+                DisplayName: $("#displayName").val().trim(),
+                Definition: $("#definition").val().trim(),
+                EmployeeStatus: $("#employeeStatus").val(),
+                LeavePerPeriod: parseInt($("#leavePerPeriod").val(), 10),
+                EmployeePreApply: $("#employeePreApply").val() === "true",
+                MaximumDay: parseInt($("#maximumDays").val(), 10),
+                FutureAdjustable: $("#futureAdjustable").val() === "true",
+                PercentageLeaveCarriedForward: parseFloat($("#percentageLeave").val()),
+                EligibleFor: $("#eligibleFor").val(),
+                AdminAssignToEmployee: $("#adminAssignToEmployee").val() === "true",
+                LeaveOptions: $("#leaveOptions").val(),
+                PaidTimeOff: $("#paidTimeOff").val() === "true",
+                WithinDays: parseInt($("#withinDays").val(), 10),
+                MaximumHours: parseInt($("#maximumHours").val(), 10),
+                Allowedfor: $("#allowedFor").val(),
+                Color: $("#color").val().trim()
+            };
+
+            // Validation function (same as the one for create)
+            function addErrorMessage(elementId, message) {
+                const element = $(`#${elementId}`);
+                element.addClass('is-invalid');
+                element.after(`<div class="invalid-feedback">${message}</div>`);
+                return false;
+            }
+
+            // Validation checks (same as for create)
+            let isValid = true;
+
+            if (!model.LeaveName) {
+                isValid = addErrorMessage('leaveName', 'Leave name is required.');
+            }
+            if (!model.DisplayName) {
+                isValid = addErrorMessage('displayName', 'Display name is required.');
+            }
+            if (!model.Definition) {
+                isValid = addErrorMessage('definition', 'Definition is required.');
+            }
+            if (!model.EmployeeStatus) {
+                isValid = addErrorMessage('employeeStatus', 'Employee status is required.');
+            }
+            if (!model.LeavePerPeriod || model.LeavePerPeriod < 0) {
+                isValid = addErrorMessage('leavePerPeriod', 'Leave per period must be a non-negative number.');
+            }
+            if (!model.MaximumDay || model.MaximumDay < 0) {
+                isValid = addErrorMessage('maximumDays', 'Maximum days must be a non-negative number.');
+            }
+            if (!model.EligibleFor) {
+                isValid = addErrorMessage('eligibleFor', 'Eligibility criteria is required.');
+            }
+            if (!model.LeaveOptions) {
+                isValid = addErrorMessage('leaveOptions', 'Leave options must be selected.');
+            }
+            if (!model.Allowedfor) {
+                isValid = addErrorMessage('allowedFor', 'Allowed for criteria is required.');
+            }
+            if (!model.Color) {
+                isValid = addErrorMessage('color', 'Color is required.');
+            }
+            if (isNaN(model.PercentageLeaveCarriedForward) || model.PercentageLeaveCarriedForward < 0 || model.PercentageLeaveCarriedForward > 100) {
+                isValid = addErrorMessage('percentageLeave', 'Percentage must be between 0 and 100.');
+            }
+            if (isNaN(model.WithinDays) || model.WithinDays < 0) {
+                isValid = addErrorMessage('withinDays', 'Within days must be a non-negative number.');
+            }
+            if (isNaN(model.MaximumHours) || model.MaximumHours < 0) {
+                isValid = addErrorMessage('maximumHours', 'Maximum hours must be a non-negative number.');
+            }
+
+            // If the form is valid, send the updated data via AJAX
+            if (isValid) {
+                $.ajax({
+                    url: "/Attendance/SaveLeave", // The endpoint for updating the leave
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(model), // Send the updated model with the ID
+                    success: function (response) {
+                        if (response.error) {
+                            alert(response.message); // Show error message if there's an issue
+                        } else {
+                            alert("Leave updated successfully.");
+                            clearFormAndCloseOffcanvas(); // Clear form and close the off-canvas
+                            loadLeaveData(); // Reload the leave data to reflect changes
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error: " + xhr.responseText); // Show error message
+                    }
+                });
+            }
+        });
+
+
+        function loadLeaveData(searchQuery = "", page = 1, size = 0) {
+            $.ajax({
+                url: `/Attendance/GetLeaveList?searchQuery=${searchQuery}&page=${page}&size=${size}`, // API endpoint
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    // Check if the API returned a successful response
+                    if (data.success) {
+                        // Load data into Tabulator
+                        leaveTable.setData(data.data);
+
+                        // Optionally, reset or hide pagination controls when fetching all
+                        if (size === 0) {
+                            leaveTable.setPageSize(data.totalRecordCount); // Show all records
+                        }
+
+                    } else {
+                        console.error("Error loading data:", data.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching leave data:", error);
+                }
+            });
+        }
+
+
+        // Event listener for Edit button in Leave Table
+        $("#leaveTable").on("click", ".editLeaveBtn", function () {
+            // Get the row data for the clicked button
+            var row = leaveTable.getRow(this.closest('.tabulator-row')); // Get the closest row
+            var data = row.getData(); // Get the row data
+
+            editingLeaveId = data.id;
+        
+            // Debug: Check if data is retrieved correctly
+            // console.log(data); // Log the data to see if it is retrieved correctly
+
+            // Populate the off-canvas fields with row data
+            $("#leaveName").val(data.leaveName || "");
+            $("#displayName").val(data.displayName || "");
+            $("#definition").val(data.definition || "");
+            $("#employeeStatus").val(data.employeeStatus || "");
+            $("#leavePerPeriod").val(data.leavePerPeriod || "");
+            $("#color").val(data.color || "");
+            $("#withinDays").val(data.withinDays || "");
+            $("#maximumDays").val(data.maximumDay || "");
+            $("#percentageLeave").val(data.percentageLeaveCarriedForward || "");
+            $("#eligibleFor").val(data.eligibleFor || "");
+            $("#adminAssignToEmployee").val(data.adminAssignToEmployee.toString() || "false"); // Convert boolean to string
+            $("#paidTimeOff").val(data.paidTimeOff.toString() || "false"); // Convert boolean to string
+            $("#maximumHours").val(data.maximumHours || "");
+            $("#allowedFor").val(data.allowedfor || "");
+            $("#futureAdjustable").val(data.futureAdjustable.toString() || "false"); // Convert boolean to string
+            $("#employeePreApply").val(data.employeePreApply.toString() || "false"); // Convert boolean to string
+
+        
+            // Store the ID of the leave being edited
+            editingLeaveId = data.id; // Assuming 'id' is the field for the leave's unique identifier
+            // console.log("Editing Leave ID:", editingLeaveId); // Debug: Check if editingLeaveId is set correctly
+        
+            // Show the off-canvas
+            var offcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasForm'));
+            offcanvas.show();
+            // console.log("Off-canvas should now be visible."); // Debug: Check if the off-canvas is shown
+        
+            // Set up buttons
+            $("#createLeaveButton").hide(); // Hide create button
+            $("#updateLeaveButton").show(); // Show update button
+        });
+
+        // Event listener for Delete button in Leave Table
+        $("#leaveTable").on("click", ".deleteLeaveBtn", function () {
+            // Get the row data for the clicked button
+            var row = leaveTable.getRow(this.closest('.tabulator-row')); // Get the closest row
+            var data = row.getData(); // Get the row data
+            var leaveId = data.id; // Assuming 'id' is the field for the leave's unique identifier
+
+            // Confirm the deletion action
+            if (confirm("Are you sure you want to delete this leave?")) {
+                // If user confirms, send an AJAX request to delete the leave
+                $.ajax({
+                    url: `/Attendance/Deleteleave?leaveId=${leaveId}`, // The API endpoint
+                    type: "GET", // Since this is a GET request
+                    success: function (response) {
+                        if (response.success === "1") {
+                            alert(response.msg); // Show success message
+                            loadLeaveData(); // Reload the leave data to refresh the table
+                        } else {
+                            alert("Failed to delete leave. Please try again.");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error deleting leave:", error); // Log error
+                        alert("An error occurred while deleting the leave.");
+                    }
+                });
+            }
+        });
+
+
+        // Initialize Tabulator
+        var leaveTable = new Tabulator("#leaveTable", {
+            layout: "fitColumns",
+            columns: [
+                { title: "Leave Name", field: "leaveName",  },
+                { title: "Display Name", field: "displayName", },
+                { title: "Definitions", field: "definition",  },
+                { title: "Leave Days", field: "leavePerPeriod",},
+                { title: "Color", field: "color", width: 130 },
+                { title: "Leave(Daily/Hourly) ", field: "leaveOptions",  },
+                {
+                    title: "Actions",
+                    formatter: function (cell, formatterParams, onRendered) {
+                        return `
+                    <div style="display: inline-flex; align-items: center;">
+                        <button class="editLeaveBtn action-icon" style="background: none; border: none; cursor: pointer; padding: 0;">
+                            <img alt="edit" width="20px" height="20px" src="/User/img/edit-off.png" />
+                        </button>
+                        <button class="deleteLeaveBtn action-icon" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 8px;">
+                           <img alt="delete" width="20px" height="20px" src="/User/img/delete.png" />
+                        </button>
+                    </div>
+                `;
+                    },
+                    
+                    hozAlign: "center"
+                }
+            ],
+            
+            movableColumns: true, // Allow columns to be movable
+        });
+
+        function clearFormAndCloseOffcanvas() {
+            // Clear all form fields
+            document.getElementById('leaveName').value = '';
+            document.getElementById('displayName').value = '';
+            document.getElementById('definition').value = '';
+            document.getElementById('employeeStatus').selectedIndex = 0; // Reset to first option
+            document.getElementById('leavePerPeriod').value = '';
+            document.getElementById('employeePreApply').selectedIndex = 0; // Reset to first option
+            document.getElementById('color').value = '';
+            document.getElementById('maximumDays').value = '';
+            document.getElementById('futureAdjustable').selectedIndex = 0; // Reset to first option
+            document.getElementById('withinDays').value = '';
+            document.getElementById('percentageLeave').value = '';
+            document.getElementById('eligibleFor').selectedIndex = 0; // Reset to first option
+            document.getElementById('adminAssignToEmployee').selectedIndex = 0; // Reset to first option
+            document.getElementById('leaveOptions').selectedIndex = 0; // Reset to first option
+            document.getElementById('maximumHours').value = '';
+            document.getElementById('paidTimeOff').selectedIndex = 0; // Reset to first option
+            document.getElementById('allowedFor').selectedIndex = 0; // Reset to first option
+
+            // Set up buttons
+            $("#createLeaveButton").show(); // Hide create button
+            $("#updateLeaveButton").hide(); // Show update button
+
+            // Remove any invalid styles
+            document.querySelectorAll('.form-control, .form-select').forEach(input => {
+                input.classList.remove('is-invalid');
+            });
+
+            // Close the offcanvas
+            const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasForm'));
+            offcanvas.hide();
+        }
+
+        // Attach the closeAndClearOffcanvas function to the Cancel and Close buttons
+        $("#cancelButton, #closeButton").on("click", function () {
+            clearFormAndCloseOffcanvas();
+        });
+
+        // Attach the function to the Cancel button click event
+        document.querySelector('.btn-secondary[data-bs-dismiss="offcanvas"]').addEventListener('click', clearAndCloseOffcanvas);
+
+    </script>
+}
+

@@ -1,0 +1,388 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutJobView";
+}
+
+
+
+<div class="container">
+
+    <div class="row " style="margin-top: 5px;">
+        <div class="col-md-9" style=" padding-top: 10px;">
+            <div class="step-content2nd active2nd" data-step="1">
+
+                <div class="pb-4">
+                    <span class="me-2" style="border: 2px solid #D0D5DD; color: #414042;  padding: 8px 20px; border-radius: 10px;">Notice</span>
+                    <span style="border: 2px solid #D0D5DD; color: #414042;  padding: 8px 20px; border-radius: 10px;">Assignment & Document</span>
+                </div>
+
+
+                <div class="table-container">
+                    <table class="table table-bordered text-center" id="jobTable">
+                        <thead>
+                            <tr>
+                                <th class="p-3"> <h6 class="font-weight-bold">Subject</h6></th>
+                                <th class="p-3"> <h6 class="font-weight-bold">Post Date</h6></th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobTableBody">
+                            <!-- Dynamic Rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+                <div class="mt-4 pb-4">
+                    <span style="border: 2px solid #D0D5DD; color: #414042;  padding: 8px 20px; border-radius: 10px;">Assignment & Document</span>
+                </div>
+
+
+               
+                <div id="assignments-container">
+                    <div id="assignments-table"></div>
+                </div>
+
+
+
+            </div>
+          
+        </div>
+        <div class="col-md-3">
+            <div style="border: 1px solid #E9E9E9; border-radius: 11px;">
+                <div class="p-3" style="display: flex; align-items: center; border-bottom: 1px solid #E9E9E9;">
+                    <div style="margin-right: 10px;">
+                        <h4 id="jobName" style="margin: 0;"></h4>
+                        <h6 id="companyName" style="font-size: 14px; margin: 0;"></h6> <!-- Adjusted font size for company name -->
+                    </div>
+                    <h6 id="progress" style="background-color: #28a745; color: white; padding: 15px 10px; border-radius: 50%;"></h6>
+                </div>
+
+                <div class="progress-container2nd" style="padding-left: 50px; padding-top: 10px; padding-bottom: 25px;" id="milestoneContainer">
+                    <!-- Milestones will be dynamically inserted here -->
+                </div>
+                <div>
+                    <img src="/User/img/compeleted.png" alt="Image 5" style="max-width: 180px;">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+
+        // Declare table variable in a wider scope
+        let table;
+
+        function getData() {
+            $.ajax({
+                url: '@Url.Action("GetJobDetailsById", "JobApplication")?jobPostId=@ViewBag.jobPostId',
+                type: 'GET',
+                success: function (response) {
+                    console.log(response);
+                    loadMilestones(response.jobName, response.companyName, response.jobInfo.milestones);
+                    calculateProgress(response.jobInfo.milestones);
+                    populateJobTable(response);
+                    initializeTabulator(response.jobInfo.groupedAssignments);
+                },
+                error: function (error) {
+                    console.error('Error fetching job applications:', error);
+                }
+            });
+        }
+
+        function formatDataForTabulator(data) {
+            console.log(data);
+            return data.map((assignmentArray, index) => {
+                const arrayId = `array${String(index + 1).padStart(2, '0')}`; // Generates array01, array02, etc.
+
+                // Mapping through assignments within each array
+                const assignments = assignmentArray.assignments.map((assignment, assignmentIndex) => {
+                    const assignmentId = `assignment${String(assignmentIndex + 1).padStart(2, '0')}`; // Generates assignment01, assignment02, etc.
+
+                    return {
+                        id: assignment.id, // Keep original id
+                        title: assignment.title,
+                        assignBy: assignment.assignBy,
+                        type: assignment.type,
+                        serial: assignment.serial,
+                        assignedDate: new Date(assignment.assignedDate).toLocaleDateString('en-GB'),
+                        dueDate: new Date(assignment.dueDate).toLocaleDateString('en-GB'),
+                        description: assignment.description,
+                        // Assign the dynamically generated id to the assignment
+                        assignmentId: assignmentId,
+                        // Mapping through files within each assignment
+
+                        
+                        // _children: assignment.files.map(file => ({
+                        //     id: `${assignment.id}-${file.fileName}`,   // Files/2nd child row
+                        //     title: file.fileName 
+                        // }))
+                    };
+                });
+
+                return {
+                    id: arrayId, // Assign an ID for the array level
+                    title: `Assignment ${index + 1}`, // Title for the array (you can customize this)
+                    _children: assignments // Assignments as children of the array
+                };
+            });
+        }
+        function initializeTabulator(assignmentsData) {
+            const formattedData = formatDataForTabulator(assignmentsData);
+            if (table) {
+                // If table already exists, update its data
+                table.setData(formattedData);
+            } else {
+                table = new Tabulator("#assignments-table", {
+                    data: formattedData, // Use formatted data
+                    dataTreeChildField: "_children", // Child field for nested data
+                    columns: [
+                        { title: "Title", field: "title", width: 200, responsive: 0 }, // Top level title
+                        { title: "Due Date", field: "dueDate", width: 150, hozAlign: "center" }, // Due date will be visible at the assignment level
+                        {
+                            title: "Download", field: "download", width: 100, hozAlign: "center", formatter: function (cell, formatterParams) {
+                                const rowData = cell.getRow().getData();
+                                if (rowData.type === "Task") {
+                                    return "<button class='download-btn'>Download</button>";
+                                }
+                                return "";
+                            },
+                            cellClick: function (e, cell) {
+                                const rowData = cell.getRow().getData();
+                                if (rowData.type === "Task") {
+                                    $.ajax({
+                                        url: '@Url.Action("DownloadAssignment", "JobApplication")' + '?assignmentId=' + rowData.id,
+                                        type: 'GET',
+                                        xhrFields: {
+                                            responseType: 'blob' // Set response type to 'blob'
+                                        },
+                                        success: function (data, status, xhr) {
+                                            let filename = `${rowData.title}.zip`;
+
+                                            const blob = new Blob([data], { type: 'application/zip' }); // Create blob with the correct MIME type
+                                            const link = document.createElement('a');
+                                            link.href = window.URL.createObjectURL(blob); // Create URL for blob
+                                            link.download = filename; // Set filename for download
+                                            document.body.appendChild(link);
+                                            link.click(); // Trigger download
+                                            document.body.removeChild(link); // Clean up after download
+                                        },
+                                        error: function (xhr, status, error) {
+                                            console.error('Download failed:', error);
+                                        }
+                                    });
+
+
+                                }
+                            }
+                        },
+                        {
+                            title: "Upload",
+                            field: "upload",
+                            width: 100,
+                            hozAlign: "center",
+                            formatter: function (cell, formatterParams) {
+                                const rowData = cell.getRow().getData();
+                                if (rowData.type === "Task") {
+                                    return "<button class='upload-btn'>Upload</button><input type='file' class='file-input' multiple style='display: none;'/>";
+                                }
+                                return "";
+                            },
+                            cellClick: function (e, cell) {
+                                const rowData = cell.getRow().getData();
+                                if (rowData.type === "Task") {
+                                    const fileInput = cell.getElement().querySelector('.file-input');
+
+                                    // Check if the event listener is already attached
+                                    if (!fileInput.dataset.listenerAttached) {
+                                        fileInput.dataset.listenerAttached = true; // Set flag to true to indicate listener is attached
+
+                                        fileInput.addEventListener('change', function (event) {
+                                            const files = event.target.files; // Get selected files
+
+                                            if (files.length > 0) {
+                                                const formData = new FormData();
+                                                formData.append('assignmentId', rowData.id);
+                                                formData.append('jobPostId', '@ViewBag.jobPostId');
+                                                formData.append('serial', rowData.serial);
+
+                                                // Append each selected file to the FormData
+                                                for (let i = 0; i < files.length; i++) {
+                                                    formData.append('files', files[i]);
+                                                }
+
+                                                // Make AJAX request to upload the files
+                                                $.ajax({
+                                                    url: '@Url.Action("UploadAssignment", "JobApplication")',
+                                                    type: 'POST',
+                                                    data: formData,
+                                                    processData: false,
+                                                    contentType: false,
+                                                    success: function (data, status, xhr) {
+                                                        alert('Files uploaded successfully!');
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        console.error('Upload failed:', error);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+
+                                    // Open file dialog for file selection
+                                    fileInput.click();
+                                }
+                            }
+                        }
+
+
+                    ],
+                    dataTree: true,
+                    dataTreeStartExpanded: false, // Optionally start with children expanded
+                    dataTreeElementColumn: "title", // Element column for displaying title
+                });
+            }
+        }
+
+
+
+
+        $(document).ready(function () {
+            getData();
+
+
+        });
+
+        function populateJobTable(data) {
+            const tableBody = document.getElementById('jobTableBody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            // Check for assignments
+            if (data.jobInfo.groupedAssignments && data.jobInfo.groupedAssignments.length > 0) {
+                data.jobInfo.groupedAssignments.forEach((group, index) => {
+                    if (group.assignments && group.assignments.length > 0) {
+                        // Find the maximum due date among the assignments in the group
+                        const maxDate = new Date( group.dateAdded);
+                        const formattedDate = maxDate.toLocaleDateString('en-GB');
+                        // Format the assignment number (e.g., Assignment 01, Assignment 02)
+                        const assignmentNumber = (index + 1).toString().padStart(2, '0'); // 01, 02, etc.
+
+                        // Create a row for the group showing the latest assignment date
+                        const groupRow = `
+                        <tr>
+                            <td class="p-3 h6">Assignment ${assignmentNumber} Submission</td>
+                                    <td class="p-3 h6">${formattedDate}</td>
+                        </tr>
+                    `;
+                        tableBody.innerHTML += groupRow;
+                    }
+                });
+            }
+
+
+            // Check for milestones
+            const milestones = data.jobInfo.milestones;
+            milestones.forEach(milestone => {
+                if (milestone.title === 'Interview') {
+                    const interviewRow = `
+                        <tr>
+                            <td class="p-3 h6">Online Interview</td>
+                            <td class="p-3 h6">TBD</td> <!-- Placeholder for the date -->
+                        </tr>
+                    `;
+                    tableBody.innerHTML += interviewRow;
+                }
+
+                // Check for Offer Letter with status 2
+                if (milestone.title === 'Offer Letter' && milestone.status === 2) {
+                    const offerLetterRow = `
+                        <tr>
+                            <td class="p-3 h6">Offer Letter</td>
+                            <td class="p-3 h6">TBD</td> <!-- Placeholder for the date -->
+                        </tr>
+                    `;
+                    tableBody.innerHTML += offerLetterRow;
+                }
+            });
+        }
+
+        function loadMilestones(jobName, companyName, milestones) {
+            // Set job name and company name
+            document.getElementById("jobName").textContent = jobName;
+            document.getElementById("companyName").textContent = companyName;
+
+            // Get milestone container
+            const milestoneContainer = document.getElementById("milestoneContainer");
+            milestoneContainer.innerHTML = ''; // Clear any existing milestones
+
+            // Add "Job Application" as the first milestone
+            milestones.unshift({
+                id: 'job-application',
+                title: 'Job Application',
+                description: 'Job Application',
+                status: 2,
+                completionDate: null // No completion date for Job Application
+            });
+
+            // Loop through milestones and create HTML structure
+            milestones.forEach((milestone, index) => {
+                // Define color based on status: green for completed, default for others
+                const circleColor = milestone.status === 2 ? 'green' : 'gray';
+                const lineColor = milestone.status === 2 ? 'green' : 'gray';
+
+                // Check if this is the last milestone, and don't show the line for the last one
+                const isLast = index === milestones.length - 1;
+
+                const milestoneHTML = `
+                    <div class="progress-step2nd" data-step="${index + 1}">
+                        <div class="date2nd">${milestone.completionDate ? new Date(milestone.completionDate).getDate() : 'N/A'}<br />${milestone.completionDate ? new Date(milestone.completionDate).toLocaleString('default', { month: 'short' }).toUpperCase() : ''}</div>
+                        <div class="circle2nd" style="background-color: ${circleColor}; border-color: ${circleColor};"></div>
+                        ${!isLast ? `<div class="line2nd" style="background-color: ${lineColor};"></div>` : ''}
+                        <div class="step-description2nd">
+                            <div>${milestone.title}</div>
+                        </div>
+                    </div>
+                `;
+                milestoneContainer.insertAdjacentHTML('beforeend', milestoneHTML);
+            });
+
+            // Check the status of the last milestone
+            const lastMilestone = milestones[milestones.length - 1]; // Get the last milestone
+            const imageContainer = document.querySelector('.progress-container2nd + div'); // Assuming the image is in the next div after the milestone container
+
+            // Show or hide the image based on the last milestone's status
+            if (lastMilestone.status === 2) {
+                imageContainer.style.display = 'block'; // Show the image if last milestone is completed
+            } else {
+                imageContainer.style.display = 'none'; // Hide the image otherwise
+            }
+        }
+
+
+
+
+        function calculateProgress(milestones) {
+            // Filter milestones with status 2 (completed)
+            var completedMilestones = milestones.filter(function (milestone) {
+                return milestone.status === 2;
+            }).length;
+
+            // Get the total number of milestones
+            var totalMilestones = milestones.length;
+
+            // Calculate the progress percentage
+            var progressPercentage = Math.round(((completedMilestones) / (totalMilestones)) * 100);
+
+            // Update the progress in the <h6> element
+            document.getElementById("progress").textContent = progressPercentage + "%";
+
+            return progressPercentage;
+        }
+
+    </script>
+}
+

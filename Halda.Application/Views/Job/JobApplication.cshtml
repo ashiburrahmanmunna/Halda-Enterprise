@@ -1,0 +1,643 @@
+﻿@{
+    ViewData["Title"] = "Job Details";
+    Layout = "_LayoutJobView";
+    var title = ViewBag.jobName;
+
+}
+
+<div class="container">
+    <div class="stepper-wrapper">
+        <div class="stepper-item completed" onclick="showStep(1)">
+            <div class="step-counter"></div>
+            <div class="step-name">Information</div>
+        </div>
+        <div class="stepper-item" onclick="showStep(2)">
+            <div class="step-counter"></div>
+            <div class="step-name">Documentation</div>
+        </div>
+        <div class="stepper-item" onclick="showStep(3)">
+            <div class="step-counter"></div>
+            <div class="step-name">Preview</div>
+        </div>
+        <div class="stepper-item" onclick="showStep(4)">
+            <div class="step-counter"></div>
+            <div class="step-name">Submit</div>
+        </div>
+    </div>
+    <div class="content">
+        <div id="content-1" class="step-content">
+
+            <div class="container px-5 rounded-4 border border-muted p-2 border-1" style="background: #FBFBFB;">
+                <form id="jobApplicationForm" class="mt-4">
+                    <div class="form-group">
+                        <label style="font-weight: 600;" class="mb-2" for="howDidYouKnow">How did you know about us?</label>
+                        <div id="howDidYouKnowGroup" class="btn-radio pt-2 mb-3">
+                            <input type="radio" id="facebook" name="howDidYouKnow" value="Facebook" required style="display: none;">
+                            <label for="facebook" class="howDidYouKnowGroup_custom">Facebook</label>
+
+                            <input type="radio" id="linkedin" name="howDidYouKnow" value="LinkedIn" required style="display: none;">
+                            <label for="linkedin" class="howDidYouKnowGroup_custom">LinkedIn</label>
+
+                            <input type="radio" id="bdJobs" name="howDidYouKnow" value="Bd Jobs" required style="display: none;">
+                            <label for="bdJobs" class="howDidYouKnowGroup_custom">Bd Jobs</label>
+
+                            <input type="radio" id="googleWeb" name="howDidYouKnow" value="Google Web" required style="display: none;">
+                            <label for="googleWeb" class="howDidYouKnowGroup_custom">Google Web</label>
+
+                            <input type="radio" id="others" name="howDidYouKnow" value="Others" required style="display: none;">
+                            <label for="others" class="howDidYouKnowGroup_custom">Others</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <h6>Personal Details</h6>
+                        <div class="form-group col-md-6 ">
+                            <label for="name" class="howDidYouKnowGroup_label">Name</label>
+                            <input type="text" class="form-control job-app-form-input" id="name" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="university" class="howDidYouKnowGroup_label">University</label>
+                            <input type="text" class="form-control job-app-form-input" id="university" required>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label for="phoneNumber" class="howDidYouKnowGroup_label">Phone Number</label>
+                            <input type="tel" class="form-control job-app-form-input" id="phoneNumber" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="skills" class="howDidYouKnowGroup_label">Skills</label>
+                            <input type="text" class="form-control job-app-form-input" id="skills" required>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label for="email" class="howDidYouKnowGroup_label">Email</label>
+                            <input type="email" class="form-control job-app-form-input" id="email" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="currentLocation" class="howDidYouKnowGroup_label">Current Location</label>
+                            <input type="text" class="form-control job-app-form-input" id="currentLocation" required>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="applyingPosition" class="howDidYouKnowGroup_label">Applying Position</label>
+                            <input type="text" class="form-control job-app-form-input" id="applyingPosition" value="@ViewBag.jobName" readonly style="color: #6c757d; background-color: #f8f9fa;">
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label for="experience" class="howDidYouKnowGroup_label">Experience</label>
+                            <input type="text" class="form-control job-app-form-input" id="experience" required>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <label for="linkedinProfileLink" class="howDidYouKnowGroup_label">LinkedIn Profile Link</label>
+                            <input type="text" class="form-control job-app-form-input" id="linkedinProfileLink" required>
+                        </div>
+
+
+                        <div class="form-group col-md-12">
+                            <label for="previousJob" class="howDidYouKnowGroup_label">Previous or Current Job Company Name (If Any)</label>
+                            <input type="text" class="form-control " style="width: 93%;" id="previousJob">
+                        </div>
+                        <div class="form-group col-md-6 mt-3">
+                            <label for="currentSalary" class="howDidYouKnowGroup_label">Current Salary</label>
+                            <input type="text" class="form-control job-app-form-input" id="currentSalary">
+                        </div>
+                        <div class="form-group col-md-6 mt-3">
+                            <label for="expectedSalary" class="howDidYouKnowGroup_label">Expected Salary</label>
+                            <input type="text" class="form-control job-app-form-input" id="expectedSalary">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="coverLetter" class="howDidYouKnowGroup_label">Cover Letter</label>
+                            <textarea class="form-control " id="coverLetter" rows="5"></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-5">
+                            <button type="submit" class="btn btn-success ps-3 pe-3" style="background-color: #4AA147; border-color: #4AA147;">Save</button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+
+
+        <div id="content-2" class="step-content d-none">
+
+            <div class="container px-5 rounded-4 border border-muted p-2 border-1" style="background: #FBFBFB;">
+
+                <form id="fileUploadForm">
+                    <div class="form-group mb-3">
+                        <div class="custom-control mt-3 custom-checkbox" style="display: inline-block; border: 2px solid #D0D5DD; border-radius: 10px; background-color: #FFFFFF; padding: 5px;">
+                            <input type="checkbox" class="custom-control-input" id="selectAll">
+                            <label class="custom-control-label" for="selectAll">Select All</label>
+                        </div>
+
+                    </div>
+                    <table class="table table-bordered">
+                        <tbody id="fileList">
+                            <!-- Rows will be inserted here by JavaScript -->
+                        </tbody>
+                    </table>
+@*                     <div class="d-flex justify-content-end mt-5">
+                        <button type="button" onclick="nextStep()" class="btn btn-success ps-3 pe-3" style="background-color: #4AA147; border-color: #4AA147;">Done</button>
+                    </div> *@
+                </form>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="content-3" class="step-content d-none">
+
+            <div class="container mx-3">
+
+
+                <div style="color: #414042" class="row mx-3">
+                    <div class="col-md-12 col-12 mb-3">
+                        <h6>How did You Know Us?</h6>
+                        <p id="howDidYouKnowText"></p>
+                    </div>
+                    <div class="col-md-6 col-6 mb-3">
+                        Name
+                        <h6 id="nameText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        University
+                        <h6 id="universityText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        Phone Number
+                        <h6 id="phoneNumberText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        Skills
+                        <h6 id="skillsText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        Email
+                        <h6 id="emailText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        Current Location
+                        <h6 id="currentLocationText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        Applying Position
+                        <h6 id="applyingPositionText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        Experience
+                        <h6 id="experienceText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        LinkedIn Profile
+                        <h6 id="linkedinProfileLinkText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        Current Salary
+                        <h6 id="currentSalaryText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        Previous or Current Job Company Name
+                        <h6 id="previousJobText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+
+                    <div class="col-md-6 col-6 mb-3">
+                        Expected Salary
+                        <h6 id="expectedSalaryText" style="font-weight: 700; margin-top: 5px;"></h6>
+                    </div>
+                </div>
+
+
+                <div class="container mt-5">
+                    <h2>Document</h2>
+                    <table id="docTable" class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <td class="p-3 border">Resume</td>
+                                <td class="p-3 border"><a class="btn btn-outline-danger btn-sm">Resume</a></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border">Govt ID</td>
+                                <td class="p-3 border"><a class="btn btn-outline-danger btn-sm">Govt ID</a></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border">Certificate</td>
+                                <td class="p-3 border"><a class="btn btn-outline-danger btn-sm">Certificate</a></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border">Transcript</td>
+                                <td class="p-3 border"><a class="btn btn-outline-danger btn-sm">Transcript</a></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border">SSC Certificate</td>
+                                <td class="p-3 border"><a class="btn btn-outline-danger btn-sm">SSC Certificate</a></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border">HSC Certificate</td>
+                                <td class="p-3 border"><a class="btn btn-outline-danger btn-sm">HSC Certificate</a></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border">BSc Certificate</td>
+                                <td class="p-3 border"><a class="btn btn-outline-danger btn-sm">BSc Certificate</a></td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 border">MSc Certificate</td>
+                                <td class="p-3 border"><a class="btn btn-outline-danger btn-sm">MSc Certificate</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-end mt-5">
+                        <button onclick="SubmitApplicantInfo();" type="button" class="btn btn-success ps-3 pe-3" style="background-color: #4AA147; border-color: #4AA147;">Submit</button>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div id="content-4" class="step-content d-none">
+
+            <div class="container">
+                <div class="d-flex justify-content-center">
+                    <img src="~/User/img/done.png" alt="Image 1" class="img-fluid me-2" style="max-width: 500px; ">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <button class="btn btn-primary" onclick="prevStep()">Previous</button>
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+            <button class="btn btn-primary" onclick="nextStep()">Next</button>
+        </div>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <script>
+        let currentStep = 1;
+
+        function showStep(step) {
+            const totalSteps = 4;
+            for (let i = 1; i <= totalSteps; i++) {
+                const stepperItem = document.querySelector(`.stepper-wrapper .stepper-item:nth-child(${i})`);
+                stepperItem.classList.remove('active', 'completed');
+                document.getElementById(`content-${i}`).classList.add('d-none');
+            }
+            for (let i = 1; i < step; i++) {
+                document.querySelector(`.stepper-wrapper .stepper-item:nth-child(${i})`).classList.add('completed');
+            }
+            document.querySelector(`.stepper-wrapper .stepper-item:nth-child(${step})`).classList.add('active');
+            document.getElementById(`content-${step}`).classList.remove('d-none');
+        }
+
+        function nextStep() {
+            if (currentStep < 4) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showStep(currentStep);
+        });
+
+        document.querySelectorAll('.btn-radio input[type="radio"]').forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                document.querySelectorAll('.btn-radio label').forEach(function (label) {
+                    label.style.backgroundColor = 'white';
+                    label.style.color = 'black';
+                });
+                if (radio.checked) {
+                    radio.nextElementSibling.style.backgroundColor = '#007bff';
+                    radio.nextElementSibling.style.color = 'white';
+                }
+            });
+        });
+
+        document.getElementById('jobApplicationForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from actually submitting and refreshing the page
+
+            // Form validation logic here
+            let valid = true;
+
+            // Check if all required fields are filled
+            this.querySelectorAll('input[required], textarea[required]').forEach(function (input) {
+                if (!input.value) {
+                    valid = false;
+                    input.classList.add('is-invalid');
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            if (valid) {
+                alert('Form submitted successfully!');
+                // Process form submission logic here (e.g., AJAX call)
+            } else {
+                alert('Please fill out all required fields.');
+            }
+        });
+
+
+        document.getElementById('jobApplicationForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            // Manually get form values
+            const howDidYouKnow = document.querySelector('input[name="howDidYouKnow"]:checked').value;
+            const name = document.getElementById('name').value;
+            const university = document.getElementById('university').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const skills = document.getElementById('skills').value;
+            const email = document.getElementById('email').value;
+            const currentLocation = document.getElementById('currentLocation').value;
+            const applyingPosition = document.getElementById('applyingPosition').value;
+            const experience = document.getElementById('experience').value;
+            const linkedinProfileLink = document.getElementById('linkedinProfileLink').value;
+            const previousJob = document.getElementById('previousJob').value;
+            const currentSalary = document.getElementById('currentSalary').value;
+            const expectedSalary = document.getElementById('expectedSalary').value;
+            const coverLetter = document.getElementById('coverLetter').value;
+
+            // Dynamically update the text in the HTML based on the form inputs
+            document.getElementById('howDidYouKnowText').textContent = howDidYouKnow;
+            document.getElementById('nameText').textContent = name;
+            document.getElementById('universityText').textContent = university;
+            document.getElementById('phoneNumberText').textContent = phoneNumber;
+            document.getElementById('skillsText').textContent = skills;
+            document.getElementById('emailText').textContent = email;
+            document.getElementById('currentLocationText').textContent = currentLocation;
+            document.getElementById('applyingPositionText').textContent = applyingPosition;
+            document.getElementById('experienceText').textContent = experience;
+            document.getElementById('linkedinProfileLinkText').textContent = linkedinProfileLink;
+            document.getElementById('previousJobText').textContent = previousJob;
+            document.getElementById('currentSalaryText').textContent = currentSalary;
+            document.getElementById('expectedSalaryText').textContent = expectedSalary;
+
+        });
+
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const files = [
+                'Resume', 'Govt ID', 'Certificate', 'Transcript', 'SSC Certificate',
+                'HSC Certificate', 'BSc Certificate', 'MSc Certificate'
+            ];
+            const fileList = document.getElementById('fileList');
+            const fragment = document.createDocumentFragment();
+
+            const createFileRow = (fileType, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="p-3">
+                        <div class="custom-control custom-checkbox d-inline-block">
+                            <input type="checkbox" class="custom-control-input" id="fileCheckbox${index}">
+                            <label class="custom-control-label" for="fileCheckbox${index}"></label>
+                        </div>
+                        <span class="d-inline-block font-weight-600">${fileType}</span>
+                    </td>
+                    <td class="p-3 font-weight-600" id="fileName${index}"></td>
+                    <td class="p-3">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <button class="btn btn-link p-0 mr-2 d-none" id="deleteFile${index}">
+                                <i class="bi bi-x" style="font-size: 20px; color: black;"></i>
+                            </button>
+                            <label for="fileInput${index}" class="cursor-pointer mb-0">
+                                <img src="/User/img/upload.png" alt="Upload" style="max-width: 30px;">
+                            </label>
+                            <input type="file" id="fileInput${index}" class="d-none" accept=".pdf,.doc,.docx" data-type="${fileType}">
+                            <img src="/User/img/more-vertical.png" alt="More" style="max-width: 30px;">
+                        </div>
+                    </td>
+                `;
+                return row;
+            };
+
+            const handleFileChange = (event) => {
+                const fileInput = event.target;
+                const fileType = fileInput.dataset.type;
+                const row = fileInput.closest('tr');
+                const fileNameCell = row.querySelector(`[id^="fileName"]`);
+                const deleteButton = row.querySelector(`[id^="deleteFile"]`);
+
+                if (fileInput.files && fileInput.files[0]) {
+                    const selectedFile = fileInput.files[0];
+                    if (selectedFile.size > 512 * 512) {
+                        alert('File size exceeds limit. Please choose a smaller file.');
+                        fileInput.value = '';
+                        fileNameCell.textContent = '';
+                        deleteButton.classList.add('d-none');
+                        return;
+                    }
+
+                    fileNameCell.textContent = selectedFile.name;
+                    deleteButton.classList.remove('d-none');
+
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        localStorage.setItem(`file_${fileType}`, JSON.stringify({
+                            name: selectedFile.name,
+                            data: e.target.result
+                        }));
+                        displayFilesFromLocalStorage();
+                    };
+                    reader.readAsDataURL(selectedFile);
+                } else {
+                    fileNameCell.textContent = '';
+                    deleteButton.classList.add('d-none');
+                    localStorage.removeItem(`file_${fileType}`);
+                }
+            };
+
+            const handleFileDelete = (event) => {
+                const deleteButton = event.target.closest('button');
+                const row = deleteButton.closest('tr');
+                const fileType = row.querySelector('input[type="file"]').dataset.type;
+                const fileNameCell = row.querySelector(`[id^="fileName"]`);
+                const fileInput = row.querySelector('input[type="file"]');
+
+                localStorage.removeItem(`file_${fileType}`);
+                fileNameCell.textContent = '';
+                fileInput.value = '';
+                deleteButton.classList.add('d-none');
+                displayFilesFromLocalStorage();
+            };
+
+            const displayFilesFromLocalStorage = () => {
+                files.forEach((fileType, index) => {
+                    const fileNameCell = document.getElementById(`fileName${index}`);
+                    const deleteButton = document.getElementById(`deleteFile${index}`);
+                    const storedFile = localStorage.getItem(`file_${fileType}`);
+
+                    if (storedFile) {
+                        const fileInfo = JSON.parse(storedFile);
+                        fileNameCell.textContent = fileInfo.name;
+                        deleteButton.classList.remove('d-none');
+                    } else {
+                        fileNameCell.textContent = '';
+                        deleteButton.classList.add('d-none');
+                    }
+                });
+                displayFilesFromLocalStorage1(); // Call to update the second display table
+            };
+
+            const displayFilesFromLocalStorage1 = () => {
+                const tableBody = document.querySelector('#docTable tbody');
+                tableBody.innerHTML = ''; // Clear existing rows
+
+                files.forEach(fileType => {
+                    const fileData = localStorage.getItem(`file_${fileType}`);
+                    const row = document.createElement('tr');
+
+                    if (fileData) {
+                        const parsedData = JSON.parse(fileData);
+                        const fileName = parsedData.name; // Extract the file name
+                        const fileUrl = parsedData.data; // Extract the Data URL
+
+                        row.innerHTML = `
+                            <td class="p-3 border">${fileType}</td>
+                            <td class="p-3 border">
+                                <a href="${fileUrl}" class="btn btn-outline-danger btn-sm" target="_blank">${fileName}</a>
+                            </td>
+                        `;
+                    } else {
+                        row.innerHTML = `
+                            <td class="p-3 border">${fileType}</td>
+                            <td class="p-3 border">
+                                <span>Empty</span>
+                            </td>
+                        `;
+                    }
+
+                    tableBody.appendChild(row);
+                });
+            };
+
+            files.forEach((fileType, index) => {
+                const row = createFileRow(fileType, index);
+                row.querySelector('input[type="file"]').addEventListener('change', handleFileChange);
+                row.querySelector(`#deleteFile${index}`).addEventListener('click', handleFileDelete);
+                fragment.appendChild(row);
+            });
+
+            fileList.appendChild(fragment);
+
+            document.getElementById('selectAll').addEventListener('change', function () {
+                document.querySelectorAll('#fileList .custom-control-input')
+                    .forEach(checkbox => checkbox.checked = this.checked);
+            });
+
+            document.getElementById('fileUploadForm').addEventListener('submit', (event) => {
+                event.preventDefault();
+                displayFilesFromLocalStorage();
+                alert('Form submitted!');
+                // Handle file uploads here if needed
+            });
+
+            // Display files from local storage on page load
+            displayFilesFromLocalStorage();
+        });
+
+
+        function SubmitApplicantInfo() {
+            // Gather applicant info from form inputs
+            const applicantInfo = {
+                howDidYouKnow: document.querySelector('input[name="howDidYouKnow"]:checked').value,
+                name: document.getElementById('name').value,
+                university: document.getElementById('university').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                skills: document.getElementById('skills').value,
+                email: document.getElementById('email').value,
+                currentLocation: document.getElementById('currentLocation').value,
+                applyingPosition: document.getElementById('applyingPosition').value,
+                experience: document.getElementById('experience').value,
+                linkedinProfileLink: document.getElementById('linkedinProfileLink').value,
+                previousJobCompanyName: document.getElementById('previousJob').value,
+                currentSalary: document.getElementById('currentSalary').value,
+                expectedSalary: document.getElementById('expectedSalary').value,
+                coverLetter: document.getElementById('coverLetter').value,
+                jobPostId: '@ViewBag.id'
+            };
+
+            // Handle file uploads
+            const fileTypes = [
+                { id: 'Resume', prop: 'resumeUrl' },
+                { id: 'Govt ID', prop: 'govtIdUrl' },
+                { id: 'Certificate', prop: 'certificateUrl' },
+                { id: 'Transcript', prop: 'transcriptUrl' },
+                { id: 'SSC Certificate', prop: 'sscCertificateUrl' },
+                { id: 'HSC Certificate', prop: 'hscCertificateUrl' },
+                { id: 'BSc Certificate', prop: 'bscCertificateUrl' },
+                { id: 'MSc Certificate', prop: 'mscCertificateUrl' }
+            ];
+
+            fileTypes.forEach(({ id, prop }) => {
+                const storedFile = localStorage.getItem(`file_${id}`);
+                if (storedFile) {
+                    const fileInfo = JSON.parse(storedFile);
+                    // Combine filename and content, separated by a delimiter
+                    applicantInfo[prop] = `${fileInfo.name}|${fileInfo.data}`;
+                }
+            });
+
+            console.log(applicantInfo);
+
+            // Send the data using AJAX as a JSON object
+            $.ajax({
+                url: '@Url.Action("AddApplicant", "JobApplication")', // Replace with your API endpoint
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(applicantInfo),
+                success: function (response) {
+                    console.log('Success:', response);
+                    localStorage.clear();
+                    showStep(4);
+                    // Handle success (e.g., show a message to the user)
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    // Handle error (e.g., show an error message to the user)
+                }
+            });
+        }
+
+    </script>
+}
+
+
+

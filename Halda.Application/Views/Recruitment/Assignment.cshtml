@@ -1,0 +1,271 @@
+﻿@{
+    ViewData["Title"] = "Assignment";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+
+    .file-list {
+        max-height: 100px; /* Limit height to prevent overflow */
+        overflow-y: auto; /* Enable vertical scroll if needed */
+        margin: 10px 0; /* Add some margin for spacing */
+        padding: 0; /* Remove default padding */
+        list-style-type: none; /* Remove bullets from list */
+    }
+
+    #uploadNotice {
+        max-height: 30px; /* Limit height for notice */
+        overflow: hidden; /* Hide overflow for notice */
+    }
+    .form-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+        .form-group label {
+            width: 200px; /* Set a fixed width for label */
+        }
+
+        .form-group input {
+            flex: 1; /* Input will take up remaining space */
+        }
+
+    .file-list {
+        list-style: none;
+        padding: 0;
+    }
+
+        .file-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        .file-list button {
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+</style>
+
+
+
+<div class="table-container">
+
+    <br />
+
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary"
+                style="background-color: #4AA147; border-color: #4AA147;"
+                data-bs-toggle="modal" data-bs-target="#assignmentModal">
+            Create
+        </button>
+    </div>
+
+
+    <div class="modal" id="assignmentModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Assignment Create</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="assignmentName">Assignment Name:</label>
+                        <input type="text" id="assignmentName" name="assignmentName" />
+                    </div>
+                    <div class="form-group">
+                        <label for="assign">Assign By:</label>
+                        <input type="text" id="assign" name="assign" />
+                    </div>
+                    <div class="form-group">
+                        <label for="deadline">Deadline:</label>
+                        <input type="date" id="deadline" name="deadline" />
+                    </div>
+
+                    <div class="form-group">
+
+                            <label for="fileUpload">Upload Files:</label>
+                            <input type="file" id="fileUpload" multiple />
+
+                    </div>
+                    <div>
+                        <ul id="fileList" class="file-list"></ul>
+                        <div id="uploadNotice" style="color: red;"></div> <!-- Notice for constraints -->
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br />
+
+    <div id="assignment-table"></div>
+</div>
+
+
+
+
+
+@section Scripts {
+    <script>
+
+        const fileUpload = document.getElementById('fileUpload');
+        const fileList = document.getElementById('fileList');
+        const uploadNotice = document.getElementById('uploadNotice');
+        let selectedFiles = [];
+
+        // Handle file selection
+        fileUpload.addEventListener('change', (event) => {
+            const files = Array.from(event.target.files);
+
+            // Validate file count and size
+            const validFiles = files.filter(file => file.size < 1 * 1024 * 1024); // less than 1 MB
+            if (validFiles.length + selectedFiles.length > 5) {
+                uploadNotice.textContent = 'Maximum limit exceeded. You can only upload up to 5 files.';
+                return; // Exit if the limit is exceeded
+            }
+
+            if (validFiles.length < files.length) {
+                uploadNotice.textContent = 'Some files exceed the size limit of 1 MB and will not be uploaded.';
+            } else {
+                uploadNotice.textContent = ''; // Clear notice if all files are valid
+            }
+
+            selectedFiles = [...selectedFiles, ...validFiles];
+            displayFileList();
+        });
+
+        // Display file list with cancel button
+        function displayFileList() {
+            fileList.innerHTML = '';
+            selectedFiles.forEach((file, index) => {
+                const li = document.createElement('li');
+                li.textContent = file.name;
+
+                // Create a cancel button for each file
+                const cancelButton = document.createElement('button');
+                cancelButton.textContent = 'x';
+                cancelButton.addEventListener('click', () => {
+                    removeFile(index);
+                });
+
+                li.appendChild(cancelButton);
+                fileList.appendChild(li);
+            });
+        }
+
+        // Remove file from the list
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            displayFileList();
+            uploadNotice.textContent = ''; // Clear notice on file removal
+        }
+
+
+        $(document).ready(function () {
+
+            // Initialize Tabulator (empty data initially)
+            var table = new Tabulator("#assignment-table", {
+                layout: "fitColumns",
+                columns: [
+                    { title: "Assignment Name", field: "title", headerSort: false, hozAlign: "left", headerCssClass: "table-header" },
+                    { title: "Assign By", field: "assignBy", headerSort: false, hozAlign: "left", headerCssClass: "table-header" },
+                    { title: "Deadline", field: "dueDate", headerSort: false, hozAlign: "left", headerCssClass: "table-header" },
+                    {
+                        title: "File",
+                        field: "submissionView",
+                        headerSort: false,
+                        formatter: function () {
+                            return "<button class='btn-view'><i class='fas fa-download'></i></button>";
+                        },
+                        hozAlign: "center"
+                    },
+                    // {
+                    //     formatter: "buttonTick",
+                    //     width: 40,
+                    //     hozAlign: "center",
+                    //     headerSort: false,
+                    // }
+                ],
+            });
+
+            // Function to load data using $.ajax
+            function loadTableData() {
+                var comId = '@ViewBag.companyId';
+
+                $.ajax({
+                    url: '@Url.Action("LoadAssignment", "Recruitment")' + '?comId=' + encodeURIComponent(comId),
+                    method: 'GET',
+                    success: function (response) {
+                        console.log(response);
+                        // Assuming the response contains an array of data
+                        table.setData(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error loading data: ", status, error);
+                    }
+                });
+            }
+
+
+            // Call the function to load data when the page is ready
+            loadTableData();
+
+
+
+            $('#assignmentModal .btn-primary').click(function () {
+                // Collect form data
+                var formData = new FormData();
+                formData.append('assignmentName', $('#assignmentName').val());
+                formData.append('assignBy', $('#assign').val());
+                formData.append('deadline', $('#deadline').val());
+
+                // Collect uploaded files
+                var files = $('#fileUpload')[0].files;
+                for (var i = 0; i < files.length; i++) {
+                    formData.append('files[]', files[i]);
+
+                }
+
+                // Log the form data entries
+                for (var pair of formData.entries()) {
+                    console.log(pair[0] + ': ' + pair[1]);
+                }
+
+                // AJAX request to save the assignment
+                $.ajax({
+                    url: '@Url.Action("SaveAssignment", "Recruitment")',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        // Handle success response
+                        console.log(response);
+                        alert('Assignment saved successfully!');
+                        $('#assignmentModal').modal('hide');
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response
+                        console.error('Error:', error);
+                        alert('Failed to save the assignment.');
+                    }
+                });
+            });
+
+        });
+    </script>
+}

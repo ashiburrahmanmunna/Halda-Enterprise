@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Budgeting";
+    Layout = "_LayoutAdmin";
+}
+
+
+<div class="container">
+    <h2>Budgeting</h2>
+    <div class="row align-items-center mb-3">
+        <div class="col-md-8 d-flex">
+            <select id="fiscalYear" class="me-2">
+                <option value="">Fiscal Year</option>
+                <option>2024-2025</option>
+                <option>2023-2024</option>
+                <option>2022-2023</option>
+            </select>
+
+            <select id="period" class="me-2">
+                <option value="">Period</option>
+                <option>Monthly</option>
+                <option>Quarterly</option>
+                <option>Yearly</option>
+            </select>
+
+            <select id="duration" class="me-2">
+                <option value="">Duration</option>
+            </select>
+        </div>
+
+        <div class="col-md-4 d-flex justify-content-end">
+            <button class="btn btn-primary me-2">Create</button>
+            <button class="btn btn-primary me-2">Customize View</button>
+        </div>
+    </div>
+
+    <div id="budgeting-table"></div>
+</div>
+
+@section Scripts{
+    <script>
+        $.ajax({
+            url: '@Url.Action("GetBudgetData", "Budgeting")',
+            method: 'GET',
+            success: function (data) {
+                var table = new Tabulator("#budgeting-table", {
+                    height: "400px",
+                    layout: "fitColumns",
+                    columns: [
+                        { title: "Department", field: "department", width: 200, formatter: "responsivecollapse" },
+                        {
+                            title: "Time", field: "time", align: "center", columns: [
+                                { title: "Fiscal Year", field: "fiscalYear" },
+                                { title: "Duration", field: "duration" }
+                            ]
+                        },
+                        {
+                            title: "ManPower", field: "manpower", align: "center", columns: [
+                                { title: "Current", field: "manpowerPrevious" },
+                                { title: "Future", field: "manpowerCurrent" }
+                            ]
+                        },
+                        {
+                            title: "Salary", field: "salary", align: "center", columns: [
+                                { title: "Previous", field: "salaryPrevious", formatter: "money" },
+                                { title: "Minimum", field: "salaryMin", formatter: "money" },
+                                { title: "Maximum", field: "salaryMax", formatter: "money" },
+                                { title: "Forecasted", field: "salaryForecasted", formatter: "money" },
+                                { title: "Real Cost", field: "salaryRealCost", formatter: "money" }
+                            ]
+                        },
+                    ],
+                    data: data
+                });
+            },
+            error: function(xhr, status, error){
+                console.error("Failed to fetch budget data: ", error);
+            }
+        });
+        
+    </script>
+}

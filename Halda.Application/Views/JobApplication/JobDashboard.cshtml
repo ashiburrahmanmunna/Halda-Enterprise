@@ -1,0 +1,254 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+    .job-card {
+        height: 400px; /* Adjust this value as needed */
+        display: flex;
+        flex-direction: column;
+    }
+
+        .job-card .card-header {
+            background-color: #f8f9fa;
+            flex-shrink: 0;
+        }
+
+        .job-card .card-body {
+            flex-grow: 1;
+            overflow: hidden;
+            padding: 0;
+        }
+
+    .milestones-container {
+        height: 100%;
+        overflow-y: auto;
+        padding: 1rem;
+    }
+
+    .status-icon {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+    }
+
+    .status-completed .status-icon {
+        background-color: #4CAF50;
+    }
+
+    .status-pending .status-icon {
+        background-color: #FFC107;
+    }
+
+    .status-next .status-icon {
+        background-color: #9E9E9E;
+    }
+
+    .status-text {
+        font-size: 0.8rem;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .status-completed .status-text {
+        color: #4CAF50;
+    }
+
+    .status-pending .status-text {
+        color: #FFC107;
+    }
+
+    .status-next .status-text {
+        color: #9E9E9E;
+    }
+
+    .milestone-item {
+        margin-bottom: 0.5rem;
+    }
+
+        .milestone-item h6 {
+            margin-bottom: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+    /* Custom scrollbar styles for better appearance */
+    .milestones-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .milestones-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .milestones-container::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+        .milestones-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+</style>
+
+<div class="container" id="job-application-list">
+    <!-- Cards will be dynamically added here -->
+</div>
+
+
+@section Scripts{
+   <script>
+        $(document).ready(function () {
+            // Fetch the job application data using AJAX
+            $.ajax({
+                url: '@Url.Action("GetAppliedJobsByUserId", "JobApplication")',
+                type: 'GET',
+                success: function (response) {
+                    // Render the job applications dynamically
+                    renderJobApplications(response);
+                },
+                error: function (error) {
+                    console.error('Error fetching job applications:', error);
+                }
+            });
+        });
+
+        function renderJobApplications(data) {
+            var jobListContainer = $('#job-application-list');
+            var rowContainer = $('<div class="row"></div>');
+
+            data.forEach(function (application, index) {
+                console.log(application);
+                var jobCard = `
+                    <div class="col-md-6 mb-3">
+                        <a href="/JobApplication/JobDetails?jobPostId=${application.jobPostId}" class="text-decoration-none">
+                            <div class="card job-card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h4 class="fw-bold mb-0">${application.applyingPosition}</h4>
+                                        <h5 class="mb-0">${application.companyName}</h5>
+                                    </div>
+                                    <h2 class="mb-0">${calculateProgress(application)}%</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="milestones-container">
+                                        ${renderMilestones(application.jobStatuses)}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                `;
+
+                rowContainer.append(jobCard);
+
+                if ((index + 1) % 2 === 0) {
+                    jobListContainer.append(rowContainer);
+                    rowContainer = $('<div class="row"></div>');
+                }
+            });
+
+            if (data.length % 2 !== 0) {
+                jobListContainer.append(rowContainer);
+            }
+        }
+
+        function calculateProgress(application) {
+            var completedMilestones = application.jobStatuses.filter(function (status) {
+                return status.applicationStatus === 2;
+            }).length;
+            var totalMilestones = application.jobStatuses.length;
+            return Math.round(((completedMilestones + 1) / (totalMilestones + 1)) * 100);
+        }
+
+        function renderMilestones(jobStatuses) {
+            let milestones = [
+                {
+                    milestoneName: "Job Application",
+                    applicationStatus: 2,
+                    milestoneStatus: 2
+                },
+                ...jobStatuses
+            ];
+
+            let foundRejected = false;
+            let lastCompletedIndex = 0; // Initialize with 0 as Job Application is always completed
+
+            return milestones.map(function (status, index) {
+                let statusInfo;
+
+                if (index === 0) {
+                    // Always set the first milestone (Job Application) as completed
+                    statusInfo = {
+                        statusClass: 'status-completed',
+                        statusText: '<span class="text-success"><i class="fa-regular fa-circle-check"></i></span>'
+                    };
+                } else if (foundRejected) {
+                    // If a rejection was found earlier, leave subsequent statuses blank
+                    statusInfo = {
+                        statusClass: 'status-blank',
+                        statusText: ''
+                    };
+                } else {
+                    statusInfo = getStatusInfo(status.applicationStatus, status.milestoneStatus);
+
+                    // Check if this status is rejected
+                    if (statusInfo.statusClass === 'status-rejected') {
+                        foundRejected = true;
+                    }
+                    // Check if this status is completed
+                    else if (statusInfo.statusClass === 'status-completed') {
+                        lastCompletedIndex = index;
+                    }
+                    // If this is the next step after the last completed step, mark it as pending
+                    else if (index === lastCompletedIndex + 1) {
+                        statusInfo = getPendingStatus();
+                    }
+                }
+
+                return `
+                <div class="milestone-item d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex align-items-center">
+                        <span class="status-icon ${statusInfo.statusClass} me-2"></span>
+                        <i class="bi bi-diamond-fill me-3" style="color: green;"></i>
+                        <h6 class="mb-0">${status.milestoneName}</h6>
+                    </div>
+                    <span class="status-text ${statusInfo.statusClass}">${statusInfo.statusText}</span>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function getStatusInfo(applicationStatus, milestoneStatus) {
+            if (applicationStatus === 2 && milestoneStatus === 2) {
+                return {
+                    statusClass: 'status-completed',
+                    statusText: '<span class="text-success"><i class="fa-regular fa-circle-check"></i></span>'
+                };
+            } else if (applicationStatus === 3 && milestoneStatus === 2) {
+                return {
+                    statusClass: 'status-rejected',
+                    statusText: '<span style="display:inline-flex;align-items:center;padding:0.125rem 0.625rem;border-radius:0.25rem;font-size:0.75rem;font-weight:500;background-color:#FF0000;color:#FFFFFF;">Rejected</span>'
+                };
+            } else {
+                return {
+                    statusClass: 'status-next',
+                    statusText: '<span style="display:inline-flex;align-items:center;padding:0.125rem 0.625rem;border-radius:0.25rem;font-size:0.75rem;font-weight:500;background-color:#B2BEB5;color:#000000;">Next Step</span>'
+                };
+            }
+        }
+
+        function getPendingStatus() {
+            return {
+                statusClass: 'status-pending',
+                statusText: '<span style="display:inline-flex;align-items:center;padding:0.125rem 0.625rem;border-radius:0.25rem;font-size:0.75rem;font-weight:500;background-color:#008000;color:#FFFFFF;">Pending</span>'
+            };
+        }
+
+   </script>
+}

@@ -1,0 +1,270 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+
+</style>
+
+<div class="container mt-1 rounded border border-muted p-2 border-1" style="background: #FBFBFB;">
+    <!-- Profile Section -->
+    <div class="row mb-1">
+        <!-- Profile Image -->
+        <div class="col-4 col-md-2 d-flex justify-content-center justify-content-md-start mb-2 mb-md-0">
+            <img src="~/User/img/borhan.png" alt="Profile Picture" class="pt-3 ps-md-3" style="max-width: 170px; max-height: 170px; border-radius: 50%;">
+        </div>
+        <!-- Profile Details -->
+        <div class="col-8 col-md-10 d-flex flex-column justify-content-center">
+            <h5 class="mb-1" style="color:#414042; font-weight: 700;">Borhan Uddin</h5>
+            <p class="mb-1 profile-custom-p">jr.programmer</p>
+            <div class="d-flex align-items-center mb-1">
+                <img src="~/User/img/smart-phone-01.png" alt="Phone Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">01906750597</p>
+            </div>
+            <div class="d-flex align-items-center mb-1">
+                <img src="~/User/img/mail-01.png" alt="Email Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">smborhan.cse@gmail.com</p>
+            </div>
+            <div class="d-flex align-items-center">
+                <img src="~/User/img/time-02.png" alt="Last Active Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">Last Active time today - 12.00 PM</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row border-bottom pb-2 mt-1">
+        <div class="col-12 d-flex align-items-center gap-2">
+            <div class="toggle-switch d-flex align-items-center" id="toggleSwitch">
+                <div class="status-text">Active</div>
+                <div class="slider"></div>
+            </div>
+
+            <div class="tag-container d-flex gap-1">
+                <span class="tag">Training</span>
+                <span class="tag">Learning</span>
+                <span class="tag">Development</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <h5 class="mt-2" style="padding: 15px;border-radius: var(--8, 8px) var(--8, 8px) 0px 0px; background: #EDEDED;">
+            Basic Information
+        </h5>
+
+        <form id="userForm" novalidate>
+            <div class="row g-10">
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="firstName" class="custom-label">First Name</label>
+                    <input type="text" class="form-control" id="firstName" required>
+                    <div class="invalid-feedback">Please enter your first name.</div>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="lastName" class="custom-label">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" required>
+                    <div class="invalid-feedback">Please enter your last name.</div>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="fathersName" class="custom-label">Father's Name</label>
+                    <input type="text" class="form-control" id="fathersName">
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="mothersName" class="custom-label">Mother's Name</label>
+                    <input type="text" class="form-control" id="mothersName">
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="dateOfBirth" class="custom-label">Date of Birth</label>
+                    <input type="date" class="form-control" id="dateOfBirth" required>
+                    <div class="invalid-feedback">Please enter your date of birth.</div>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="gender" class="custom-label">Gender</label>
+                    <select class="form-control" id="gender" required>
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <div class="invalid-feedback">Please select your gender.</div>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="religion" class="custom-label">Religion</label>
+                    <select class="form-control" id="religion">
+                        <option value="0">Select religion</option>
+                        <option value="1">Islam</option>
+                        <option value="2">Hinduism</option>
+                        <option value="3">Christianity</option>
+                        <option value="4">Buddhism</option>
+                        <option value="5">Other</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="maritalStatus" class="custom-label">Marital Status</label>
+                    <select class="form-control" id="maritalStatus">
+                        <option value="0">Select marital status</option>
+                        <option value="1">Single</option>
+                        <option value="2">Married</option>
+                        <option value="3">Widowed</option>
+                        <option value="4">Divorced</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="designation" class="custom-label">Designation</label>
+                    <select class="form-control" id="designation">
+                        <option value="0">Select designation</option>
+                        <option value="1">Manager</option>
+                        <option value="2">Supervisor</option>
+                        <option value="3">Staff</option>
+                        <option value="4">Intern</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="department" class="custom-label">Department</label>
+                    <select class="form-control" id="department">
+                        <option value="0">Select department</option>
+                        <option value="1">Human Resources</option>
+                        <option value="2">Finance</option>
+                        <option value="3">Information Technology</option>
+                        <option value="4">Production</option>
+                        <option value="5">Marketing</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="line" class="custom-label">Line</label>
+                    <select class="form-control" id="line">
+                        <option value="0">Select line</option>
+                        <option value="1">Line 1</option>
+                        <option value="2">Line 2</option>
+                        <option value="3">Line 3</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="nationality" class="custom-label">Nationality</label>
+                    <select class="form-control" id="nationality">
+                        <option value="0">Select nationality</option>
+                        <option value="1">Bangladeshi</option>
+                        <option value="2">Indian</option>
+                        <option value="3">American</option>
+                        <option value="4">Canadian</option>
+                        <option value="5">Australian</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="section" class="custom-label">Section</label>
+                    <select class="form-control" id="section">
+                        <option value="0">Select section</option>
+                        <option value="1">Section A</option>
+                        <option value="2">Section B</option>
+                        <option value="3">Section C</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="nationalId" class="custom-label">National Id</label>
+                    <input type="text" class="form-control" id="nationalId">
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="passportNumber" class="custom-label">Passport Number</label>
+                    <input type="text" class="form-control" id="passportNumber">
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="passportIssueDate" class="custom-label">Passport Issue Date</label>
+                    <input type="date" class="form-control" id="passportIssueDate">
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="primaryMobile" class="custom-label">Primary Mobile No.</label>
+                    <input type="tel" class="form-control" id="primaryMobile" required>
+                    <div class="invalid-feedback">Please enter your primary mobile number.</div>
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="secondaryMobile" class="custom-label">Secondary Mobile No.</label>
+                    <input type="tel" class="form-control" id="secondaryMobile">
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="emergencyContact" class="custom-label">Emergency Contact</label>
+                    <input type="tel" class="form-control" id="emergencyContact">
+                </div>
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="primaryEmail" class="custom-label">Primary Email</label>
+                    <input type="email" class="form-control" id="primaryEmail" required>
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+
+                <div class="row justify-content-end mt-3">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Save</button>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+
+    </div>
+</div>
+
+
+<script>
+    // Function to capture form data into an object
+    function captureFormData() {
+        const formData = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            fathersName: document.getElementById('fathersName').value,
+            mothersName: document.getElementById('mothersName').value,
+            dateOfBirth: document.getElementById('dateOfBirth').value,
+            gender: document.getElementById('gender').value,
+            religion: document.getElementById('religion').value,
+            maritalStatus: document.getElementById('maritalStatus').value,
+            designation: document.getElementById('designation').value,
+            department: document.getElementById('department').value,
+            line: document.getElementById('line').value,
+            nationality: document.getElementById('nationality').value,
+            section: document.getElementById('section').value,
+            nationalId: document.getElementById('nationalId').value,
+            passportNumber: document.getElementById('passportNumber').value,
+            passportIssueDate: document.getElementById('passportIssueDate').value,
+            primaryMobile: document.getElementById('primaryMobile').value,
+            secondaryMobile: document.getElementById('secondaryMobile').value,
+            emergencyContact: document.getElementById('emergencyContact').value,
+            primaryEmail: document.getElementById('primaryEmail').value
+        };
+        return formData;
+    }
+
+    // Event listener to capture data on form submission
+    document.getElementById('userForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const formData = captureFormData();
+        console.log(formData); // You can replace this with the desired action (e.g., sending the data to a server)
+    });
+
+    // Function to move to the next input field on pressing Enter
+    document.querySelectorAll('input, select').forEach((element, index, array) => {
+        element.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const nextElement = array[index + 1];
+                if (nextElement) {
+                    nextElement.focus();
+                }
+            }
+        });
+    });
+
+
+    document.getElementById('userForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (this.checkValidity()) {
+            alert('Form is valid! Submitting...');
+            // Add your form submission logic here
+        } else {
+            this.classList.add('was-validated');
+        }
+    });
+</script>
+
+
+

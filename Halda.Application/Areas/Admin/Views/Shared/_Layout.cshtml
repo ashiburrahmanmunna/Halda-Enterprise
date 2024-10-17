@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Halda2</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Halda2.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" />
+   
+</head>
+<body>
+    <header class="shadow-sm box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white">
+            <div class="container-fluid">
+                <img id="group-img" alt="site logo" src="~/User/img/Group 3779.png" style="max-width: 100px;">
+                <button class="btn ms-3" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+
+                <ul class="navbar-nav ms-auto">
+                    <form class="d-flex ms-3 me-3">
+                        <input style="border-radius: 10px;" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <i type="submit" style="margin-left: -40px; margin-top: 10px; z-index: 99;" class="bi bi-search fs-5"></i>
+
+                    </form>
+                    <div class="d-flex align-items-center">
+                        <!-- Profile Image -->
+                        <img src="~/User/img/Featured icon.png" alt="Profile Image" class="rounded-circle" style="width: 30px; height: 30px;">
+                        <!-- Name -->
+                        <p class=" mt-3 ms-2">Robin</p>
+                        <!-- Settings Icon -->
+                        <i class="bi ms-3 fs-4 bi-gear"></i>
+
+                        <i class="bi ms-3 fs-4 bi-bell"></i>
+                    </div>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="wrapper">
+        <div class="sidebar bg-white shadow-sm">
+            <ul class="nav flex-column">
+
+                <!-- Dashboard with Dropdown -->
+                <li class="d-flex nav-item align-items-center hover-effect mt-2 p-1 rounded-2">
+                    <a class="nav-link text-dark d-flex align-items-center" data-bs-toggle="collapse" href="#dashboardMenu" role="button" aria-expanded="false" aria-controls="dashboardMenu">
+                        <img src="~/User/img/1.png" alt="Image 1" class="img-fluid" style="max-width: 30px; margin-right: 10px;">
+                        <h6 class="sidebar-item">Dashboard</h6>
+                        @* <i class="bi bi-chevron-down ms-auto"></i> *@
+                    </a>
+                </li>
+                <div class="collapse" id="dashboardMenu">
+                    <ul class="nav flex-column ms-4">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark hover-effect" asp-area="" asp-controller="Home" asp-action="GTR">GTR</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark hover-effect" asp-area="" asp-controller="Home" asp-action="Halda">Halda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark hover-effect" asp-area="" asp-controller="Home" asp-action="HRM">HRM</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <li class="d-flex nav-item align-items-center hover-effect mt-2 p-1 rounded-2">
+                    <a class="nav-link text-dark d-flex align-items-center" data-bs-toggle="collapse" href="#payrollMenu" role="button">
+                        <img src="~/User/img/5.png" alt="Image 2" class="img-fluid" style="max-width: 30px; margin-right: 10px;">
+                        <h6 class="sidebar-item">Payroll</h6>
+                    </a>
+                </li>
+                <div class="collapse" id="payrollMenu">
+                    <ul class="nav flex-column ms-4">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark hover-effect" asp-area="" asp-controller="Home" asp-action="GTR">GTR</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark hover-effect" asp-area="" asp-controller="Home" asp-action="Halda">Halda</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark hover-effect" asp-area="" asp-controller="Home" asp-action="HRM">HRM</a>
+                        </li>
+                    </ul>
+                </div>
+                <li class="d-flex nav-item align-items-center hover-effect mt-2 p-1 rounded-2">
+                    <a class="nav-link text-dark d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/User/img/2.png" alt="Image 3" class="img-fluid" style="max-width: 30px; margin-right: 10px;">
+                        <h6 class="sidebar-item">Employee</h6>
+                    </a>
+                </li>
+
+                <li class="d-flex nav-item align-items-center hover-effect mt-2 p-1 rounded-2">
+                    <a class="nav-link text-dark d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/User/img/3.png" alt="Image 4" class="img-fluid" style="max-width: 30px; margin-right: 10px;">
+                        <h6 class="sidebar-item">Task</h6>
+                    </a>
+                </li>
+
+                <li class="d-flex nav-item align-items-center hover-effect mt-2 p-1 rounded-2">
+                    <a class="nav-link text-dark d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/User/img/4.png" alt="Image 5" class="img-fluid" style="max-width: 30px; margin-right: 10px;">
+                        <h6 class="sidebar-item">Report</h6>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+
+
+       
+
+
+        <div class="main-content">
+            <div class="container-fluid">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        document.getElementById('sidebarToggle').addEventListener('click', function () {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+        });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

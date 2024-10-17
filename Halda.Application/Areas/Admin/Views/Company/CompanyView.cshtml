@@ -1,0 +1,426 @@
+﻿
+@model CompanyViewModel
+
+@{
+    ViewData["Title"] = "Account and Settings";
+  //  Layout = "~/Views/Shared/_adminLayout.cshtml";
+    
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@*<link href="~/admin_theme_gtr/assets/css/custommultistepformcss.css" rel="stylesheet" />*@
+
+<style>
+    .cancelbtn {
+        border: 1px solid black;
+        border-radius: 30px;
+        background: white;
+        color: black;
+        font-weight: 600;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .savebtn {
+        border: none;
+        border-radius: 30px;
+        background: #0b970bd9;
+        color: white;
+        font-weight: 600;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 6px;
+        padding-bottom: 6px;
+    }
+
+    .customize-btn {
+        background: #e9ecef6b;
+        border: 1px solid black;
+        border-radius: 20px;
+    }
+
+    .customize-btn-another {
+        background: #2CA01C;
+        border: 1px solid black;
+        border-radius: 20px;
+        color: #FFFFFF;
+        border: 1px solid #2CA01C;
+    }
+
+        .customize-btn-another:hover {
+            background: #2CA01C;
+            border: 1px solid black;
+            border-radius: 20px;
+            color: #FFFFFF;
+            border: 1px solid #2CA01C;
+        }
+
+    .customize-btn:hover {
+        background: #ffffff;
+        border: 1px solid black;
+        color: black;
+        border-radius: 20px;
+    }
+</style>
+
+<div class="page-wrapper">
+
+    <div class="container-fluid">
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card ">
+                    <div class="card-header">
+                        <h4>Company Info</h4>
+
+                    </div>
+
+
+
+                   <div class="card-body">
+                        <div class="basic-elements">
+                             <form method="post" enctype="multipart/form-data">
+
+                                @* <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="SubscriptionTypeId" />
+                                <input type="hidden" asp-for="CreateDate" />
+                                <input type="hidden" asp-for="UpdateDate" />
+                                <input type="hidden" asp-for="LuserId" />
+                                <input type="hidden" asp-for="LuserIdUpdate" />
+                                <input type="hidden" asp-for="BaseComId" /> *@
+
+
+
+
+                                <div class="row">
+                                    <div class="col">                                     
+                                        <br />
+                                        <div class="tab-content mt-4" id="nav-tabContent">
+                                            @*========company tab starts==================*@
+                                            <div class="tab-pane fade show active" id="nav-company" role="tabpanel" aria-labelledby="nav-company-tab">
+                                                <h6 class="fw-bold">Company name</h6>
+                                                <div class="row company-name" style="margin-left: 200px">
+                                                    <div class="col-lg-3" style="margin-top: 7%;">
+                                                        <p>Company logo</p>
+                                                        <p>Company name</p>
+                                                        <p>Legal name</p>
+                                                        <p>Business ID No.</p>
+                                                        <p>VAT#</p>
+                                                        <p>Time zone</p>
+                                                    </div>
+                                                    <div class="col-lg" id="company-name-second-col">
+                                                        <img src="@(Model.ComLogo != null ? "data:image;base64," + Convert.ToBase64String(Model.ComLogo) : "")" alt="Company logo" style="width: 200px; height: 100px;" />
+
+                                                         @* <img src="../@Model.ComLogo" alt="img" id="UploadFile" class="" style="height: 150px;" />  *@
+                                                        <input id="store-name" asp-for="CompanyName" type="text" class="form-control form-control-sm w-50 border-0 mb-1" placeholder="Company name">
+                                                        <input checked class="form-check-input d-none mb-1 checkbox-company" type="checkbox" value="" id="legal-name-id">
+                                                        <label class="form-check-label ms-2 mb-1" for="">
+                                                            Same as company name
+                                                        </label>
+                                                        <input asp-for="CompanyName" id="legal-name" type="text" class="legal-name form-control form-control-sm w-50 mb-1 d-none" placeholder="Legal name">
+                                                        @*<input asp-for="BusinessIdNo" id="business-id" type="text" class="form-control form-control-sm w-50 border-0 mb-1" placeholder="business id no">
+                                                        <input asp-for="vat" id="vat" type="text" class="form-control form-control-sm w-50 border-0 mb-1" placeholder="vat"> *@
+                                                        <p class="mt-3 ms-2" id="time-zone-tag-id">All</p>
+                                                        <div class="w-25 d-none mt-3">
+                                                            @* @Html.DropDownListFor(x => x.TimeZoneSettingsId, *@
+                                                @*             new SelectList((IEnumerable<SelectListItem>)ViewBag.TimeZoneSettings, "Value", "Text"), "Select TimeZone",
+                                                            htmlAttributes: new { @class = "form-control form-control-sm", id = "TimeZoneSettingsId" }) *@
+                                                        </div>
+                                                        <button class="d-none cancelbtn mt-2" id="BtnCancelCom" type="button">Cancel</button>
+                                                        <button class="d-none savebtn mt-2" id="BtnSaveCom" type="button">Save</button>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <i class="bi bi-pen cursor-pointer" id="CompanyNameEditButton"></i>
+                                                    </div>
+                                                </div>
+
+                                                <hr />
+
+                                                <h6 class="fw-bold">Contact info</h6>
+                                                <div class="row contact-info" style="margin-left: 200px">
+                                                    <div class="col-lg-3 contact-info-col">
+                                                        <p>Company email</p>
+                                                        <p class="d-none Customer-facing-email">Customer-facing email</p>
+                                                        <p>Company phone</p>
+                                                        <p>website</p>
+                                                    </div>
+                                                    <div class="col-lg contact-info-col">
+                                                         <input id="email" type="text" asp-for="comEmail" class="form-control form-control-sm w-50 border-0 mb-1" placeholder="email-address-id"> 
+                                                        <input checked class="form-check-input d-none mb-1 checkbox-company" type="checkbox" value="" id="custome-facing-email-id">
+                                                        <label class="form-check-label d-none ms-2 mb-1" for="custome-facing-email-id">
+                                                            Same as company email
+                                                        </label>
+                                                        <input id="customer-facing-email" type="text" class="form-control custom-facing-email form-control-sm w-50 border-0 mb-1 d-none" placeholder="Customer facing email" />
+                                                       <input id="phone" type="text" asp-for="comPhone" class="form-control form-control-sm w-50 border-0 mb-1" placeholder="Phone">
+                                                        <input id="web" type="text" asp-for="comWeb" class="form-control form-control-sm w-50 border-0 mb-1" placeholder="website">
+                                                        <button class="d-none cancelbtn mt-2" id="cInfoCancel" type="button">Cancel</button>
+                                                        <button class="d-none savebtn mt-2" type="button">Save</button>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <i class="bi bi-pen cursor-pointer" id="ContactInfoEditButton"></i>
+                                                    </div>
+                                                </div>
+
+
+
+                                                <hr />
+
+                                                <h6 class="fw-bold"> Address</h6>
+                                                <div class="row address" style="margin-left: 200px">
+                                                    <div class="col-lg-3">
+                                                        <p>Company address</p>
+                                                        <p>Customer-facing address</p>
+                                                        <p>Legal address</p>
+                                                    </div>
+                                                    <div class="col-lg address-info-col">
+                                                        <input id="address" type="text" asp-for="PrimaryAddress" class="form-control form-control-sm w-50 border-0 mb-1" placeholder="Street address">
+                                                        <input id="city" type="text" asp-for="PrimaryAddress" class="other-addresses border-0 form-control form-control-sm w-50 mb-1 d-none" placeholder="City">
+                                                        <input id="state" type="text" asp-for="PrimaryAddress" class="other-addresses border-0 form-control form-control-sm w-50 mb-1 d-none" placeholder="State">
+                                                        <input id="zip-code" type="text" asp-for="PrimaryAddress" class="other-addresses border-0 form-control form-control-sm w-50 mb-1 d-none" placeholder="Zip code">
+
+                                                        <input checked class="form-check-input d-none mb-1 checkbox-company" type="checkbox" value="" id="custome-facing-address-id">
+                                                        <label class="form-check-label ms-2" for="custome-facing-address-id">
+                                                            Same as company address
+                                                        </label><br />
+                                                        <input id="customer-facing-address" type="text" asp-for="PrimaryAddress" class="custome-facing-address form-control d-none form-control-sm w-50  mb-1" placeholder="Street address">
+                                                        <input id="customer-facing-city" type="text" asp-for="PrimaryAddress" class="custome-facing-address  form-control form-control-sm w-50 mb-1 d-none" placeholder="City">
+                                                        <input id="customer-facing-state" type="text" asp-for="PrimaryAddress" class="custome-facing-address  form-control form-control-sm w-50 mb-1 d-none" placeholder="State">
+                                                        <input id="customer-facing-zip-code" type="text" asp-for="PrimaryAddress" class="custome-facing-address  form-control form-control-sm w-50 mb-1 d-none" placeholder="Zip code">
+ 
+                                                        <input checked class="form-check-input d-none mb-1 checkbox-company" type="checkbox" value="" id="legal-address-id">
+                                                        <label class="form-check-label ms-2 mb-1" for="legal-address-id">
+                                                            Same as company address
+                                                        </label><br />
+                                                        <input id="legal-address" type="text" asp-for="PrimaryAddress" class="legal-address form-control d-none form-control-sm w-50 mb-1" placeholder="Street address">
+                                                        <input id="legal-city" type="text" asp-for="PrimaryAddress" class="legal-address form-control form-control-sm w-50 mb-1 d-none" placeholder="City">
+                                                        <input id="legal-state" type="text" asp-for="PrimaryAddress" class="legal-address form-control form-control-sm w-50 mb-1 d-none" placeholder="State">
+                                                        <input id="legal-zip-code" type="text" asp-for="PrimaryAddress" class="legal-address form-control form-control-sm w-50 mb-1 d-none" placeholder="Zip code">
+
+                                                        <button class="d-none cancelbtn mt-2" id="addressCancelbtn" type="button">Cancel</button>
+                                                        <button class="d-none savebtn mt-2" type="button">Save</button>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <i class="bi bi-pen cursor-pointer" id="AddressEditButton"></i>
+                                                    </div>
+                                                </div>
+
+
+                                                <hr />
+                                                <h6 class="fw-bold">
+                                                    Communications with
+                                                    Halda
+                                                </h6>
+                                                <div class="row coomunicate" style="margin-left: 200px">
+                                                    <div class="col-lg-3">
+                                                        <p><a href="#">View Privacy Statement</a></p>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                            </div>
+
+                                            </form>
+                        </div>  
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+                    @*========company tab ends==================*@
+
+@section scripts {
+    <script type="text/javascript">
+                //========================================company nav functionalities starts===================================================
+
+
+                //company name func starts----
+
+                $("#TimeZoneSettingsId").change(function () {
+                    var selectedText = $("#TimeZoneSettingsId option:selected").text();
+                    $("#time-zone-tag-id").text(selectedText);
+                })
+
+                var selectedText = $("#TimeZoneSettingsId option:selected").text();
+                $("#time-zone-tag-id").text(selectedText);
+                $("#tax-form-id").change(function () {
+                    var selectedText = $("#tax-form-id option:selected").text();
+                    $("#tax-form-tag").text(selectedText);
+                });
+
+                $("#industry-id").change(function () {
+                    var selectedText = $("#industry-id option:selected").text();
+                    $("#industry-tag").text(selectedText);
+                });
+
+                $('#CompanyNameEditButton').click(function () {
+                    var companyNameContainer = $(this).closest('.company-name');
+                    $("#company-name-second-col .w-25").toggleClass('d-none');
+
+                    // Toggle the class 'd-none' for the p elements
+                    $("#company-name-second-col p#time-zone-tag-id").toggleClass('d-none');
+
+                    $(this).closest('.company-name').find('input.form-control').toggleClass('border-0');
+                    $(this).closest('.company-name').find('input[type="checkbox"].form-check-input').first().toggleClass('d-none');
+                    companyNameContainer.find('#BtnCancelCom, #BtnSaveCom').toggleClass('d-none');
+                });
+                $('#BtnCancelCom').click(function () {
+                    var companyNameContainer = $(this).closest('.company-name');
+                    $("#company-name-second-col .w-25").toggleClass('d-none');
+
+                    // Toggle the class 'd-none' for the p elements
+                    $("#company-name-second-col p#time-zone-tag-id").toggleClass('d-none');
+
+                    $(this).closest('.company-name').find('input.form-control').toggleClass('border-0');
+                    $(this).closest('.company-name').find('input[type="checkbox"].form-check-input').first().toggleClass('d-none');
+                    companyNameContainer.find('#BtnCancelCom, #BtnSaveCom').toggleClass('d-none');
+                });
+                $('#legal-name-id').change(function () {
+                    var legalName = $('.legal-name');
+
+                    if (!$(this).prop('checked')) {
+                        legalName.toggleClass('d-none border-0');
+                    } else {
+                        legalName.toggleClass('d-none border-0');
+                    }
+                });
+                //compnay name func ends------
+
+
+
+                //compnay type func starts------
+                $('#CompanyTypeEditButton').click(function () {
+                    var companyNameContainer = $(this).closest('.company-type');
+
+                    var companyTypeSecondCol = $(this).closest('.company-type').find('div.company-type-second-col');
+
+                    // Toggle the class 'd-none' for the select elements
+                    companyTypeSecondCol.find('select').toggleClass('d-none');
+
+                    // Toggle the class 'd-none' for the p elements
+                    companyTypeSecondCol.find('p').toggleClass('d-none');
+                    companyNameContainer.find('.cancelbtn, .savebtn').toggleClass('d-none');
+
+                });
+                //compnay type func ends------
+
+
+                //contact info func starts------
+                $('#ContactInfoEditButton').click(function () {
+                    var companyNameContainer = $(this).closest('.contact-info');
+                    var companyTypeSecondCol = $(this).closest('.contact-info').find('div.contact-info-col');
+
+                    $(this).closest('.contact-info').find('input.form-control').toggleClass('border-0');
+
+                    $(this).closest('.contact-info').find('input[type="checkbox"].form-check-input').first().toggleClass('d-none');
+                    $(this).closest('.contact-info').find('.Customer-facing-email').toggleClass('d-none');
+                    companyTypeSecondCol.find('label').toggleClass('d-none');
+                    companyNameContainer.find('.cancelbtn, .savebtn').toggleClass('d-none');
+
+                });
+                $('#cInfoCancel').click(function () {
+                    var companyNameContainer = $(this).closest('.contact-info');
+                    var companyTypeSecondCol = $(this).closest('.contact-info').find('div.contact-info-col');
+
+                    $(this).closest('.contact-info').find('input.form-control').toggleClass('border-0');
+
+                    $(this).closest('.contact-info').find('input[type="checkbox"].form-check-input').first().toggleClass('d-none');
+                    $(this).closest('.contact-info').find('.Customer-facing-email').toggleClass('d-none');
+                    companyTypeSecondCol.find('label').toggleClass('d-none');
+                    companyNameContainer.find('.cancelbtn, .savebtn').toggleClass('d-none');
+
+                });
+                $('#custome-facing-email-id').change(function () {
+                    var legalName = $('.custom-facing-email');
+
+                    if (!$(this).prop('checked')) {
+                        legalName.toggleClass('d-none');
+                    } else {
+                        legalName.toggleClass('d-none');
+                    }
+                });
+                //contact info func ends------
+
+                //address func starts------
+                $('#AddressEditButton').click(function () {
+                    var companyNameContainer = $(this).closest('.address');
+
+                    $(this).closest('.address').find('input.form-control').toggleClass('border-0');
+
+                    companyNameContainer.find('input.other-addresses').toggleClass('d-none');
+
+                    $(this).closest('.address').find('input[type="checkbox"].form-check-input').toggleClass('d-none');
+                    companyNameContainer.find('.cancelbtn, .savebtn').toggleClass('d-none');
+
+                });
+                $('#addressCancelbtn').click(function () {
+                    var companyNameContainer = $(this).closest('.address');
+
+                    $(this).closest('.address').find('input.form-control').toggleClass('border-0');
+
+                    companyNameContainer.find('input.other-addresses').toggleClass('d-none');
+
+                    $(this).closest('.address').find('input[type="checkbox"].form-check-input').toggleClass('d-none');
+                    companyNameContainer.find('.cancelbtn, .savebtn').toggleClass('d-none');
+
+                });
+                $('#custome-facing-address-id').change(function () {
+                    var legalName = $('.custome-facing-address');
+
+                    if (!$(this).prop('checked')) {
+                        legalName.toggleClass('d-none');
+                        legalName.removeClass('border-0');
+                    } else {
+                        legalName.toggleClass('d-none');
+                    }
+                });
+                $('#legal-address-id').change(function () {
+                    var legalName = $('.legal-address');
+
+                    if (!$(this).prop('checked')) {
+                        legalName.toggleClass('d-none');
+                        legalName.removeClass('border-0');
+
+                    } else {
+                        legalName.toggleClass('d-none');
+                    }
+                });
+                                     
+
+
+
+
+                //==========================================company nav functionalities ends===================================================
+
+
+
+        // $(document).ready(function () {
+        //     // Fetch company info from API
+        //     $.ajax({
+        //         url: 'https://localhost:7220/api/v1/Company/119a091f-2fc3-4361-a8b4-5a6e859ad87c',
+        //         method: 'GET',
+        //         success: function (response) {
+        //             // Populate company information
+        //             $('#company-logo').attr('src', response.ComLogo);
+        //             $('#company-name').text(response.CompanyName);
+        //             $('#company-email').text(response.comEmail);
+        //             // // Populate other fields similarly
+        //             // document.getElementById('company-name').textContent = data.CompanyName;
+        //             // document.getElementById('company-email').textContent = data.comEmail;
+        //             // document.getElementById('company-phone').textContent = data.comPhone;
+        //             // document.getElementById('company-address').textContent = data.PrimaryAddress;
+        //         },
+        //         error: function (xhr, status, error) {
+        //             console.error(xhr.responseText);
+        //             // Handle error
+        //         }
+        //     });
+        // });
+
+
+
+
+    </script>
+}

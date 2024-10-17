@@ -1,0 +1,198 @@
+﻿@{
+    ViewData["Title"] = "Job Details";
+    Layout = "_LayoutJobView";
+}
+<input type="hidden" id="Id" value="@ViewBag.id" />
+<div class="container px-5 rounded border border-muted p-2 border-1" style="background: #FBFBFB;">
+    <div class="col-lg-12">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <div style="font-size: 18px; font-weight: 500; text-align: left; color: #414042; margin-top:30px;">
+                    We are hiring <img src="~/User/img/hand.png" alt="hand" style="max-width: 28px; margin-top: -5px;">
+                </div>
+               @* <div style="font-size: 48px; font-weight: 900; line-height: 55px; text-align: left; background: linear-gradient(101.58deg, #3087ED 3.71%, #31BC69 88.87%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Graphic<img src="~/User/img/Clip path group.png" alt="clip-path" style="max-width: 20px; margin-top: -20px;"><br>Designer
+                </div> *@
+                <div id="designationName" style="font-size: 48px; font-weight: 900; line-height: 55px; text-align: left; background: linear-gradient(101.58deg, #3087ED 3.71%, #31BC69 88.87%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    <!-- Designation name will be inserted here -->
+                </div>
+
+            </div>
+            <div>
+                <img src="~/User/img/arrow.png" alt="arrow" class="pt-2" style="max-width: 50px;">
+               @*  <img src="~/User/img/ux.png" alt="ux" class="pt-2" style="max-width: 35px;"> *@
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="mt-3">
+                <span id="jobTypesContainer" style="font-size: 14px; font-weight: 500; line-height: 11.9px; text-align: left; color: #414042;">
+                    <!-- Job types will be inserted here -->
+                </span>
+            </div>
+
+            @* <div class="mt-3">
+                <span style="font-size: 14px; font-weight: 500; line-height: 11.9px; text-align: left; color: #414042;">
+                    Full Time // On site <img src="~/User/img/arrow2.png" alt="arrow2" style="max-width: 25px;">
+                </span>
+            </div> *@
+            <div id="jobTags" class="tags mt-3 d-flex align-items-center flex-wrap"></div>
+            <div class="tags mt-1">
+                <p class="tag" id="email" style="font-size: 12px;"></p>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="d-flex align-items-end border-bottom p-1">
+                <img src="~/User/img/calendar-04.png" alt="calendar" class="pt-2" style="max-width: 25px;">
+                <p class="pt-2" id="lastDate" style="font-size: 13px; margin-left: 5px; margin-bottom: 4px; font-weight: 600; color: #414042"></p>
+            </div>
+            <div class="d-flex align-items-end border-bottom p-1">
+                <img src="~/User/img/money-receive-flow-02.png" alt="salary" class="pt-2" style="max-width: 25px;">
+                <p class="pt-2" id="salaryMin" style="font-size: 13px; margin-left: 5px; margin-bottom: 4px; font-weight: 600; color: #414042"></p>
+                <p class="pt-2" id="salaryMax" style="font-size: 13px; margin-left: 5px; margin-bottom: 4px; font-weight: 600; color: #414042"></p>
+            </div>
+            <div class="d-flex align-items-end border-bottom p-1">
+                <img src="~/User/img/location.png" alt="location" class="pt-2" style="max-width: 30px;">
+                <p class="pt-2" id="location" style="font-size: 13px; margin-left: 5px; margin-bottom: 4px; font-weight: 600;"></p>
+            </div>
+            <div class="d-flex align-items-end">
+                <button id="applyNowBtn" class="btn btn-primary ms-auto" style="margin-left: auto; margin-bottom:2px;margin-top:5px; background-color: #4AA147; border-color: #4AA147;">Apply Now</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="mt-3">
+            <div class="form-group">
+                <label class="custom-title-font mb-2" for="description">Description:</label>
+                <textarea class="form-control border-2" id="description" rows="10" readonly style="background-color: #f8f9fa; color: #495057; border: 2px solid #ced4da; cursor: default;"></textarea>
+            </div>
+            <div class="form-group mt-4">
+                <label class="custom-title-font mb-2">Responsibilities:</label>
+                <div id="responsibilities" class="mb-2">
+                    <div class="form-control border-2"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="custom-title-font mb-2">Qualifications:</label>
+                <div id="qualifications" class="mb-2">
+                    <div class="form-control border-2"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="custom-title-font mb-2">Benefits:</label>
+                <div id="benefits" class="mb-2">
+                    <div class="form-control border-2"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="custom-title-font mb-2">Other Information:</label>
+                <div id="other-information" class="mb-2">
+                    <div class="form-control border-2"></div>
+                </div>
+            </div>
+           @*  <div class="row justify-content-end mt-3">
+                <div class="col-auto">
+                    <button type="button" class="btn btn-success ps-3 pe-3" style="background-color: #4AA147; border-color: #4AA147;">Save</button>
+                </div>
+            </div> *@
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    <script>
+        document.getElementById('applyNowBtn').addEventListener('click', function () {
+            var postId = document.getElementById('Id').value;
+            window.open('/Account/Login?postId=' + encodeURIComponent(postId), '_blank');
+        });
+    </script>
+
+<script>
+    $(document).ready(function () {
+        var id = $('#Id').val();
+
+        $.ajax({
+            url: '@Url.Action("GetJobDetails", "Job")',
+            type: 'GET',
+            data: { Id: id },
+            success: function (response) {
+                if (response.success) {
+                    var data = response.data;
+
+                    // Set the data in the respective elements
+                    $('#designationName').text(data.designationName);
+                        $('#email').html('<img src="/User/img/elements.png" alt="elements" style="max-width: 15px; max-height: 15px; margin-right: 5px;"> ' + data.email);
+
+                    // $('#email').html('<img src="~/User/img/elements.png" alt="elements" style="max-width: 15px; max-height: 15px; margin-right: 5px;"> ' + data.email);
+                    $('#lastDate').text('Last Date: ' + data.lastDate);
+                    $('#salaryMin').text('৳' + data.salaryMin);
+                    $('#salaryMax').text('৳' + data.salaryMax);
+                    $('#location').text(data.location);
+                    $('#description').val(data.description);
+
+                        var jobTypesHtml = '';
+                        for (var i = 0; i < data.jobTypes.length; i++) {
+                            jobTypesHtml += data.jobTypes[i];
+                            if (i < data.jobTypes.length - 1) {
+                                jobTypesHtml += ' // ';
+                            }
+                        }
+
+                        // Append arrow image
+                        jobTypesHtml += ' <img src="/User/img/arrow2.png" alt="arrow2" style="max-width: 25px;">';
+
+                        // Set the job types in the container
+                        $('#jobTypesContainer').html(jobTypesHtml);
+
+
+
+
+                    // Populate job tags
+                    $('#jobTags').empty();
+                    data.jobTags.forEach(tag => {
+                        $('#jobTags').append('<p class="tag">' + tag + '</p>');
+                    });
+
+                    // Populate responsibilities
+                    var responsibilitiesList = '<ul>';
+                    data.responsibilities.forEach(item => {
+                        responsibilitiesList += '<li class="mt-2">' + item + '</li>';
+                    });
+                    responsibilitiesList += '</ul>';
+                    $('#responsibilities .form-control').html(responsibilitiesList);
+
+                    // Populate qualifications
+                    var qualificationsList = '<ul>';
+                    data.qualifications.forEach(item => {
+                        qualificationsList += '<li class="mt-2">' + item + '</li>';
+                    });
+                    qualificationsList += '</ul>';
+                    $('#qualifications .form-control').html(qualificationsList);
+
+                    // Populate benefits
+                    var benefitsList = '<ul>';
+                    data.benefits.forEach(item => {
+                        benefitsList += '<li class="mt-2">' + item + '</li>';
+                    });
+                    benefitsList += '</ul>';
+                    $('#benefits .form-control').html(benefitsList);
+
+                    // Populate other information
+                    var otherInfoList = '<ul>';
+                    data.otherInformation.forEach(item => {
+                        otherInfoList += '<li class="mt-2">' + item + '</li>';
+                    });
+                    otherInfoList += '</ul>';
+                    $('#other-information .form-control').html(otherInfoList);
+                } else {
+                    alert(response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('An error occurred while processing your request.');
+            }
+        });
+    });
+</script>
+}

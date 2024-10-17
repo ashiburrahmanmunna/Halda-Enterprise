@@ -1,0 +1,954 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+<style>
+    .button-custom {
+        background-color: #4AA147;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 0px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px 8px 8px 8px;
+        cursor: pointer;
+        opacity: 1; /* Fully visible */
+        transform: rotate(0deg); /* No rotation */
+    }
+
+        .button-custom i {
+            margin-right: 5px; /* Space between icon and text */
+        }
+
+    .nav-tabs .nav-link {
+        color: #6c757d;
+        border: none;
+        font-weight: 500;
+        border-radius: 0px;
+        font-size: 16px !important;
+        border-bottom: 2px solid transparent;
+    }
+
+        .nav-tabs .nav-link.active {
+            color: #4AA147;
+            font-weight: 500;
+            border-radius: 0px;
+            font-size: 16px !important;
+            background-color: transparent;
+            border-bottom: 3px solid #4AA147;
+        }
+
+    .btn-create-shift {
+        background-color: #198754;
+        color: white;
+    }
+
+    .offcanvas-body label {
+        font-weight: 500;
+    }
+
+    .input-group {
+        margin-bottom: 10px;
+    }
+</style>
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2 border-1">
+
+    <div class="row mx-0 mb-2" style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+
+        <div class="p-2 col-12 d-flex align-items-center gap-2">
+            <img alt="calander" src="~/User/img/calender.png" width="40px">
+            <h5 class="header-text-4 mb-0">January 2023 </h5>
+
+        </div>
+
+    </div>
+
+    <div class="row mx-0 mb-2" style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button style="border-radius: 0px;" class="nav-link active" id="shift-info-tab" data-bs-toggle="tab" data-bs-target="#shift-info" type="button" role="tab" aria-controls="shift-info" aria-selected="true">Shift Info</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button style="border-radius: 0px;" class="nav-link" id="shift-adjust-tab" data-bs-toggle="tab" data-bs-target="#shift-adjust" type="button" role="tab" aria-controls="shift-adjust" aria-selected="false">Shift Adjust</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button style="border-radius: 0px;" class="nav-link" id="shift-adjust-list-tab" data-bs-toggle="tab" data-bs-target="#shift-adjust-list" type="button" role="tab" aria-controls="shift-adjust-list" aria-selected="false">Shift Adjust List</button>
+            </li>
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active " id="shift-info" role="tabpanel" aria-labelledby="shift-info-tab">
+                <div class="pt-2 " style="/* border-bottom: 1px solid #D4D4D4; */ display: flex; justify-content: space-between; align-items: center;">
+                    <span class="mt-2" style="font-weight: 500; font-size: 20px;"></span>
+                    <button class="button-custom" data-bs-toggle="offcanvas" data-bs-target="#createShiftOffcanvas">
+                        <i class="fas fa-plus"></i> Create Shift
+                    </button>
+                </div>
+                <div id="shiftTable" class="mt-3"></div>
+            </div>
+            <div class="tab-pane fade" id="shift-adjust" role="tabpanel" aria-labelledby="shift-adjust-tab">
+
+                <div class="col-12 col-md-12 mt-3 mb-2 mb-md-0 d-flex align-items-center" style="white-space: nowrap;">
+                    <label for="leaveBalanceYearFrom" class="custom-label pt-2 me-2" style="font-size: 14px;">From Date:</label>
+                    <input type="date" class="form-control me-2" id="leaveBalanceYearFrom" value="2024-01-10" style="width: auto;">
+
+                    <label for="leaveBalanceYearTo" class="custom-label pt-2 me-2" style="font-size: 14px;">To Date:</label>
+                    <input type="date" class="form-control me-2" id="leaveBalanceYearTo" value="2024-01-10" style="width: auto;">
+
+                    <label for="criteria" class="custom-label pt-2 me-2" style="font-size: 14px;">Select Shift:</label>
+                    <select class="form-select me-3" id="criteria" style="width: auto;">
+                        <option selected>Regular Shift (9 am - 6 pm)</option>
+                        <option value="active">Active Employees (9 am - 6 pm)</option>
+                        <option value="inactive">Inactive Employees (9 am - 6 pm)</option>
+                        <option value="on_leave">On Leave (9 am - 6 pm)</option>
+                        <option value="terminated">Terminated Employees (9 am - 6 pm)</option>
+                    </select>
+
+                    <button type="button" class="btn btn-success" style="background-color: #4AA147; border-color: #4AA147; padding: 4px 8px; font-size: 16px;">Save</button>
+                </div>
+
+
+                <div class="row mx-0 mt-3 mb-2" style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+                    <div class="col-md-5 mt-1 mb-2 col-12 d-flex align-items-center gap-2">
+
+                        <div class="input-group mt-2" style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFFFFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 2px 3px;">
+                            <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                            <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                                <img alt="search" src="/User/img/search.png" width="20" style="height: auto;">
+                            </span>
+                        </div>
+                        <button id="select-all" class="btn" style="white-space: nowrap; background-color: #F0F0F0; border: 1px solid #D0D5DD;">
+                            <input type="checkbox" id="select-toggle" style="pointer-events: none;"> Select All
+                        </button>
+
+                    </div>
+
+                    <div id="ShiftAdjust"></div>
+                </div>
+                
+
+            </div>
+            <div class="tab-pane fade" id="shift-adjust-list" role="tabpanel" aria-labelledby="shift-adjust-list-tab">
+
+                <div class="col-12 col-md-12 mt-3 mb-2 mb-md-0 d-flex align-items-center" style="white-space: nowrap;">
+                    <label for="empname" class="custom-label pt-2 me-2" style="font-size: 14px;"> Employee name:</label>
+                    <input type="text" class="form-control me-2" id="empname" value="2024-01-10" style="width: auto;">
+
+                    <label for="leaveBalanceYearFrom" class="custom-label pt-2 me-2" style="font-size: 14px;">From Date:</label>
+                    <input type="date" class="form-control me-2" id="leaveBalanceYearFrom" value="2024-01-10" style="width: auto;">
+
+                    <label for="leaveBalanceYearTo" class="custom-label pt-2 me-2" style="font-size: 14px;">To Date:</label>
+                    <input type="date" class="form-control me-2" id="leaveBalanceYearTo" value="2024-01-10" style="width: auto;">
+
+                    
+
+                    <button type="button" class="btn btn-success" style="background-color: #4AA147; border-color: #4AA147; padding: 4px 8px; font-size: 16px;">Save</button>
+                </div>
+
+
+                <div class="row mx-0 mt-3 mb-2" style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+                    <div class="col-md-12 mt-1 mb-2 col-12 d-flex align-items-center gap-2">
+
+                        <div class="d-flex align-items-center gap-2">
+                            <button id="select-all-list" class="btn me-2" style="white-space: nowrap; background-color: #F0F0F0; border: 1px solid #D0D5DD;">
+                                <input type="checkbox" id="select-all-checkbox" style="pointer-events: none;"> Select All
+                            </button>
+
+                            <button id="select-all" class="btn" style="white-space: nowrap; background-color: #F0F0F0; border: 1px solid #D0D5DD;">
+                                <input type="checkbox" id="select-toggle" style="pointer-events: none;"> Delect All
+                            </button>
+                        </div>
+
+                        <div class="ms-auto d-flex align-items-center gap-2">
+                            <button class="button-custom btn " data-bs-toggle="offcanvas" data-bs-target="#createShiftOffcanvasNew">
+                                <i class="fas fa-plus"></i> Create Shift
+                            </button>
+
+                            <div class="dropdown">
+                                <button class="btn dropdown-toggle py-1" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ri-printer-line fs-4"></i> <!-- Printer icon as default selection -->
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a href="#" class="dropdown-item"><i class="ri-printer-line fs-4"></i> Print</a></li>
+                                    <li><a href="#" class="dropdown-item"><i class="ri-download-2-line fs-4"></i> Download</a></li>
+                                    <li><a href="#" class="dropdown-item"><i class="ri-file-copy-line fs-4"></i> Copy</a></li>
+                                    <li><a href="#" class="dropdown-item"><i class="ri-refresh-line fs-4"></i> Refresh</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <div id="ShiftAdjustList"></div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Off-canvas for Create Shift -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="createShiftOffcanvas" aria-labelledby="createShiftOffcanvasLabel" style="width: 800px;">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="createShiftOffcanvasLabel">Create Shift</h5>
+        <button type="button" class="btn-close" id="closeButton" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+
+        <div class="mb-3 row">
+            <label for="ShiftName" class="col-sm-3 col-form-label">Shift Name:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="ShiftName" name="ShiftName" value="">
+                <div class="invalid-feedback" id="ShiftNameError"></div> <!-- Error message container -->
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="ShiftType" class="col-sm-3 col-form-label">Shift Type:</label>
+            <div class="col-sm-3">
+                <select class="form-select" id="ShiftType" name="ShiftType">
+                    <option value="">Select Shift</option>
+                    <!-- Add shift type options here -->
+                </select>
+                <div class="invalid-feedback" id="ShiftTypeError"></div> <!-- Error message container -->
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="ShiftIn" class="col-sm-3 col-form-label">Shift In:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="ShiftIn" name="ShiftIn" value="">
+                <div class="invalid-feedback" id="ShiftInError"></div> <!-- Error message container -->
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="ShiftOut" class="col-sm-3 col-form-label">Shift Out:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="ShiftOut" name="ShiftOut" value="">
+                <div class="invalid-feedback" id="ShiftOutError"></div> <!-- Error message container -->
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="BreakIn" class="col-sm-3 col-form-label">Break In:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="BreakIn" name="BreakIn" value="">
+                <div class="invalid-feedback" id="BreakInError"></div> <!-- Error message container -->
+            </div>
+
+            <label for="BreakOut" class="col-sm-3 col-form-label">Break Out:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="BreakOut" name="BreakOut" value="">
+                <div class="invalid-feedback" id="BreakOutError"></div> <!-- Error message container -->
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="SecondBreakIn" class="col-sm-3 col-form-label">2nd Break In:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="SecondBreakIn" name="SecondBreakIn" value="">
+                <div class="invalid-feedback" id="SecondBreakInError"></div> <!-- Error message container -->
+            </div>
+
+            <label for="SecondBreakOut" class="col-sm-3 col-form-label">2nd Break Out:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="SecondBreakOut" name="SecondBreakOut" value="">
+                <div class="invalid-feedback" id="SecondBreakOutError"></div> <!-- Error message container -->
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="ThirdBreakIn" class="col-sm-3 col-form-label">3rd Break In:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="ThirdBreakIn" name="ThirdBreakIn" value="">
+                <div class="invalid-feedback" id="ThirdBreakInError"></div> <!-- Error message container -->
+            </div>
+
+            <label for="ThirdBreakOut" class="col-sm-3 col-form-label">3rd Break Out:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="ThirdBreakOut" name="ThirdBreakOut" value="">
+                <div class="invalid-feedback" id="ThirdBreakOutError"></div> <!-- Error message container -->
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="NightCross" class="col-sm-3 col-form-label">Night Cross:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="NightCross" name="NightCross" value="">
+                <div class="invalid-feedback" id="NightCrossError"></div> <!-- Error message container -->
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="WeekendAllowTime" class="col-sm-3 col-form-label">Weekend Allow Time:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="WeekendAllowTime" name="WeekendAllowTime" value="">
+                <div class="invalid-feedback" id="WeekendAllowTimeError"></div> <!-- Error message container -->
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label for="TotalHour" class="col-sm-3 col-form-label">Total Hour:</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" id="TotalHour" name="TotalHour" value="">
+                <div class="invalid-feedback" id="TotalHourError"></div> <!-- Error message container -->
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary me-2" id="cancelButton" data-bs-dismiss="offcanvas">Cancel</button>
+            <button type="button" class="btn button-custom" id="createShiftButton">Create</button>
+            <button type="button" class="btn button-custom" id="updateShiftButton" style="display: none;">Update</button>
+        </div>
+
+
+    </div>
+
+</div>
+
+<!-- Offcanvas element -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="createShiftOffcanvasNew" aria-labelledby="createShiftOffcanvasNewLabel" style="width: 800px;">
+    <div class="offcanvas-header">
+        <h5 id="createShiftOffcanvasNewLabel">Create Shift</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <!-- Your form or content goes here -->
+        <form>
+            <div class="mb-3 row">
+                <label for="employeeCode" class="col-sm-3 col-form-label">Employee Code:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="employeeCode" placeholder="Enter employee code">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="employeeName" class="col-sm-3 col-form-label">Employee Name:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="employeeName" placeholder="Enter employee name">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="mainShift" class="col-sm-3 col-form-label">Main Shift:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="mainShift" placeholder="Enter main shift">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="selectedShift" class="col-sm-3 col-form-label">Selected Shift:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="selectedShift" placeholder="Enter selected shift">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="fromDate" class="col-sm-3 col-form-label">From Date:</label>
+                <div class="col-sm-6">
+                    <input type="date" class="form-control" id="fromDate">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="toDate" class="col-sm-3 col-form-label">To Date:</label>
+                <div class="col-sm-6">
+                    <input type="date" class="form-control" id="toDate">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="designation" class="col-sm-3 col-form-label">Designation:</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="designation" placeholder="Enter designation">
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="offcanvas">Cancel</button>
+                <button type="submit" class="btn button-custom">Update</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/js/service/apiservice.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            select2Initializer("#ShiftType", "@Url.Action("SearchVariable", "Variable")", "ShiftType");
+            // Call the function to load the data
+            loadShiftData();
+        });
+
+        // Assuming comid and userid are already defined
+        var comid = '@ViewBag.CompanyId';
+        var userid = '@ViewBag.UserId';
+        var editingShiftId; // Variable to hold the ID of the shift being edited
+
+        // Create Shift Button Logic
+        $("#createShiftButton").on("click", function () {
+            // Clear previous error messages and invalid classes
+            const errorElements = document.querySelectorAll('.invalid-feedback');
+            errorElements.forEach(element => {
+                element.innerText = ''; // Clear any previous message
+            });
+
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.classList.remove('is-invalid'); // Remove invalid class
+            });
+
+            // Function to format time
+            var formatTime = function (time, isRequired = false) {
+                if (!time) return isRequired ? "00:00:00" : null;
+                var date = new Date("1970-01-01T" + time + ":00");
+                return date.toTimeString().split(' ')[0]; // Format to 'HH:mm:ss'
+            };
+
+            // Retrieve values from inputs
+            var model = {
+                id: null, // For new shifts, id is null
+                CompanyId: comid,
+                UserId: userid,
+                ShiftName: $("#ShiftName").val().trim(),
+                ShiftType: $("#ShiftType option:selected").text(),
+                ShiftIn: formatTime($("#ShiftIn").val(), true), // Required
+                ShiftOut: formatTime($("#ShiftOut").val(), true), // Required
+                BreakIn: formatTime($("#BreakIn").val()), // Optional
+                BreakOut: formatTime($("#BreakOut").val()), // Optional
+                SecondBreakIn: formatTime($("#SecondBreakIn").val()), // Optional
+                SecondBreakOut: formatTime($("#SecondBreakOut").val()), // Optional
+                ThirdBreakIn: formatTime($("#ThirdBreakIn").val()), // Optional
+                ThirdBreakOut: formatTime($("#ThirdBreakOut").val()), // Optional
+                NightCross: formatTime($("#NightCross").val()), // Optional
+                WeekendAllowTime: formatTime($("#WeekendAllowTime").val()), // Optional
+                TotalHour: formatTime($("#TotalHour").val()), // Optional
+                IsActive: true // Assuming it's active
+            };
+
+            // Basic validation
+            let isValid = true;
+
+            if (!model.ShiftName) {
+                $("#ShiftNameError").text("Shift Name is required.");
+                $("#ShiftName").addClass('is-invalid');
+                isValid = false;
+            }
+
+            if (!model.ShiftType || model.ShiftType === "Select Shift") {
+                $("#ShiftTypeError").text("Shift Type is required.");
+                $("#ShiftType").addClass('is-invalid');
+                isValid = false;
+            }
+
+            if (!model.ShiftIn) {
+                $("#ShiftInError").text("Shift In time is required.");
+                $("#ShiftIn").addClass('is-invalid');
+                isValid = false;
+            }
+
+            if (!model.ShiftOut) {
+                $("#ShiftOutError").text("Shift Out time is required.");
+                $("#ShiftOut").addClass('is-invalid');
+                isValid = false;
+            }
+
+            if (model.ShiftIn >= model.ShiftOut) {
+                $("#ShiftOutError").text("Shift Out must be later than Shift In.");
+                $("#ShiftOut").addClass('is-invalid');
+                isValid = false;
+            }
+
+            // Only proceed if form is valid
+            if (isValid) {
+                $.ajax({
+                    url: "/Attendance/SaveShift",
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(model),
+                    success: function (response) {
+                        if (response.error) {
+                            alert(response.message);
+                        } else {
+                            alert("Shift saved successfully.");
+                            loadShiftData(); // Load the shift data again after saving
+                            closeAndClearOffcanvas();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error: " + xhr.responseText);
+                    }
+                });
+            }
+        });
+
+        // Update Shift Logic
+        $("#updateShiftButton").on("click", function () {
+            // Clear previous error messages and invalid classes
+            const errorElements = document.querySelectorAll('.invalid-feedback');
+            errorElements.forEach(element => {
+                element.innerText = ''; // Clear any previous message
+            });
+
+            const inputs = document.querySelectorAll('.form-control');
+            inputs.forEach(input => {
+                input.classList.remove('is-invalid'); // Remove invalid class
+            });
+
+            // Function to format time (same as above)
+            var formatTime = function (time, isRequired = false) {
+                if (!time) return isRequired ? "00:00:00" : null;
+                var date = new Date("1970-01-01T" + time + ":00");
+                return date.toTimeString().split(' ')[0]; // Format to 'HH:mm:ss'
+            };
+
+            // Retrieve values from inputs
+            var model = {
+                id: editingShiftId, // Set to the ID of the shift being edited
+                CompanyId: comid,
+                UserId: userid,
+                ShiftName: $("#ShiftName").val().trim(),
+                ShiftType: $("#ShiftType option:selected").text(),
+                ShiftIn: formatTime($("#ShiftIn").val(), true), // Required
+                ShiftOut: formatTime($("#ShiftOut").val(), true), // Required
+                BreakIn: formatTime($("#BreakIn").val()), // Optional
+                BreakOut: formatTime($("#BreakOut").val()), // Optional
+                SecondBreakIn: formatTime($("#SecondBreakIn").val()), // Optional
+                SecondBreakOut: formatTime($("#SecondBreakOut").val()), // Optional
+                ThirdBreakIn: formatTime($("#ThirdBreakIn").val()), // Optional
+                ThirdBreakOut: formatTime($("#ThirdBreakOut").val()), // Optional
+                NightCross: formatTime($("#NightCross").val()), // Optional
+                WeekendAllowTime: formatTime($("#WeekendAllowTime").val()), // Optional
+                TotalHour: formatTime($("#TotalHour").val()), // Optional
+                IsActive: true // Assuming it's active
+            };
+
+            // Basic validation (same as above)
+            let isValid = true;
+
+            if (!model.ShiftName) {
+                $("#ShiftNameError").text("Shift Name is required.");
+                $("#ShiftName").addClass('is-invalid');
+                isValid = false;
+            }
+
+            if (!model.ShiftType || model.ShiftType === "Select Shift") {
+                $("#ShiftTypeError").text("Shift Type is required.");
+                $("#ShiftType").addClass('is-invalid');
+                isValid = false;
+            }
+
+            if (!model.ShiftIn) {
+                $("#ShiftInError").text("Shift In time is required.");
+                $("#ShiftIn").addClass('is-invalid');
+                isValid = false;
+            }
+
+            if (!model.ShiftOut) {
+                $("#ShiftOutError").text("Shift Out time is required.");
+                $("#ShiftOut").addClass('is-invalid');
+                isValid = false;
+            }
+
+            if (model.ShiftIn >= model.ShiftOut) {
+                $("#ShiftOutError").text("Shift Out must be later than Shift In.");
+                $("#ShiftOut").addClass('is-invalid');
+                isValid = false;
+            }
+
+            // Only proceed if form is valid
+            if (isValid) {
+                $.ajax({
+                    url: "/Attendance/SaveShift", // Change this URL to your update endpoint
+                    type: "POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(model),
+                    success: function (response) {
+                        if (response.error) {
+                            alert(response.message);
+                        } else {
+                            alert("Shift updated successfully.");
+                            loadShiftData(); // Load the shift data again after saving
+                            closeAndClearOffcanvas();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error: " + xhr.responseText);
+                    }
+                });
+            }
+        });
+
+        // Event listener for Edit button
+        $("#shiftTable").on("click", ".editShiftBtn", function () {
+            // Get the row data for the clicked button
+            var row = table.getRow(this.closest('.tabulator-row')); // Get the closest row
+            var data = row.getData(); // Get the row data
+
+            // Debug: Check if data is retrieved correctly
+            console.log(data); // Log the data to see if it is retrieved correctly
+
+            // Populate the off-canvas fields with row data
+            $("#ShiftName").val(data.shiftName || ""); // Ensure that the data field matches exactly (case-sensitive)
+            $("#ShiftType").val(data.shiftType || ""); // Adjust if needed for select options
+            $("#ShiftIn").val(data.shiftIn || ""); // Make sure these properties match the data structure
+            $("#ShiftOut").val(data.shiftOut || "");
+            $("#BreakIn").val(data.breakIn || "");
+            $("#BreakOut").val(data.breakOut || "");
+            $("#SecondBreakIn").val(data.secondBreakIn || "");
+            $("#SecondBreakOut").val(data.secondBreakOut || "");
+            $("#ThirdBreakIn").val(data.thirdBreakIn || "");
+            $("#ThirdBreakOut").val(data.thirdBreakOut || "");
+            $("#NightCross").val(data.nightCross || "");
+            $("#WeekendAllowTime").val(data.weekendAllowTime || "");
+            $("#TotalHour").val(data.totalHour || "");
+
+            // Store the ID of the shift being edited
+            editingShiftId = data.id; // Assuming 'id' is the field for the shift's unique identifier
+            console.log("Editing Shift ID:", editingShiftId); // Debug: Check if editingShiftId is set correctly
+
+            // Show the off-canvas
+            var offcanvas = new bootstrap.Offcanvas(document.getElementById('createShiftOffcanvas'));
+            offcanvas.show();
+            console.log("Off-canvas should now be visible."); // Debug: Check if the off-canvas is shown
+
+            // Set up buttons
+            $("#createShiftButton").hide(); // Hide create button
+            $("#updateShiftButton").show(); // Show update button
+        });
+
+
+        // Initialize Tabulator
+        var table = new Tabulator("#shiftTable", {
+            layout: "fitColumns",
+            columns: [
+                { title: "Shift Name", field: "shiftName", width: 135 },
+                { title: "Shift Type", field: "shiftType", width: 130 },
+                { title: "Shift In", field: "shiftIn", width: 105,  formatterParams: { outputFormat: "HH:mm:ss" } },
+                { title: "Shift Out", field: "shiftOut", width: 120,  formatterParams: { outputFormat: "HH:mm:ss" } },
+                { title: "Break In", field: "breakIn", width: 105,  formatterParams: { outputFormat: "HH:mm:ss" } },
+                { title: "Break Out", field: "breakOut", width: 125,  formatterParams: { outputFormat: "HH:mm:ss" } },
+                { title: "Night Cross", field: "nightCross", width: 135,  formatterParams: { outputFormat: "HH:mm:ss" } },
+                { title: "Weekend Allow Time", field: "weekendAllowTime", width: 155,  formatterParams: { outputFormat: "HH:mm:ss" } },
+                { title: "Total Hour", field: "totalHour", width: 135,  formatterParams: { outputFormat: "HH:mm:ss" } },
+                {
+                    title: "Actions",
+                    formatter: function (cell, formatterParams, onRendered) {
+                        return `
+                    <div style="display: inline-flex; align-items: center;">
+                        <button class="editShiftBtn action-icon" style="background: none; border: none; cursor: pointer; padding: 0;">
+                            <img alt="edit" width="20px" height="20px" src="/User/img/edit-off.png" />
+                        </button>
+                        <button id="deleteShiftBtn" class="action-icon" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 8px;">
+                           <img alt="delete" width="20px" height="20px" src="/User/img/delete.png" />
+                        </button>
+
+                    </div>
+                `;
+                    },
+                    width: 110,
+                    hozAlign: "center"
+                }
+
+            ],
+            movableColumns: true,
+        });
+
+        // Assuming you have a variable to hold the ID of the shift to be deleted
+        let shiftIdToDelete;
+
+        // Event listener for delete button in the table
+        $("#shiftTable").on("click", "#deleteShiftBtn", function () {
+            // Get the row data for the clicked button
+            var row = table.getRow(this.closest('.tabulator-row')); // Get the closest row
+            var data = row.getData(); // Get the row data
+
+            // Store the ID of the shift to be deleted
+            shiftIdToDelete = data.id; // Assuming 'id' is the field for the shift's unique identifier
+
+            // Confirm deletion
+            if (confirm("Are you sure you want to delete this shift?")) {
+                deleteShift(shiftIdToDelete);
+            }
+        });
+
+        // Function to delete the shift
+        function deleteShift(shiftId) {
+            $.ajax({
+                url: `/Attendance/DeleteShift?shiftId=${shiftId}`, // Adjust URL if necessary
+                type: "GET", // Use GET if you use [HttpGet] in your action method
+                success: function (response) {
+                    if (response.success === "1") {
+                        alert("Shift deleted successfully.");
+                        loadShiftData(); // Reload the shift data
+                    } else {
+                        alert(response.msg);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+        }
+
+
+        function loadShiftData(searchQuery = "", page = 1, size = 0) {
+            $.ajax({
+                url: `/Attendance/GetShiftList?searchQuery=${searchQuery}&page=${page}&size=${size}`, // API endpoint
+                type: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    // Check if the API returned a successful response
+                    if (data.success) {
+                        // Load data into Tabulator
+                        table.setData(data.data);
+
+                        // Optionally, reset or hide pagination controls when fetching all
+                        if (size === 0) {
+                            table.setPageSize(data.totalRecordCount); // Show all records
+                        }
+                    } else {
+                        console.error("Error loading data:", data.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching shift data:", error);
+                }
+            });
+        }
+
+
+        function closeAndClearOffcanvas() {
+            // Clear all input fields in the offcanvas
+            document.getElementById('ShiftName').value = '';
+            document.getElementById('ShiftIn').value = '';
+            document.getElementById('ShiftOut').value = '';
+            document.getElementById('BreakIn').value = '';
+            document.getElementById('BreakOut').value = '';
+            document.getElementById('SecondBreakIn').value = '';
+            document.getElementById('SecondBreakOut').value = '';
+            document.getElementById('ThirdBreakIn').value = '';
+            document.getElementById('ThirdBreakOut').value = '';
+            document.getElementById('NightCross').value = '';
+            document.getElementById('WeekendAllowTime').value = '';
+            document.getElementById('TotalHour').value = '';
+
+            // Optionally, clear error messages
+            document.getElementById('ShiftNameError').innerText = '';
+            document.getElementById('ShiftTypeError').innerText = '';
+            document.getElementById('ShiftInError').innerText = '';
+            document.getElementById('ShiftOutError').innerText = '';
+            document.getElementById('BreakInError').innerText = '';
+            document.getElementById('BreakOutError').innerText = '';
+            document.getElementById('SecondBreakInError').innerText = '';
+            document.getElementById('SecondBreakOutError').innerText = '';
+            document.getElementById('ThirdBreakInError').innerText = '';
+            document.getElementById('ThirdBreakOutError').innerText = '';
+            document.getElementById('NightCrossError').innerText = '';
+            document.getElementById('WeekendAllowTimeError').innerText = '';
+            document.getElementById('TotalHourError').innerText = '';
+
+            // Set up buttons
+            $("#createShiftButton").show(); // Hide create button
+            $("#updateShiftButton").hide(); // Show update button
+
+            // Hide the offcanvas
+            const offcanvas = document.getElementById('createShiftOffcanvas');
+            const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvas);
+            if (bsOffcanvas) {
+                bsOffcanvas.hide();
+            }
+        }
+
+        // Attach the closeAndClearOffcanvas function to the Cancel and Close buttons
+        $("#cancelButton, #closeButton").on("click", function () {
+            closeAndClearOffcanvas();
+        });
+
+        // Attach the function to the Cancel button click event
+        document.querySelector('.btn-secondary[data-bs-dismiss="offcanvas"]').addEventListener('click', clearAndCloseOffcanvas);
+
+        
+       
+        document.addEventListener('DOMContentLoaded', function () {
+        // var table = new Tabulator("#shiftTable", {
+        //     layout: "fitColumns",
+        //     columns: [
+        //         { title: "Shift Name", field: "shiftName", width: 135 },
+        //         { title: "Shift Type", field: "shiftType", width: 130 },
+        //         { title: "Shift in", field: "shiftIn", width: 105 },
+        //         { title: "Shift out", field: "shiftOut", width: 120 },
+        //         { title: "Break in", field: "breakIn", width: 105 },
+        //         { title: "Break out", field: "breakOut", width: 125 },
+        //         { title: "Weekday Allow Time", field: "weekdayAllowTime", width: 155 },
+        //         { title: "Night Cross", field: "nightCross", width: 135 },
+        //         { title: "Total hour", field: "totalHour", width: 135 },
+        //     ],
+        //     pagination: "local",
+        //     paginationSize: 6,
+        //     paginationButtonCount: 4,
+        //     paginationSizeSelector: [10, 25, 50, 100],
+        //     data: [
+        //         { shiftName: "A" },
+        //         { shiftName: "B" },
+        //         { shiftName: "C" },
+        //     ]
+        // });
+
+        var table = new Tabulator("#ShiftAdjust", {
+            layout: "fitColumns",
+            columns: [
+                {
+                    title: "<input type='checkbox' id='select-all-checkbox'>",
+                    field: "select",
+                    formatter: "rowSelection",
+                    titleFormatter: "rowSelection",
+                    hozAlign: "center",
+                    headerSort: false,
+                    width: 50,
+                    headerHozAlign: "center"
+                },
+                { title: "Emp Code", field: "empCode", width: 100, headerHozAlign: "center" },
+                { title: "Emp Name", field: "empName", width: 150 },
+                { title: "Shift", field: "shift", width: 100 },
+                { title: "Department", field: "department", width: 140 },
+                { title: "Designation", field: "designation", width: 130 },
+                { title: "Section", field: "section", width: 120 },
+                { title: "Floor", field: "floor", width: 80 },
+                { title: "Line", field: "line", width: 80 },
+                { title: "Emp Type", field: "empType", width: 100 },
+            ],
+            pagination: "local",
+            paginationSize: 6,
+            paginationButtonCount: 4,
+            paginationSizeSelector: [10, 25, 50, 100],
+            selectable: true,
+            data: [
+                { empCode: "E001", empName: "John Doe", shift: "Morning", department: "HR", designation: "Manager", section: "Admin", floor: "1st", line: "Line A", empType: "Full-Time" },
+                { empCode: "E002", empName: "Jane Smith", shift: "Afternoon", department: "Finance", designation: "Analyst", section: "Accounts", floor: "2nd", line: "Line B", empType: "Part-Time" },
+                { empCode: "E003", empName: "Mike Johnson", shift: "Night", department: "IT", designation: "Developer", section: "DevOps", floor: "3rd", line: "Line C", empType: "Contract" },
+                { empCode: "E004", empName: "Emily Brown", shift: "Morning", department: "Sales", designation: "Executive", section: "Marketing", floor: "2nd", line: "Line D", empType: "Intern" },
+                { empCode: "E005", empName: "Chris Lee", shift: "Afternoon", department: "Logistics", designation: "Coordinator", section: "Supply", floor: "Ground", line: "Line E", empType: "Full-Time" },
+            ]
+        });
+
+        // Toggle selection/deselection based on button click
+        document.getElementById("select-all").addEventListener("click", function () {
+            const toggleCheckbox = document.getElementById("select-toggle");
+
+            // Toggle the checkbox state manually
+            toggleCheckbox.checked = !toggleCheckbox.checked;
+
+            if (toggleCheckbox.checked) {
+                table.selectRow(); // Select all rows
+            } else {
+                table.deselectRow(); // Deselect all rows
+            }
+        });
+
+        var table = new Tabulator("#ShiftAdjustList", {
+            layout: "fitColumns",
+            columns: [
+                {
+                    title: "<input type='checkbox' id='select-all-checkbox-list'>",
+                    field: "select",
+                    formatter: "rowSelection",
+                    titleFormatter: "rowSelection",
+                    hozAlign: "center",
+                    headerSort: false,
+                    width: 50,
+                    headerHozAlign: "center"
+                },
+                { title: "Emp Code", field: "empCode", width: 100, headerHozAlign: "center" },
+                { title: "Emp Name", field: "empName", width: 150 },
+                { title: "Shift", field: "shift", width: 100 },
+                { title: "Department", field: "department", width: 140 },
+                { title: "Designation", field: "designation", width: 130 },
+                { title: "Main Shift", field: "mainShift", width: 120 },
+                { title: "Assign Shift", field: "assignShift", width: 80 },
+                { title: "Floor", field: "floor", width: 80 },
+                { title: "Line", field: "line", width: 80 },
+                { title: "From Date", field: "fromDate", width: 100 },
+                { title: "To Date", field: "toDate", width: 100 },
+                {
+                    title: "Action",
+                    field: "action",
+                    width: 100,
+                    frozen: true,  // This will fix the column at the end
+                    formatter: function () {
+                        return `
+                <span class="action-icon edit-icon" style="cursor: pointer; color: #007bff;">
+                    <i class="fas fa-edit"></i>
+                </span>
+                <span class="action-icon delete-icon" style="cursor: pointer; color: #dc3545; margin-left: 10px;">
+                    <i class="fas fa-trash"></i>
+                </span>
+            `;
+                    },
+                    headerHozAlign: "center",
+                    hozAlign: "center",
+                    cellClick: function (e, cell) {
+                        const element = e.target.closest('.action-icon');
+                        if (element && element.classList.contains('edit-icon')) {
+                            // Handle edit action
+                            alert('Edit action for row: ' + cell.getRow().getData().empCode);
+                        } else if (element && element.classList.contains('delete-icon')) {
+                            // Handle delete action
+                            alert('Delete action for row: ' + cell.getRow().getData().empCode);
+                        }
+                    }
+                }
+
+            ],
+            pagination: "local",
+            paginationSize: 6,
+            paginationButtonCount: 4,
+            paginationSizeSelector: [10, 25, 50, 100],
+            selectable: true,
+            data: [
+                { empCode: "E001", empName: "John Doe", shift: "Morning", department: "HR", designation: "Manager", mainShift: "Admin", assignShift: "1st", floor: "1st", line: "Line A", fromDate: "2024-01-01", toDate: "2024-01-07" },
+                { empCode: "E002", empName: "Jane Smith", shift: "Afternoon", department: "Finance", designation: "Analyst", mainShift: "Accounts", assignShift: "2nd", floor: "2nd", line: "Line B", fromDate: "2024-02-01", toDate: "2024-02-07" },
+                { empCode: "E003", empName: "Mike Johnson", shift: "Night", department: "IT", designation: "Developer", mainShift: "DevOps", assignShift: "3rd", floor: "3rd", line: "Line C", fromDate: "2024-03-01", toDate: "2024-03-07" },
+                { empCode: "E004", empName: "Emily Brown", shift: "Morning", department: "Sales", designation: "Executive", mainShift: "Marketing", assignShift: "2nd", floor: "2nd", line: "Line D", fromDate: "2024-04-01", toDate: "2024-04-07" },
+                { empCode: "E005", empName: "Chris Lee", shift: "Afternoon", department: "Logistics", designation: "Coordinator", mainShift: "Supply", assignShift: "Ground", floor: "Ground", line: "Line E", fromDate: "2024-05-01", toDate: "2024-05-07" }
+            ]
+        });
+
+        // Toggle selection based on button click
+        document.getElementById("select-all-list").addEventListener("click", function () {
+            const toggleCheckbox = document.getElementById("select-all-checkbox");
+
+            // Toggle the checkbox state manually
+            toggleCheckbox.checked = !toggleCheckbox.checked;
+
+            if (toggleCheckbox.checked) {
+                table.selectRow(); // Select all rows
+            } else {
+                table.deselectRow(); // Deselect all rows
+            }
+        });
+
+
+        // Tab switching logic
+        document.querySelectorAll('.nav-link').forEach(function (navLink) {
+            navLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(function (link) {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    });
+</script>
+
+}

@@ -1,0 +1,1388 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+
+    .status-container {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .status-bubble {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 16px;
+        color: white;
+        cursor: pointer;
+    }
+
+    .status-approved {
+        background-color: green;
+    }
+
+    .status-submitted {
+        background-color: orange;
+    }
+
+    .status-pending {
+        background-color: lightgray;
+    }
+
+    .status-bubble i {
+        font-size: 14px;
+    }
+
+    .img-avatar {
+        max-width: 30px;
+        margin-top: -5px;
+    }
+
+    .role-badge {
+        color: #414042;
+        background-color: #E7FEE7;
+        padding: 5px;
+        border-radius: 10px;
+        font-weight: 400;
+    }
+</style>
+
+<div class="row" style="color: #414042;">
+    <div  class="col-lg-9 px-md-4" style="padding: 20px;">
+      @*   <div id="jobPublished" class="tab-content" style="display: none;">
+            <!-- Content for Job Published -->
+            <p>Job Published Content</p>
+        </div> *@
+        <div id="CV Shortlisting" class="tab-content" style="display: none;">
+            <div class="container p-3" style="background-color: #FCF3F3; border-radius: 10px;">
+
+                <div class="row mb-3 mt-3">
+                    <div class="col ">
+                        <h6>Experiences </h6>
+                        <select id="experience-filter" style="width: 100%; padding: 10px; border: 1px solid #D0D5DD; border-radius: 5px;">
+
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <h6>Location </h6>
+                        <select id="location-filter" style="width: 100%; padding: 10px;  border: 1px solid #D0D5DD; border-radius: 5px;">
+
+                        </select>
+                    </div>
+                    <div class="col">
+                        <h6>University </h6>
+                        <select id="university-filter" style="width: 100%; padding: 30px;  border: 1px solid #D0D5DD; border-radius: 5px;">
+
+                        </select>
+                    </div>
+                    <div class="col">
+                        <h6>Skills </h6>
+                        <select id="skills-filter" @* multiple="multiple" *@ style="width: 100%; padding: 10px; border: 1px solid #D0D5DD; border-radius: 5px;">
+
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <div style="background-color: #FFFFFF; width: fit-content; border: 2px solid #D0D5DD; border-radius: 5px; padding: 5px 10px;">
+                            <input type="checkbox" id="selectAllCheckbox"> Select All
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-flex ms-auto me-3" style="width: fit-content;">
+                            <input id="nameSearch" style="border-radius: 10px; width: 100%;" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <i style="margin-left: -40px; margin-top: 10px; z-index: 99;" class="bi bi-search fs-5"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <select id="statusFilter" style="width: 100%;">
+                            <option value="">Select Status</option>
+                            <option value="2">Accept</option>
+                            <option value="3">Reject</option>
+                            <option value="0">No Response</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-md-3">
+                       
+                           <button id="selectDownload">Select Download</button>
+                       
+                    </div>
+
+                    <div id="tabulator-table"></div>
+
+
+                    <div col-md-12>
+                        <button id="saveButton" class="btn action-btn" style="background-color: #4AA147; color: #FFFFFF; padding: 10px 20px; border: none; 
+                            border-radius: 4px; cursor: pointer; margin-top: 20px; float: right;">Save</button>
+                    </div>
+
+                </div>
+
+
+
+
+
+            </div>
+        </div>
+
+        <div id="Interview" class="tab-content" style="display: none;">
+            <!-- Content for Job Published -->
+            <p>Job Published Content</p>
+
+
+        </div>
+
+        <div id="Assessment" class="tab-content" style="display: none;">
+            <div class="container p-3" style="background-color: #FCF3F3; border-radius: 10px;">
+                <div class="row">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="col-md-3">
+                            <div style="background-color: #FFFFFF; width: fit-content; border: 2px solid #D0D5DD; border-radius: 5px; padding: 5px 10px;">
+                                <input type="checkbox" id="selectAllAssignment"> Select All
+                            </div>
+                        </div>
+
+                        <div class="d-flex">
+                            <div class="me-3">
+                                <button id="assignToEveryoneBtn" style="background-color: white; color: black; border: 1px solid black; padding: 10px 20px; font-size: 16px; cursor: pointer; display: inline-flex; align-items: center;">
+                                    <i class="fa fa-upload" style="margin-right: 8px;"></i> Select Upload
+                                </button>
+                            </div>
+
+                            <div>
+                                <div class="d-flex ms-auto" style="width: fit-content;">
+                                    <input id="nameSearchAssignment" style="border-radius: 10px; width: 100%;" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                    <i style="margin-left: -40px; margin-top: 10px; z-index: 99;" class="bi bi-search fs-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="assignment-table"></div>
+
+                    <div class="col-md-12">
+                        <button id="assignmentSave" class="btn action-btn" style="background-color: #4AA147; color: #FFFFFF; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin-top: 20px; float: right;">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="HR Interview" class="tab-content" style="display: none;">
+
+            <div class="container p-3" style="background-color: #FCF3F3; border: 1px solid #D4D4D4; border-radius: 10px;">
+                <h5 style="color: #4AA147;" class=" mb-4">Rate your interview process →</h5>
+
+                <form id="interviewForm">
+                    <div class="row mb-3 ">
+
+                        <div class="col-md-4">
+                            <div style="border: 1px solid #D4D4D4; background-color: #EDEDED; border-radius: 15px;">
+                                <h6 class="p-2" style="margin-bottom: 10px;">The interview process was</h6>
+                                <div class="p-3" style="background-color: #FFFFFF; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewProcess" id="challenging" value="Challenging" checked>
+                                        <label for="challenging">Challenging</label>
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewProcess" id="fastFluid" value="Fast & fluid">
+                                        <label for="fastFluid">Fast & fluid</label>
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewProcess" id="boring" value="Rather boring">
+                                        <label for="boring">Rather boring</label>
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewProcess" id="tooLong" value="Too long">
+                                        <label for="tooLong">Too long</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div style="border: 1px solid #D4D4D4; background-color: #EDEDED; border-radius: 15px;">
+                                <h6 class="p-2" style="margin-bottom: 10px;">Did your interview start on time</h6>
+                                <div class="p-3" style="background-color: #FFFFFF; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewStart" id="onTime" value="Yep, right on time" checked>
+                                        <label for="onTime">Yep, right on time</label>
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewStart" id="moreOrLess" value="more or less">
+                                        <label for="moreOrLess">more or less</label>
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewStart" id="grewBeard" value="Nope, i grew a beard waiting">
+                                        <label for="grewBeard">Nope,i grew beard waiting</label>
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewStart" id="startedEarly" value="No, it started early">
+                                        <label for="startedEarly">No, it started early</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div style="border: 1px solid #D4D4D4; background-color: #EDEDED; border-radius: 15px;">
+                                <h6 class="p-2" style="margin-bottom: 10px;">The interviewers were</h6>
+                                <div class="p-3" style="background-color: #FFFFFF; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewers" id="friendly" value="Friendly and fun" checked>
+                                        <label for="friendly">Friendly and fun</label>
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewers" id="professional" value="Professional and polite">
+                                        <label for="professional">Professional and polite</label>
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewers" id="barelyCourteous" value="Barely courteous">
+                                        <label for="barelyCourteous">Barely courteous</label>
+                                    </div>
+                                    <div style="margin-bottom: 5px;">
+                                        <input type="radio" name="interviewers" id="intimidating" value="Intimidating">
+                                        <label for="intimidating">Intimidating</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4 mt-2">
+                        <h5 class="pb-3">Any suggestion what can we do make interview process better</h5>
+                        <textarea class="form-control" id="suggestion" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <h5>Rate your interview experience</h5>
+                        <div style="font-size: 0;">
+                            <!-- Star 1 -->
+                            <span class="star" style="display: inline-block; font-size: 40px; color: #ccc; cursor: pointer; transition: color 0.2s;" onclick="handleClick(1)">★</span>
+                            <!-- Star 2 -->
+                            <span class="star" style="display: inline-block; font-size: 40px; color: #ccc; cursor: pointer; transition: color 0.2s;" onclick="handleClick(2)">★</span>
+                            <!-- Star 3 -->
+                            <span class="star" style="display: inline-block; font-size: 40px; color: #ccc; cursor: pointer; transition: color 0.2s;" onclick="handleClick(3)">★</span>
+                            <!-- Star 4 -->
+                            <span class="star" style="display: inline-block; font-size: 40px; color: #ccc; cursor: pointer; transition: color 0.2s;" onclick="handleClick(4)">★</span>
+                            <!-- Star 5 -->
+                            <span class="star" style="display: inline-block; font-size: 40px; color: #ccc; cursor: pointer; transition: color 0.2s;" onclick="handleClick(5)">★</span>
+                        </div>
+
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end;">
+                        <button type="submit" class="btn btn-success" style="background-color: #4AA147; color: #fff;">Done</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+        <div id="Offer Letter" class="tab-content" style="display: none;">
+            <div class="container p-3" style="background-color: #FCF3F3; border-radius: 10px;">
+                <h6>
+                    Offerletter
+                </h6>
+
+                <div class=" m-4 p-4 pt-4 px-5" style="background-color: #FFFFFF; border-radius: 10px;">
+                    <form>
+                        <h5 class="mb-3">Reason for rejected this offer?</h5>
+
+                        <div class="mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rejectionReason" id="acceptedAnother">
+                                <label class="form-check-label" for="acceptedAnother">Accepted Another Offer</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rejectionReason" id="lowSalary">
+                                <label class="form-check-label" for="lowSalary">Low Salary</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rejectionReason" id="betterCompensation">
+                                <label class="form-check-label" for="betterCompensation">Better Compensation Package Elsewhere</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rejectionReason" id="careerPath">
+                                <label class="form-check-label" for="careerPath">Career Path or Professional Goals</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rejectionReason" id="companyCulture">
+                                <label class="form-check-label" for="companyCulture">Company Culture or Fit</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rejectionReason" id="location">
+                                <label class="form-check-label" for="location">Location or Commute Issues</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rejectionReason" id="personalReasons">
+                                <label class="form-check-label" for="personalReasons">Personal or Family Reasons</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rejectionReason" id="experience">
+                                <label class="form-check-label" for="experience">Experience</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="rejectionReason" id="technical">
+                                <label class="form-check-label" for="technical">Technical</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="otherReason" class="form-label">Others:</label>
+                            <textarea class="form-control" id="otherReason" rows="3"></textarea>
+                        </div>
+
+                        <div class="col-md-12 d-flex justify-content-end align-items-end pb-3" style="padding-left: 100px;">
+                            <button class="btn" style="background-color: #4AA147; color: #FFFFFF; padding: 10px 20px; border: none; border-radius: 7px;">Submit</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div id="Technical Interview" class="tab-content" style="display: none;">
+            <!-- Content for Job Published -->
+            <p>Job Published Content</p>
+        </div>
+
+    </div>
+
+    <div class="col-lg-3  ">
+        <div class="p-3" style="background-color: #4AA147; color: #fff;  font-size: 16px; margin-top: 20px; font-weight: 700;  border-radius: 15px 15px 0px 0px;">
+            Pre-onboarding <span class="p-2 " style="background-color: #fff; color: #000; font-weight: 700; border-radius: 12px;">20%</span>
+        </div>
+
+        <nav class="pt-2 d-md-block bg-light" style="height: 450px; border: 0.5px solid #D4D4D4; border-radius: 0 0 15px 15px; position: sticky; top: 0; background-color: #FFFFFF; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+            <div class="position-sticky">
+                <ul class="nav flex-column px-2" id="menuList">
+                    <!-- Menu items will be loaded dynamically here -->
+                </ul>
+            </div>
+        </nav>
+
+    </div>
+
+
+</div>
+
+@* <div class="modal fade" id="assignmentModal" tabindex="-1" aria-labelledby="assignmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignmentModalLabel">Select Assignment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul id="assignmentList" class="list-group">
+                    <!-- Assignment items will be dynamically added here -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="background-color: #4AA147; color: #FFFFFF; padding: 10px 20px; border: none; border-radius: 7px;"
+                class="btn btn-primary" id="saveAssignment">Send Assignment</button>
+            </div>
+        </div>
+    </div>
+</div> *@
+
+
+<div id="documentDownloadModal" class="modal fade" tabindex="-1" aria-labelledby="documentDownloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="documentDownloadModalLabel">Download Documents</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input type="checkbox" id="selectAll" class="form-check-input">
+                        <label for="selectAll" class="form-check-label">Select All</label>
+                    </div>
+                </div>
+                <div id="documentList">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>File Type</th>
+                                <th>File Name</th>
+                            </tr>
+                        </thead>
+                        <tbody id="documentTableBody">
+                            <!-- Document rows will be dynamically inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="downloadButton" class="btn btn-primary">Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+    <script src="~/js/Service/APIService.js"></script>
+
+    <script>
+
+        var table = "";
+        var assignmentTable = "";
+        var milestone = "";
+        var menuSteps = [];
+
+        $(document).ready(function () {
+            // Initialize Select2
+            $('#statusFilter').select2({
+                placeholder: "Customs View",
+                allowClear: true
+            });
+
+            // Add event listener for when the selection changes
+            $('#statusFilter').on('change', function () {
+                const status = $(this).val(); // Get selected value
+                filterTableByStatus(status);
+            });
+        });
+
+        $(document).ready(function () {
+            // Add event listener for search input
+            $('#nameSearch').on('input', function () {
+                const searchValue = $(this).val().trim(); // Get the value entered in the search field
+
+                if (searchValue) {
+                    // Apply filter to the "name" field in Tabulator
+                    table.setFilter("name", "like", searchValue);
+                } else {
+                    // Clear the filter if the search field is empty
+                    table.clearFilter();
+                }
+            });
+        });
+
+
+        // Function to filter the Tabulator table based on selected status
+        function filterTableByStatus(status) {
+            if (status) {
+                table.setFilter("status", "=", status); // Assuming 'status' is the field name in your data
+            } else {
+                table.clearFilter(); // Clear filter if no status is selected
+            }
+        }
+
+
+
+        $(document).ready(function () {
+
+            select2Initializer('#experience-filter', '@Url.Action("GetApplicaitonFilter", "Variable")' + '?jobPostId=@ViewBag.id' + '&type=Experience');
+            select2Initializer('#location-filter', '@Url.Action("GetApplicaitonFilter", "Variable")' + '?jobPostId=@ViewBag.id' + '&type=CurrentLocation');
+            select2Initializer('#university-filter', '@Url.Action("GetApplicaitonFilter", "Variable")' + '?jobPostId=@ViewBag.id' + '&type=University');
+            select2Initializer('#skills-filter', '@Url.Action("GetApplicaitonFilter", "Variable")' + '?jobPostId=@ViewBag.id' + '&type=Skills');
+
+            loadDynamicMenuItems();
+
+
+        });
+
+        function handleClick(rating) {
+            // Reset all stars to default color
+            let stars = document.querySelectorAll('.star');
+            stars.forEach(star => star.style.color = '#ccc');
+
+            // Highlight stars up to the selected rating
+            for (let i = 0; i < rating; i++) {
+                stars[i].style.color = '#FFD700'; // Gold color
+            }
+
+            // Optionally, you can send the rating value to a backend or perform further actions
+
+        }
+
+        function showTab(event, tabName, milestoneId) {
+            event.preventDefault();
+
+            // Hide all tab contents
+            var tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(function (tab) {
+                tab.style.display = 'none';
+            });
+
+            // Remove active class and reset styles for all links
+            var links = document.querySelectorAll('.nav-link');
+            links.forEach(function (link) {
+                link.classList.remove('active');
+                link.style.backgroundColor = '#FFFFFF';
+                link.style.color = '#000';
+            });
+
+            // Show the selected tab
+            var element = document.getElementById(tabName);
+            if (element) {
+                element.style.display = 'block';
+            } else {
+                console.error("Element with id '" + tabName + "' not found.");
+                return;
+            }
+
+            milestone = tabName;
+
+            let nextIndex = null;
+
+            // Find the index of the current milestone in menuSteps
+            const currentIndex = menuSteps.findIndex(step => step.name.toLowerCase() === milestone.toLowerCase());
+
+            // Check if a valid currentIndex was found
+            if (currentIndex !== -1) {
+                // Set the previous index to the previous step or current index if it's the first one
+                previousIndex = (currentIndex - 1 >= 0) ? currentIndex - 1 : currentIndex;
+            } else {
+                alert("No matching milestone found.");
+                return;
+            }
+
+            // Update milestone to the new tab name
+
+
+            // Define a map of functions for each tab
+            var functionMap = {
+                'Assessment': function () { loadAssignmentTable(menuSteps[previousIndex].id); },
+                'CV Shortlisting': function () { loadTableData(function (data) { }); },
+            };
+
+            // Call the respective function if it exists in the functionMap
+            if (functionMap[tabName]) {
+                functionMap[tabName](); // Call the function for the current tab
+            } else {
+                console.error("No function defined for the tab: " + tabName);
+            }
+        }
+
+
+
+
+        // Add hover effect
+        document.querySelectorAll('.nav-link').forEach(function (link) {
+            link.addEventListener('mouseover', function () {
+                if (!link.classList.contains('active')) {
+                    link.style.backgroundColor = '#EBEBEB';
+                    link.style.color = '';
+                }
+            });
+            link.addEventListener('mouseout', function () {
+                if (!link.classList.contains('active')) {
+                    link.style.backgroundColor = '';
+                    link.style.color = '#000';
+                }
+            });
+        });
+
+
+        function loadDynamicMenuItems() {
+            var menuList = $('#menuList');
+
+            // Static menu items array
+            var staticMenuItems = [
+                {
+                    name: 'Job Published',
+                    icon: '@Url.Content("~/User/img/icon.png")',
+                    tab: 'Job Published',
+                    iconClass: 'fa-circle-check', // Completed icon class
+                    status: 2 // Static items assumed to be completed
+                },
+                // {
+                //     name: 'Job Application',
+                //     icon: '@Url.Content("~/User/img/icon.png")',
+                //     tab: 'Job Application',
+                //     iconClass: 'fa-circle', // Default icon class
+                //     status: 0 // Set the appropriate status for static items
+                // }
+            ];
+
+            // First, load static items
+            $.each(staticMenuItems, function (index, item) {
+                var newItem = '<li class="nav-item mb-2">' +
+                    '<a class="nav-link nav-custom-1" href="#" onclick="return handleTabClick(event, \'' + item.tab + '\')" style="display: flex; justify-content: space-between; align-items: center;">' +
+                    '<span>' +
+                    '<img src="' + item.icon + '" alt="Image" style="max-width: 15px; margin-right: 10px;"> ' + item.name +
+                    '</span>' +
+                    '<span style="margin-left: auto;">' +
+                    '<i class="fa-regular ' + item.iconClass + '" style="margin-left: 10px;"></i>' +
+                    '</span>' +
+                    '</a>' +
+                    '</li>';
+
+                menuList.append(newItem);
+
+                // Append to menuSteps
+                menuSteps.push({
+                    name: item.name,
+                    status: item.status
+                });
+            });
+
+            $.ajax({
+                url: '@Url.Action("PreOnboardingVar", "Variable")' + '?jobPostId=@ViewBag.id', // Adjusted URL for dynamic content
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    var nextStepToLoad = null; // Variable to track the next step to load
+                    var cvShortlistedCompleted = false; // Flag to check if CV Shortlisted is completed
+                    var completedCount = 0; // Count of completed steps
+                    var totalSteps = staticMenuItems.length; // Start with static items count
+
+                    // Iterate over the dynamic data and add to menu
+                    $.each(data, function (index, item) {
+                        totalSteps++; // Increment total steps for each dynamic item
+                        if (item.status === 2) {
+                            completedCount++; // Increment completed count
+                        }
+
+                        var newItem = '<li class="nav-item mb-2">' +
+                            '<a class="nav-link nav-custom-1" href="#" onclick="showTab(event, \'' + item.name + '\', \'' + item.id + '\')" style="display: flex; justify-content: space-between; align-items: center;">' +
+                            '<span>' +
+                            '<img src="@Url.Content("~/User/img/icon.png")" alt="Image" style="max-width: 15px; margin-right: 10px;"> ' + item.name +
+                            '</span>' +
+                            '<span style="margin-left: auto;">' +
+                            '<i class="fa-regular fa-circle' + (item.status === 2 ? '-check' : '') + '" style="margin-left: 10px;"></i>' +
+                            '</span>' +
+                            '</a>' +
+                            '</li>';
+
+                        menuList.append(newItem);
+
+                        // Append to menuSteps with data.id
+                        menuSteps.push({
+                            name: item.name,
+                            tab: item.name,
+                            iconClass: (item.status === 2 ? 'fa-circle-check' : 'fa-circle'),
+                            status: item.status, // Add status property to track if completed
+                            id: item.id // Append the id from data
+                        });
+
+                        // Check if the "CV Shortlisted" step is completed
+                        if (item.name === 'CV Shortlisted' && item.status === 2) {
+                            cvShortlistedCompleted = true; // Mark CV Shortlisted as completed
+                        }
+
+                        // Check if the step is not completed (status != 2) for first incomplete step
+                        if (item.status !== 2 && nextStepToLoad === null) {
+                            nextStepToLoad = item.name; // Set the first incomplete step to load
+                        }
+                    });
+
+                    // Calculate the completion percentage
+                    var percentage = ((completedCount + 1) / totalSteps) * 100;
+                    percentage = Math.round(percentage); // Round to the nearest integer
+
+                    // Update the DOM with the calculated percentage
+                    $('.p-2').text(percentage + '%'); // Update the percentage in the pre-onboarding div
+
+                    // Decide the next step to load after changing the status
+                    var nextIncompleteStep = menuSteps.find(step => step.status !== 2); // Find the first incomplete step
+
+                    if (nextIncompleteStep) {
+                        // Load the first incomplete step
+                        showTab({ preventDefault: () => { } }, nextIncompleteStep.name, nextIncompleteStep.id); // Pass id to load the next step
+                    } else {
+                        console.log('All steps are completed.');
+                    }
+
+                    console.log(menuSteps); // Check that the menuSteps are correctly populated
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('Error loading dynamic menu items:', error);
+                }
+            });
+        }
+
+
+        // Function to handle tab clicks
+        function handleTabClick(event, tab) {
+            if (tab === 'Job Published') {
+                // Prevent redirect for Job Published tab
+                return false;
+            } else {
+                // Redirect or show tab for other tabs
+                showTab(event, tab);
+            }
+        }
+
+
+        $(document).ready(function () {
+            // Attach event listeners to filter inputs
+            $("#skills-filter, #university-filter, #experience-filter, #location-filter, #milestone-filter").on('change keyup', function () {
+                // Retrieve the value of the milestone filter
+
+
+                loadTableData(data => {
+                    if (window.tabulatorTable) {
+                        window.tabulatorTable.setData(data); // Update the table with new data
+                    }
+                }, null); // Pass the milestone to the loadTableData function
+            });
+
+
+            // Initialize the table on page load
+            initializeTable();
+        });
+
+        function loadTableData(callback, milestone) {
+            const jobPostId = '@ViewBag.id'; // Job Post ID from the ViewBag
+            const filters = {
+                Skills: $("#skills-filter").val(),
+                University: $("#university-filter").val(),
+                Experience: $("#experience-filter").val(),
+                CurrentLocation: $("#location-filter").val(),
+            };
+
+            // Remove empty filters
+            Object.keys(filters).forEach(key => {
+                if (!filters[key]) {
+                    delete filters[key];
+                }
+            });
+
+            $.ajax({
+                url: '@Url.Action("GetApplicants", "Variable")', // Your API endpoint
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    jobPostId: jobPostId,
+                    milestone: milestone,
+                    filters: Object.keys(filters).length ? filters : null
+                }),
+                success: function (data) {
+                    console.log(data);
+                    // if (callback) {
+                    //     callback(data); // Call the callback with the data
+                    // }
+
+                    table.setData(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                }
+            });
+        }
+
+
+
+
+        function initializeTable() {
+            table = new Tabulator("#tabulator-table", {
+                layout: "fitColumns",
+                placeholder: "No Data Available",
+                columns: [
+                    {
+                        title: "",
+                        field: "select",
+                        width: 50,
+                        hozAlign: "center",
+                        headerSort: false,
+                        formatter: function (cell, formatterParams, onRendered) {
+                            const checked = cell.getValue() ? 'checked' : '';
+                            return `<input type="checkbox" class="row-checkbox" ${checked}>`;
+                        },
+                        cellClick: function (e, cell) {
+                            const checked = cell.getValue();
+                            cell.setValue(!checked); // Toggle the checkbox value
+                        },
+                        accessor: function (value, data, type, params, component) {
+                            return !!value; // ensure value is boolean
+                        },
+                    },
+                    {
+                        title: "Avatar", field: "avatar", formatter: (cell) => `<img src="${cell.getValue()}" class="img-avatar">`,
+                        width: 50, hozAlign: "center"
+                    },
+                    { title: "Name", field: "name", width: 150 },
+                    {
+                        title: "Applying Position", field: "applyingPosition", formatter: (cell) =>
+                            `<span class="role-badge">${cell.getValue()}</span>`,
+                        width: 150
+                    },
+                    {
+                        title: "Email", field: "email", formatter: "link", formatterParams: {
+                            labelField: "email",
+                            urlPrefix: "mailto:",
+                        }
+                    },
+                    { title: "Skills", field: "skills" },
+                    {
+                        title: "Download",
+                        field: "download",
+                        formatter: function (cell) {
+                            const rowData = cell.getRow().getData(); // Get row data
+                            return `<button class='btn-download' onclick='showDownloadModal(${JSON.stringify(rowData)})'>
+                            <i class='fas fa-download'></i>
+                        </button>`;
+                        },
+                        width: 50,
+                        hozAlign: "center",
+                    },
+
+
+                    {
+                        title: "",
+                        field: "moreOptions",
+                        formatter: function () {
+                            return "<button class='btn-view'><i class='fas fa-ellipsis-v'></i></button>";
+                        },
+                        width: 50
+                    }
+                ],
+            });
+
+            document.getElementById("selectAllCheckbox").addEventListener("change", function (e) {
+                const isChecked = e.target.checked;
+                table.getRows().forEach(row => {
+                    const checkboxCell = row.getCell("select");
+                    checkboxCell.setValue(isChecked); // Select or deselect each row's checkbox
+                });
+            });
+
+            document.getElementById("selectAllAssignment").addEventListener("change", function (e) {
+                const isChecked = e.target.checked;
+                assignmentTable.getRows().forEach(row => {
+                    const checkboxCell = row.getCell("select");
+                    checkboxCell.setValue(isChecked); // Select or deselect each row's checkbox
+                });
+            });
+
+
+            document.querySelectorAll(".action-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const selectedIds = [];
+
+                    if (milestone === "CV Shortlisting") {
+                        table.getRows().forEach(row => {
+                            const checkboxCell = row.getCell("select");
+                            if (checkboxCell && checkboxCell.getValue()) {
+                                selectedIds.push(row.getData().applicantId);
+                            }
+                        });
+                    } else if (milestone === "Assessment") {
+                        assignmentTable.getRows().forEach(row => {
+                            const checkboxCell = row.getCell("select");
+                            if (checkboxCell && checkboxCell.getValue()) {
+                                selectedIds.push(row.getData().applicantId);
+                            }
+                        });
+                    }
+
+                    if (selectedIds.length === 0) {
+                        alert("Please select at least one item.");
+                        return;
+                    }
+
+                    const currentIndex = menuSteps.findIndex(step => step.name.toLowerCase() === milestone.toLowerCase());
+                    if (currentIndex === -1) {
+                        alert("No matching milestone found.");
+                        return;
+                    }
+
+                    const nextIndex = (currentIndex + 1 < menuSteps.length) ? currentIndex + 1 : currentIndex;
+
+                    $.ajax({
+                        url: '@Url.Action("UpdateMilestoneStatus", "Recruitment")',
+                        method: 'PUT',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            milestoneId: menuSteps[currentIndex].id,
+                            RecruitmentVariable: menuSteps[currentIndex].name,
+                            ApplicantId: selectedIds,
+                            JobPostId: '@ViewBag.id'
+                        }),
+                        success: function (response) {
+                            showTab({ preventDefault: () => { } }, menuSteps[nextIndex].name);
+                            window.location.reload();
+                            alert("Data saved successfully!");
+                        },
+                        error: function (error) {
+                            console.error('Error saving data:', error);
+                            alert("There was an error saving the data.");
+                        }
+                    });
+                });
+            });
+        }
+
+        document.querySelector("#selectDownload").addEventListener("click", function () {
+            const selectedData = [];
+
+            table.getRows().forEach(row => {
+                const checkboxCell = row.getCell("select");
+                if (checkboxCell && checkboxCell.getValue()) {
+                    const rowData = row.getData();
+                    selectedData.push({
+                        type: rowData.name,
+                        filePath: rowData.resumeUrl
+                    });
+                }
+            });
+
+            if (selectedData.length === 0) {
+                alert("Please select at least one item.");
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("GetApplicantDataWithFiles", "Recruitment")',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(selectedData),
+                xhrFields: {
+                    responseType: 'blob' // Set the response type to blob to handle binary data
+                },
+                success: function (data, status, xhr) {
+                    // Create a new Blob object using the data returned from the server
+                    var blob = new Blob([data], { type: 'application/zip' });
+                    var link = document.createElement('a');
+                    var url = window.URL.createObjectURL(blob);
+
+                    link.href = url;
+                    link.download = `Resume.zip`; // Set the filename for the download
+                    document.body.appendChild(link);
+                    link.click();
+
+                    // Clean up
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url); // Release the memory
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error downloading files', error);
+                }
+            });
+        });
+
+
+        function showDownloadModal(rowData) {
+            // Clear any previous entries in the document table
+            $('#documentTableBody').empty();
+
+            // Define the document fields in the rowData to display if they have valid URLs
+            const documents = [
+                { type: "Resume", name: "Resume", url: rowData.resumeUrl },
+                { type: "Govt ID", name: "Govt ID", url: rowData.govtIdUrl },
+                { type: "Certificate", name: "Certificate", url: rowData.certificateUrl },
+                { type: "Transcript", name: "Transcript", url: rowData.transcriptUrl },
+                { type: "SSC Certificate", name: "SSC Certificate", url: rowData.sscCertificateUrl },
+                { type: "HSC Certificate", name: "HSC Certificate", url: rowData.hscCertificateUrl },
+                { type: "BSc Certificate", name: "BSc Certificate", url: rowData.bScCertificateUrl },
+                { type: "MSc Certificate", name: "MSc Certificate", url: rowData.mScCertificateUrl },
+            ];
+
+            // Loop through the documents and add rows dynamically if they have valid URLs
+            documents.forEach(function (doc, index) {
+                if (doc.url) { // Ensure the document URL exists and is not null
+                    $('#documentTableBody').append(`
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input file-checkbox" data-type="${doc.type}" data-url="${doc.url}" id="fileCheckbox${index}">
+                                    <label class="form-check-label" for="fileCheckbox${index}">${doc.type}</label>
+                                </div>
+                            </td>
+                            <td>${doc.name}</td>
+                        </tr>
+                    `);
+                }
+            });
+
+            // Add event listener for the "Select All" checkbox
+            $('#selectAll').off('change').on('change', function () {
+                const isChecked = $(this).is(':checked');
+                $('.file-checkbox').prop('checked', isChecked); // Set the state of all file checkboxes
+            });
+
+            // Ensure "Select All" checkbox reflects the state of individual checkboxes
+            $('#documentTableBody').off('change', '.file-checkbox').on('change', '.file-checkbox', function () {
+                const allChecked = $('.file-checkbox').length === $('.file-checkbox:checked').length;
+                $('#selectAll').prop('checked', allChecked);
+            });
+
+            // Event listener for the Download button
+            $('#downloadButton').off('click').on('click', function () {
+                const selectedDocuments = [];
+
+                // Gather selected documents (type and URL)
+                $('.file-checkbox:checked').each(function () {
+                    selectedDocuments.push({
+                        type: $(this).data('type'),
+                        filePath: $(this).data('url')
+                    });
+                });
+
+                if (selectedDocuments.length > 0) {
+                    // AJAX call to handle the download
+                    $.ajax({
+                        url: '@Url.Action("GetApplicantDataWithFiles", "Recruitment")',
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(selectedDocuments),
+                        xhrFields: {
+                            responseType: 'blob' // Set the response type to blob to handle binary data
+                        },
+                        success: function (data, status, xhr) {
+                            // Create a new Blob object using the data returned from the server
+                            var blob = new Blob([data], { type: 'application/zip' });
+                            var link = document.createElement('a');
+                            var url = window.URL.createObjectURL(blob);
+
+                            link.href = url;
+                            link.download = `${rowData.name}.zip`; // Set the filename for the download
+                            document.body.appendChild(link);
+                            link.click();
+
+                            // Clean up
+                            document.body.removeChild(link);
+                            window.URL.revokeObjectURL(url); // Release the memory
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error downloading files', error);
+                        }
+                    });
+
+                } else {
+                    alert('Please select at least one document to download.');
+                }
+            });
+
+            // Open the modal
+            $('#documentDownloadModal').modal('show');
+        }
+
+
+
+
+        function loadAssignmentTable(milestoneId) {
+            // Initialize the Tabulator table
+            assignmentTable = new Tabulator("#assignment-table", {
+                height: "400px", // Set table height
+                layout: "fitColumns", // Fit columns to width of table
+                placeholder: "No Data Available", // Display when no data
+                columns: [
+                    {
+                        title: "",
+                        field: "select",
+                        width: 50,
+                        hozAlign: "center",
+                        headerSort: false,
+                        formatter: function (cell, formatterParams, onRendered) {
+                            const checked = cell.getValue() ? 'checked' : '';
+                            return `<input type="checkbox" class="row-checkbox" ${checked}>`;
+                        },
+                        cellClick: function (e, cell) {
+                            const checked = cell.getValue();
+                            cell.setValue(!checked); // Toggle the checkbox value
+                        },
+                        accessor: function (value, data, type, params, component) {
+                            return !!value; // ensure value is boolean
+                        },
+                    },
+                    {
+                        title: "Avatar",
+                        field: "avatar",
+                        formatter: (cell) => `<img src="${cell.getValue()}" class="img-avatar" style="width:30px; height:30px;">`,
+                        width: 50,
+                        hozAlign: "center"
+                    },
+                    {
+                        title: "Name",
+                        field: "name",
+                        width: 150
+                    },
+                    {
+                        title: "Assignment",
+                        field: "assignments",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            const assignments = cell.getValue(); // Get the array of assignments
+                            console.log(assignments);
+                            // Create the bubbles for each assignment
+                            let bubblesHtml = '';
+                            assignments.forEach((assignment) => {
+                                let bubbleClass = 'status-pending'; // Default class for unsubmitted/unapproved
+                                let bubbleIcon = ''; // No icon for pending
+                                let onClickAttribute = '';
+
+                                // Change the bubble color based on the assignment status
+                                if (assignment.isApproved) {
+                                    bubbleClass = 'status-approved'; // Green for approved
+                                    bubbleIcon = '<i class="fas fa-check"></i>';
+                                } else if (assignment.isSubmitted) {
+                                    bubbleClass = 'status-submitted'; // Yellow for submitted
+                                    bubbleIcon = '<i class="fas fa-exclamation"></i>';
+                                    onClickAttribute = `onclick="changeAssignmentStatus('${assignment.assignmentId}', '${assignment.applicantId}')" `;
+                                }
+
+                                // Conditionally set the onclick attribute if isSubmitted is true
+                                
+
+                                // Create the bubble HTML
+                                bubblesHtml += `<div class="status-bubble ${bubbleClass}" data-assignment-id="${assignment.assignmentId}" ${onClickAttribute}>${bubbleIcon}</div>`;
+
+                            });
+
+                            return `<div class="status-container">${bubblesHtml}</div>`;
+                        },
+                        width: 150
+                    },
+                    {
+                        title: "Email",
+                        field: "email",
+                        formatter: "link",
+                        formatterParams: {
+                            labelField: "email",
+                            urlPrefix: "mailto:",
+                        }
+                    },
+                    // {
+                    //     title: "Upload",
+                    //     formatter: function (cell, formatterParams, onRendered) {
+                    //         return "<button class='btn-view btn-upload'><i class='fas fa-upload'></i></button>";
+                    //     },
+                    //     width: 50,
+                    //     cellClick: function (e, cell) {
+                    //         var rowData = cell.getRow().getData(); // Get the row data
+                    //         openUploadModal(rowData.applicantId); // Open the modal with row id
+                    //     }
+                    // },
+                    {
+                        title: "Download",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            return "<button class='btn-view'><i class='fas fa-download'></i></button>";
+                        },
+                        width: 50,
+                        cellClick: function (e, cell) {
+                            var rowData = cell.getRow().getData(); // Get the row data
+                            // openUploadModal(rowData.id); // Open the modal with row id
+                        }
+                    },
+                    {
+                        title: "",
+                        field: "moreOptions",
+                        formatter: function () {
+                            return "<button class='btn-view'><i class='fas fa-ellipsis-v'></i></button>";
+                        },
+                        width: 50
+                    },
+                ],
+            });
+
+            console.log(milestoneId);
+            // Make AJAX request to load data into the table
+            $.ajax({
+                url: '@Url.Action("GetAssignmentApplicants", "Recruitment")',
+                type: 'GET',
+                data: {
+                    jobpostId: '@ViewBag.id',
+                    milestoneId: milestoneId
+                },
+                success: function (data) {
+                    console.log(data);
+                    assignmentTable.setData(data); // Populate the table with data
+                },
+                error: function (error) {
+                    console.log("Error loading data:", error);
+                }
+            });
+        }
+
+        // Function to handle bubble clicks and trigger status change via AJAX
+        function changeAssignmentStatus(assignmentId, applicantId) {
+            $.ajax({
+                url: '@Url.Action("AssignmentApprove", "Recruitment")',
+                type: 'PUT',
+                data: { assignmentId: assignmentId,
+                    applicantId: applicantId },
+                success: function (response) {
+                    console.log('Status updated successfully:', response);
+                    // Optionally refresh the table or update the bubble's color
+                },
+                error: function (error) {
+                    console.log('Error updating status:', error);
+                }
+            });
+        }
+
+
+
+        function openUploadModal() {
+            const selectedRowIds = [];
+
+            // Ensure assignmentTable exists and has rows
+            if (!assignmentTable || assignmentTable.getRows().length === 0) {
+                alert("No data available in the table.");
+                return;
+            }
+
+            // Loop through all rows and check if 'select' column checkbox is checked
+            assignmentTable.getRows().forEach(row => {
+                const checkboxCell = row.getCell("select");
+                if (checkboxCell && checkboxCell.getValue()) {
+                    const rowData = row.getData();
+                    selectedRowIds.push(rowData.applicantId);  // Push the row ID to the array
+                }
+            });
+
+            // If no items were selected, show an alert and exit
+            if (selectedRowIds.length === 0) {
+                alert("Please select at least one item.");
+                return;
+            }
+
+            // Send AJAX request to the server with selected row IDs
+            $.ajax({
+                url: '@Url.Action("Assignment", "Recruitment")',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(selectedRowIds),  // Send only the selected row IDs
+
+                success: function (data, status, xhr) {
+                    // Handle success response
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error downloading files:', error);
+                    alert('An error occurred while downloading the files. Please try again.');
+                }
+            });
+        }
+
+
+
+        $('#assignToEveryoneBtn').on('click', function () {
+            openUploadModal(); // No rowId passed, so it handles all rows
+        });
+
+
+
+        function fetchAssignments(rowId) {
+
+            var comId = 'd5ba21d9-e99c-46a5-8ab0-191039dc4e06';
+
+            $.ajax({
+                url: '@Url.Action("LoadAssignment", "Recruitment")' + '?comId=' + encodeURIComponent(comId),
+                method: 'GET',
+                success: function (data) {
+                    console.log(data);
+                    $('#assignmentList').empty(); // Clear the list first
+
+                    // Iterate over the data and append the assignments to the list
+                    data.forEach(function (assignment) {
+                        $('#assignmentList').append(`
+                            <li class="list-group-item">
+                                <input type="checkbox" name="assignment" value="${assignment.id}"> ${assignment.title}
+                            </li>
+                        `);
+                    });
+
+                    // Store the row ID for saving later
+                    $('#saveAssignment').data('rowId', rowId);
+                },
+                error: function (error) {
+                    console.error('Error fetching assignments:', error);
+                }
+            });
+        }
+
+
+        $('#saveAssignment').on('click', function () {
+            // Get all checked checkboxes
+            var selectedAssignments = [];
+            $('input[name="assignment"]:checked').each(function () {
+                selectedAssignments.push($(this).val()); // Collect checked assignment IDs
+            });
+
+            var rowIds = $(this).data('rowIds'); // Retrieve stored row IDs (single or multiple)
+
+            // Ensure `rowIds` is an array
+            if (!Array.isArray(rowIds)) {
+                rowIds = [rowIds]; // If it's a single ID, wrap it in an array
+            }
+
+            if (selectedAssignments.length > 0 && rowIds.length > 0) {
+                // Send the selected assignment IDs and row IDs to the server
+                $.ajax({
+                    url: '@Url.Action("AssignAssignment", "Recruitment")',
+                    method: 'POST',
+                    data: JSON.stringify({
+                        applicantId: rowIds,         // Array of row IDs (can be single or multiple)
+                        assignmentId: selectedAssignments,  // Array of selected assignment IDs
+                        jobPostId: '@ViewBag.id'     // Job post ID from ViewBag
+                    }),
+                    contentType: 'application/json', // Proper content type for JSON payload
+                    success: function (response) {
+                        console.log('Assignments saved successfully:', response);
+                        $('#assignmentModal').modal('hide'); // Close the modal on success
+                    },
+                    error: function (error) {
+                        console.error('Error saving assignments:', error);
+                    }
+                });
+
+            } else {
+                alert('Please select at least one assignment and row.');
+            }
+        });
+
+
+
+
+
+
+    </script>
+
+   
+}
+

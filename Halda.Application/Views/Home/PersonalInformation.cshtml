@@ -1,0 +1,1477 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+ 
+</style>
+
+<div class="container mt-1 rounded border border-muted p-2 border-1" style="background: #FBFBFB;">
+    <!-- Profile Section -->
+    <div class="row mb-1">
+        <!-- Profile Image -->
+        <div class="col-4 col-md-2 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
+            <img src="~/User/img/borhan.png" alt="Profile Picture" class="pt-3 ps-md-3" style="max-width: 170px; max-height: 170px; border-radius: 50%;">
+        </div>
+        <!-- Profile Details -->
+        <div class="col-8 col-md-10 d-flex flex-column justify-content-center">
+            <h5 class="mb-1" style="color:#414042; font-weight: 700;">Borhan Uddin</h5>
+            <p class="mb-1 profile-custom-p">jr.programmer</p>
+            <div class="d-flex align-items-center mb-1">
+                <img src="~/User/img/smart-phone-01.png" alt="Phone Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">01906750597</p>
+            </div>
+            <div class="d-flex align-items-center mb-1">
+                <img src="~/User/img/mail-01.png" alt="Email Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">smborhan.cse@gmail.com</p>
+            </div>
+            <div class="d-flex align-items-center">
+                <img src="~/User/img/time-02.png" alt="Last Active Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p" >Last Active time today - 12.00 PM</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row border-bottom pb-2 mt-1">
+        <div class="col-12 d-flex align-items-center gap-2">
+            <div class="toggle-switch d-flex align-items-center" id="toggleSwitch">
+                <div class="status-text">Active</div>
+                <div class="slider"></div>
+            </div>
+
+            <div class="tag-container d-flex gap-1">
+                <span class="tag">Training</span>
+                <span class="tag">Learning</span>
+                <span class="tag">Development</span>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="col-12 mt-2">
+        <ul class="nav custom-pills mb-1 pb-2" id="custom-pills-tab" role="tablist" style="border-bottom: 0.5px solid #D4D4D4;">
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link active" id="personal-tab" data-bs-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Personal</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="education-tab" data-bs-toggle="tab" href="#education" role="tab" aria-controls="education" aria-selected="false">Education</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="family-tab" data-bs-toggle="tab" href="#family" role="tab" aria-controls="family" aria-selected="false">Family</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="nominee-tab" data-bs-toggle="tab" href="#nominee" role="tab" aria-controls="nominee" aria-selected="false">Nominee</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact Details</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="document-tab" data-bs-toggle="tab" href="#document" role="tab" aria-controls="document" aria-selected="false">Document</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="bank-details-tab" data-bs-toggle="tab" href="#bank-details" role="tab" aria-controls="bank-details" aria-selected="false">Bank details</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="tax-tab" data-bs-toggle="tab" href="#tax" role="tab" aria-controls="tax" aria-selected="false">Tax</button>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                <!-- Personal Content Here -->
+                
+                <div class="card mb-3" style="border-radius: 8px; color: #414042; ">
+                    <div class="card-header d-flex justify-content-between align-items-center" style="cursor: pointer; background-color: #EDEDED; padding: 10px; border-radius: 5px;">
+                        <h5 style="margin: 0;">Basic Information</h5>
+                        <div class="ms-auto">
+                            <button type="button" class="btn btn-light p-1">
+                                Edit <img src="~/User/img/UX.png" alt="Image 1" class="img-fluid ms-1 " style="max-width: 25px; max-height: 25px;"> 
+                             </button>
+                            
+                        </div>
+                    </div>
+
+
+                  
+                    <div class="card-body">
+                            <div class="row mx-md-3">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        First Name
+                                    </span>
+                                    <h6 style="font-weight: 700;"> Robin</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Last Name
+                                    </span>
+                                    <h6 style="font-weight: 700;"> Mia</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Father ‘s Name
+                                    </span>
+                                    <h6 style="font-weight: 700;"> Nazrul Islam</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Mother’s Name
+                                </span>
+                                    <h6 style="font-weight: 700;"> Rashida Khatun</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Date of Birth
+                                </span>
+                                    <h6 style="font-weight: 700;">20 Feb 1998</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Gender
+                                </span>
+                                    <h6 style="font-weight: 700;">Male</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Religion
+                                </span>
+                                    <h6 style="font-weight: 700;">Islam</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Marital Status
+                                </span>
+                                    <h6 style="font-weight: 700;">Unmarried</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Nationality
+                                </span>
+                                    <h6 style="font-weight: 700;">Bangladeshi</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Passport Issue Date
+                                </span>
+                                    <h6 style="font-weight: 700;">*********</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Passport Number
+                                </span>
+                                    <h6 style="font-weight: 700;">AE21**895</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Secondary Mobile No.
+                                </span>
+                                    <h6 style="font-weight: 700;">+88 01263</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Primary Mobile No.
+                                </span>
+                                    <h6 style="font-weight: 700;">+88 01263</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Primary Email
+                                </span>
+                                    <h6 style="font-weight: 700;">social@gtrbd.com</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Emergency Contact
+                                </span>
+                                    <h6 style="font-weight: 700;">+88 01263</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                    Blood group
+                                </span>
+                                    <h6 style="font-weight: 700;">B Positive </h6>
+                                </div>
+                            </div>
+                        </div>
+                   
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="education" role="tabpanel" aria-labelledby="education-tab">
+                <!-- Education Content Here -->
+                <div class="card-body">
+                    <div class="row mx-md-2 pt-md-2">
+                        <div class="col-md-6 col-6">
+                            <h6 class="pt-3">Past Education</h6>
+                        </div>
+                        <div class="col-md-6 col-6 d-flex justify-content-end">
+                            <!-- Add Education Button -->
+                            <button style="font-weight: 500; border: 1px solid #D0D5DD;" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#educationModal">
+                                <img src="~/User/img/add-01.png" alt="Add Education" class="button-icon pe-1">
+                                <span class="button-text">Add Education</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row mx-md-2 pt-2 pt-md-2">
+                        <div class="col-md-6 col-12 mb-3 mb-md-0">
+                            <div class="education-card">
+                                <div class="education-header">
+                                    <h5 class="education-title">Bachelor in Computer Science (BSc)</h5>
+                                    <p class="education-subtitle">Computer Engineering</p>
+                                </div>
+                                <div class="education-info mt-3">
+                                    <img src="~/User/img/harvad.png" alt="Image 1" class="education-icon me-2">
+                                    <h6 class="education-institution">Harvard University, Cambridge, MA, USA</h6>
+                                </div>
+                                <div class="education-details mt-2">
+                                    <div class="education-detail me-md-5 me-3">
+                                        <img src="~/User/img/graduate-male.png" alt="Image 1" class="detail-icon me-2">
+                                        <h6 class="detail-text">3.71 GPA</h6>
+                                    </div>
+                                    <div class="education-detail">
+                                        <img src="~/User/img/calendar-minus-02.png" alt="Image 1" class="detail-icon me-2">
+                                        <h6 class="detail-text">2018 - 2022</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 mb-3 mb-md-0">
+                            <div class="education-card">
+                                <div class="education-header">
+                                    <h5 class="education-title">Technological Arts</h5>
+                                    <p class="education-subtitle">Diploma</p>
+                                </div>
+                                <div class="education-info mt-3">
+                                    <img src="~/User/img/grafics.png" alt="Image 1" class="education-icon me-2">
+                                    <h6 class="education-institution">Graphic Arts Institute</h6>
+                                </div>
+                                <div class="education-details mt-2">
+                                    <div class="education-detail me-md-5 me-3">
+                                        <img src="~/User/img/graduate-male.png" alt="Image 1" class="detail-icon me-2">
+                                        <h6 class="detail-text">3.57 GPA</h6>
+                                    </div>
+                                    <div class="education-detail">
+                                        <img src="~/User/img/calendar-minus-02.png" alt="Image 1" class="detail-icon me-2">
+                                        <h6 class="detail-text">2014 - 2018</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mx-md-2 pt-md-2">
+                        <div class="col-md-6 col-6">
+                            <h6 class="pt-3">Professional Certification</h6>
+                        </div>
+                        <div class="col-md-6 col-6 d-flex justify-content-end">
+                            <!-- Add Certificate Button -->
+                            <button style="font-weight: 500; border: 1px solid #D0D5DD;" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#certificateModal">
+                                <img src="~/User/img/add-01.png" alt="Add Education" class="button-icon pe-1">
+                                <span class="button-text">Add Certificate</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row mx-md-2 pt-2 pt-md-2">
+                        <div class="col-md-4 col-sm-6 col-12">
+                            <div class="course-card">
+                                <div class="row">
+                                    <div class="col-7 col-sm-8">
+                                        <h5 class="course-title">UI/UX Design</h5>
+                                        <span class="course-provider">By Google</span>
+                                    </div>
+                                    <div class="col-5 col-sm-4 d-flex justify-content-end">
+                                        <img src="~/User/img/coursera.png" alt="Coursera Logo" class="course-icon me-2">
+                                        <h6 class="course-platform">Coursera</h6>
+                                    </div>
+                                    <div class="col-12 d-flex mt-3">
+                                        <img src="~/User/img/browser.png" alt="Browser Icon" class="detail-icon me-2">
+                                        <h6 class="course-duration">6 Month course</h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="row justify-content-end mt-3">
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="family" role="tabpanel" aria-labelledby="family-tab">
+                <!-- Family Content Here -->
+                <div class="mx-md-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Father’s Details</h6>
+                        <button type="button" class="btn btn-light p-1">
+                            <img src="/User/img/UX.png" alt="Image 1" class="img-fluid" style="max-width: 35px; max-height: 35px;">
+                        </button>
+                    </div>
+                    <div class="row" style="padding-bottom: 10px; border-bottom: 1px solid #D4D4D4;">
+                        <div class="col-md-3">
+                            <div class="profile-pic mb-3">
+                                <span><img src="~/User/img/main-upload.png" alt="Image 1" class="upload-button"></span>
+                                <input type="file" id="profilePicInput" class="d-none" accept="image/*">
+                            </div>
+
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        First Name
+                                    </span>
+                                    <h6 style="font-weight: 700;">Nazrul</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Last Name
+                                </span>
+                                    <h6 style="font-weight: 700;">Islam</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Occupation
+                                </span>
+                                    <h6 style="font-weight: 700;">Farmer</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Date of Birth
+                                    </span>
+                                    <h6 style="font-weight: 700;">05 June 1970</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Alive
+                                </span>
+                                    <h6 style="font-weight: 700;">Yes</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Age as of today
+                                    </span>
+                                    <h6 style="font-weight: 700;">54 years</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <label for="certificateUpload" class="custom-placeholder">Upload Font Side</label>
+                                        <div class="upload-container" id="upload-container" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                                            <div class="text-section">
+                                                Drag &amp; Drop <span>/</span>
+                                                <span id="file-name" style="margin-left: 10px; color: #344054;"></span>
+                                            </div>
+                                            <button type="button" onclick="document.getElementById('file-input').click()">
+                                                <span>Upload</span>
+                                                <img src="/User/img/upload-trans.png" alt="Add Education" style="max-width: 30px;" class=" ps-2">
+                                            </button>
+                                            <input id="file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                                        </div>
+                                        <div class="progress-container mt-3" id="progress-container" style="display: none;">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                            </div>
+                                        </div>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <label for="certificateUpload" class="custom-placeholder">Upload Back Side</label>
+                                    <div class="upload-container" id="upload-container" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                                        <div class="text-section">
+                                            Drag &amp; Drop <span>/</span>
+                                            <span id="file-name" style="margin-left: 10px; color: #344054;"></span>
+                                        </div>
+                                        <button type="button" onclick="document.getElementById('file-input').click()">
+                                            <span>Upload</span>
+                                            <img src="/User/img/upload-trans.png" alt="Add Education" style="max-width: 30px;" class=" ps-2">
+                                        </button>
+                                        <input id="file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                                    </div>
+                                    <div class="progress-container mt-3" id="progress-container" style="display: none;">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Mother’s Details</h6>
+                        <button type="button" class="btn btn-light p-1">
+                            <img src="/User/img/UX.png" alt="Image 1" class="img-fluid" style="max-width: 35px; max-height: 35px;">
+                        </button>
+                    </div>
+                    <div class="row" style="padding-bottom: 10px; border-bottom: 1px solid #D4D4D4;">
+                        <div class="col-md-3">
+                            <div class="profile-pic mb-3">
+                                <span><img src="~/User/img/main-upload.png" alt="Image 1" class="upload-button"></span>
+                                <input type="file" id="profilePicInput" class="d-none" accept="image/*">
+                            </div>
+
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        First Name
+                                    </span>
+                                    <h6 style="font-weight: 700;">Rashida</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Last Name
+                                    </span>
+                                    <h6 style="font-weight: 700;">Islam</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Occupation
+                                    </span>
+                                    <h6 style="font-weight: 700;">Farmer</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Date of Birth
+                                    </span>
+                                    <h6 style="font-weight: 700;">05 June 1970</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Alive
+                                    </span>
+                                    <h6 style="font-weight: 700;">Yes</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Age as of today
+                                    </span>
+                                    <h6 style="font-weight: 700;">54 years</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <label for="certificateUpload" class="custom-placeholder">Upload Font Side</label>
+                                    <div class="upload-container" id="upload-container" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                                        <div class="text-section">
+                                            Drag &amp; Drop <span>/</span>
+                                            <span id="file-name" style="margin-left: 10px; color: #344054;"></span>
+                                        </div>
+                                        <button type="button" onclick="document.getElementById('file-input').click()">
+                                            <span>Upload</span>
+                                            <img src="/User/img/upload-trans.png" alt="Add Education" style="max-width: 30px;" class=" ps-2">
+                                        </button>
+                                        <input id="file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                                    </div>
+                                    <div class="progress-container mt-3" id="progress-container" style="display: none;">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <label for="certificateUpload" class="custom-placeholder">Upload Back Side</label>
+                                    <div class="upload-container" id="upload-container" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                                        <div class="text-section">
+                                            Drag &amp; Drop <span>/</span>
+                                            <span id="file-name" style="margin-left: 10px; color: #344054;"></span>
+                                        </div>
+                                        <button type="button" onclick="document.getElementById('file-input').click()">
+                                            <span>Upload</span>
+                                            <img src="/User/img/upload-trans.png" alt="Add Education" style="max-width: 30px;" class=" ps-2">
+                                        </button>
+                                        <input id="file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                                    </div>
+                                    <div class="progress-container mt-3" id="progress-container" style="display: none;">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end mt-3">
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="nominee" role="tabpanel" aria-labelledby="nominee-tab">
+                <!-- Nominee Content Here -->
+
+                <div class="mx-md-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">First Nominee’s Details</h6>
+                        <button type="button" class="btn btn-light p-1">
+                            <img src="/User/img/UX.png" alt="Image 1" class="img-fluid" style="max-width: 35px; max-height: 35px;">
+                        </button>
+                    </div>
+                    <div class="row" style="padding-bottom: 10px; border-bottom: 1px solid #D4D4D4;">
+                        <div class="col-md-3">
+                            <div class="profile-pic mb-3">
+                                <span><img src="~/User/img/main-upload.png" alt="Image 1" class="upload-button"></span>
+                                <input type="file" id="profilePicInput" class="d-none" accept="image/*">
+                            </div>
+
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        First Name
+                                    </span>
+                                    <h6 style="font-weight: 700;">Nazrul</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Last Name
+                                    </span>
+                                    <h6 style="font-weight: 700;">Islam</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Occupation
+                                    </span>
+                                    <h6 style="font-weight: 700;">Farmer</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Date of Birth
+                                    </span>
+                                    <h6 style="font-weight: 700;">05 June 1970</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Relationship
+                                    </span>
+                                    <h6 style="font-weight: 700;">Mother</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Age as of today
+                                    </span>
+                                    <h6 style="font-weight: 700;">54 years</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <label for="certificateUpload" class="custom-placeholder">Upload Font Side</label>
+                                    <div class="upload-container" id="upload-container" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                                        <div class="text-section">
+                                            Drag &amp; Drop <span>/</span>
+                                            <span id="file-name" style="margin-left: 10px; color: #344054;"></span>
+                                        </div>
+                                        <button type="button" onclick="document.getElementById('file-input').click()">
+                                            <span>Upload</span>
+                                            <img src="/User/img/upload-trans.png" alt="Add Education" style="max-width: 30px;" class=" ps-2">
+                                        </button>
+                                        <input id="file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                                    </div>
+                                    <div class="progress-container mt-3" id="progress-container" style="display: none;">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <label for="certificateUpload" class="custom-placeholder">Upload Back Side</label>
+                                    <div class="upload-container" id="upload-container" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                                        <div class="text-section">
+                                            Drag &amp; Drop <span>/</span>
+                                            <span id="file-name" style="margin-left: 10px; color: #344054;"></span>
+                                        </div>
+                                        <button type="button" onclick="document.getElementById('file-input').click()">
+                                            <span>Upload</span>
+                                            <img src="/User/img/upload-trans.png" alt="Add Education" style="max-width: 30px;" class=" ps-2">
+                                        </button>
+                                        <input id="file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                                    </div>
+                                    <div class="progress-container mt-3" id="progress-container" style="display: none;">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Second Nominee’s Details</h6>
+                        <button type="button" class="btn btn-light p-1">
+                            <img src="/User/img/UX.png" alt="Image 1" class="img-fluid" style="max-width: 35px; max-height: 35px;">
+                        </button>
+                    </div>
+                    <div class="row" style="padding-bottom: 10px; border-bottom: 1px solid #D4D4D4;">
+                        <div class="col-md-3">
+                            <div class="profile-pic mb-3">
+                                <span><img src="~/User/img/main-upload.png" alt="Image 1" class="upload-button"></span>
+                                <input type="file" id="profilePicInput" class="d-none" accept="image/*">
+                            </div>
+
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        First Name
+                                    </span>
+                                    <h6 style="font-weight: 700;">Rashida</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Last Name
+                                    </span>
+                                    <h6 style="font-weight: 700;">Islam</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Occupation
+                                    </span>
+                                    <h6 style="font-weight: 700;">Farmer</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Date of Birth
+                                    </span>
+                                    <h6 style="font-weight: 700;">05 June 1970</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Relationship
+                                    </span>
+                                    <h6 style="font-weight: 700;">Mother</h6>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">
+                                        Age as of today
+                                    </span>
+                                    <h6 style="font-weight: 700;">54 years</h6>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <label for="certificateUpload" class="custom-placeholder">Upload Font Side</label>
+                                    <div class="upload-container" id="upload-container" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                                        <div class="text-section">
+                                            Drag &amp; Drop <span>/</span>
+                                            <span id="file-name" style="margin-left: 10px; color: #344054;"></span>
+                                        </div>
+                                        <button type="button" onclick="document.getElementById('file-input').click()">
+                                            <span>Upload</span>
+                                            <img src="/User/img/upload-trans.png" alt="Add Education" style="max-width: 30px;" class=" ps-2">
+                                        </button>
+                                        <input id="file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                                    </div>
+                                    <div class="progress-container mt-3" id="progress-container" style="display: none;">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 col-6 mb-1">
+                                    <label for="certificateUpload" class="custom-placeholder">Upload Back Side</label>
+                                    <div class="upload-container" id="upload-container" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+                                        <div class="text-section">
+                                            Drag &amp; Drop <span>/</span>
+                                            <span id="file-name" style="margin-left: 10px; color: #344054;"></span>
+                                        </div>
+                                        <button type="button" onclick="document.getElementById('file-input').click()">
+                                            <span>Upload</span>
+                                            <img src="/User/img/upload-trans.png" alt="Add Education" style="max-width: 30px;" class=" ps-2">
+                                        </button>
+                                        <input id="file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                                    </div>
+                                    <div class="progress-container mt-3" id="progress-container" style="display: none;">
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end mt-3">
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Save</button>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <!-- Contact Details Content Here -->
+                <div class="mx-md-2 row">
+                    <div class="col-12 col-md-6 p-2 " style="border-right: 1px solid #D4D4D4; border-bottom: 1px solid #D4D4D4; ">
+                        <div class="row">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">Present  Details</h6>
+                                <button type="button" class="btn btn-light p-1">
+                                    <img src="/User/img/UX.png" alt="Image 1" class="img-fluid" style="max-width: 35px; max-height: 35px;">
+                                </button>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Apartment/Building
+                                </span>
+                                <h6 style="font-weight: 700;"> **** Vila</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Street
+                                </span>
+                                <h6 style="font-weight: 700;"> ******</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    City
+                                </span>
+                                <h6 style="font-weight: 700;"> Dhaka</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    District
+                                </span>
+                                <h6 style="font-weight: 700;"> Uttara</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Country
+                                </span>
+                                <h6 style="font-weight: 700;"> Bangladesh</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Postal/Zip Code
+                                </span>
+                                <h6 style="font-weight: 700;">1230</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 p-2" style="border-bottom: 1px solid #D4D4D4; ">
+                        <div class="row">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">Permanent  Details</h6>
+                                <button type="button" class="btn btn-light p-1">
+                                    <img src="/User/img/UX.png" alt="Image 1" class="img-fluid" style="max-width: 35px; max-height: 35px;">
+                                </button>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    House name
+                                </span>
+                                <h6 style="font-weight: 700;"> **** Vila</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Road No.
+                                </span>
+                                <h6 style="font-weight: 700;"> ******</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Village
+                                </span>
+                                <h6 style="font-weight: 700;"> Bakta</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    District
+                                </span>
+                                <h6 style="font-weight: 700;"> Mymenshingh</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Post Office
+                                </span>
+                                <h6 style="font-weight: 700;"> Bakta Bazar</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Postal/Zip Code
+                                </span>
+                                <h6 style="font-weight: 700;"> 1230</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 p-2" style="border-right: 1px solid #D4D4D4; border-bottom: 1px solid #D4D4D4; ">
+                        <div class="row">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">Emergency Contacts <span style="background-color: #E0D1FC; padding: 5px; border-radius: 6px;">Frist</span> </h6>
+                                <button type="button" class="btn btn-light p-1">
+                                    <img src="/User/img/UX.png" alt="Image 1" class="img-fluid" style="max-width: 35px; max-height: 35px;">
+                                </button>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    First Name
+                                </span>
+                                <h6 style="font-weight: 700;"> Nazrul</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Last Name
+                                </span>
+                                <h6 style="font-weight: 700;"> Islam</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Relationship
+                                </span>
+                                <h6 style="font-weight: 700;"> Father</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Phone Number
+                                </span>
+                                <h6 style="font-weight: 700;"> +880894563</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Occupation
+                                </span>
+                                <h6 style="font-weight: 700;">Farmer</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Office Address
+                                </span>
+                                <h6 style="font-weight: 700;">N/A</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 p-2 " style=" border-bottom: 1px solid #D4D4D4; ">
+                        <div class="row">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0">Emergency Contacts <span style="background-color: #E0D1FC; padding: 5px; border-radius: 6px;">Second</span> </h6>
+                                <button type="button" class="btn btn-light p-1">
+                                    <img src="/User/img/UX.png" alt="Image 1" class="img-fluid" style="max-width: 35px; max-height: 35px;">
+                                </button>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    First Name
+                                </span>
+                                <h6 style="font-weight: 700;"> Nazrul</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Last Name
+                                </span>
+                                <h6 style="font-weight: 700;"> Islam</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Relationship
+                                </span>
+                                <h6 style="font-weight: 700;"> Father</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Phone Number
+                                </span>
+                                <h6 style="font-weight: 700;"> +880894563</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Occupation
+                                </span>
+                                <h6 style="font-weight: 700;">Farmer</h6>
+                            </div>
+                            <div class="col-md-6 col-6 mb-1">
+                                <span class="custom-placeholder">
+                                    Office Address
+                                </span>
+                                <h6 style="font-weight: 700;">N/A</h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end mt-3">
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
+                <!-- Document Content Here -->
+                <div class="row pt-3 g-5 mb-4 text-center">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/pdf 2.png" alt="Resume" class="doc-upload" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">Resume</p>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/pdf 2.png" alt="Resume" class="doc-upload" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">Offer letter</p>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/db view.png" alt="Resume" class="doc-upload-db" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">Pay-slip</p>
+                    </div>
+
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/db view.png" alt="Resume" class="doc-upload-db" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">Birth Certificate </p>
+                    </div>
+
+                    
+
+
+                    <!-- Repeat for other file upload items -->
+                </div>
+
+                <div class="row g-4 mb-4 text-center">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/pdf 2.png" alt="Resume" class="doc-upload" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">National ID Card <br /> (Front Side)</p>
+                    </div>
+
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/pdf 2.png" alt="Resume" class="doc-upload" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">National ID Card <br /> (Back Side)</p>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/pdf 2.png" alt="Resume" class="doc-upload" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">Passport</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h6>Declaration</h6>
+                    <p class="card-declar">
+                        Congratulation! You have shortlisted for the next round. To be selected for the final viva you need to send us an assignment. Please note, only selected candidates will get the opportunity.
+                    </p>
+                    <div class="row mb-3 align-items-center">
+                        <!-- Employee Signature Upload -->
+                        <div class="col-md-2">
+                            <label for="signatureUpload" class="custom-label">Employee signature</label>
+                            <div class="signature-upload position-relative border rounded" style="width: 175px; height: 44px; display: flex; align-items: center; overflow: hidden;">
+                                <!-- Signature Preview -->
+                                <img id="signaturePreview" src="#" alt="Signature Preview" class="position-absolute d-none" style="left: 0; top: 0; height: 100%; object-fit: contain;">
+                                <!-- Upload Icon -->
+                                <label for="signatureUpload" class="position-absolute" style="top: 0; right: 0; padding: 10px; cursor: pointer;">
+                                    <img src="/User/img/main-upload.png" alt="Upload Icon" style="max-width: 30px;">
+                                </label>
+                                <!-- File Input -->
+                                <input type="file" id="signatureUpload" name="signatureUpload" accept="image/*" class="form-control responsive-input position-absolute" style="top: 0; left: 0; width: 100%; height: 100%; opacity: 0;" onchange="previewSignature()">
+                            </div>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="col-md-3">
+                            <label for="date" class="custom-label">Date</label>
+                            <div class="date-input">
+                                <input type="date" class="form-control responsive-input" id="date">
+                            </div>
+                        </div>
+
+                        <!-- Save Button -->
+                        <div class="col-md-7 text-end">
+                            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px; margin-top: 30px;">Save</button>
+                        </div>
+                    </div>
+                </div>
+                    <!-- Repeat for other file upload items -->
+             </div>
+            
+            <div class="tab-pane fade" id="bank-details" role="tabpanel" aria-labelledby="bank-details-tab">
+                <!-- Bank Details Content Here -->
+                  <div class="container mt-3">
+                      <div style="display: flex; align-items: center;">
+                    <h6 style="margin-right: 20px; margin-top: 5px;">Select Account Type*</h6>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="accountType" id="bankOption" value="bank" checked>
+                        <label class="form-check-label" for="bankOption">Bank</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="accountType" id="cardOption" value="card">
+                        <label class="form-check-label" for="cardOption">Credit Card</label>
+                    </div>
+                </div>
+                
+                
+                    <form id="bankForm" class="form-section active mt-4">
+                        <div class="mb-3">
+                            <label for="accountName" class="custom-label">Account Name*</label>
+                            <input type="text" class="form-control responsive-input responsive-input" id="accountName" placeholder="your name">
+                        </div>
+
+                         <div class="mb-3">
+                             <label for="accountNumber" class="custom-label">Account Number*</label>
+                             <input type="text" class="form-control responsive-input" id="accountNumber" placeholder="123654789">
+                         </div>
+                         <div class="mb-3">
+                             <label for="bankName" class="custom-label">Bank Name*</label>
+                             <input type="text" class="form-control responsive-input" id="bankName" placeholder="bank name">
+                         </div>
+                         <div class="mb-3">
+                             <label for="routingNumber" class="custom-label">Routing Number</label>
+                             <input type="text" class="form-control responsive-input" id="routingNumber" placeholder="12584639">
+                         </div>
+                         <div class="mb-3">
+                             <label for="branch" class="custom-label">Branch</label>
+                             <input type="text" class="form-control responsive-input" id="branch" placeholder="uttara">
+                         </div>
+                    </form>
+                
+                    <form id="cardForm" class="form-section mt-4">
+                    <div class="mb-3">
+                        <label for="cardHolderName" class="custom-label">Card Holder Name*</label>
+                        <input type="text" class="form-control responsive-input" id="cardHolderName" placeholder="your name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cardNumber" class="custom-label">Card Number*</label>
+                        <input type="text" class="form-control responsive-input" id="cardNumber" placeholder="123654789">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="expiryDate" class="custom-label">Expiry Date*</label>
+                            <input type="text" class="form-control responsive-input" id="expiryDate" placeholder="Year/Month">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cvv" class="custom-label">CVV*</label>
+                            <input type="text" class="form-control responsive-input" id="cvv" placeholder="CVV">
+                        </div>
+                    </div>
+                </form>
+                
+                      <div class="row justify-content-end mt-3">
+                          <div class="col-auto">
+                              <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Save</button>
+                          </div>
+                      </div>
+                  </div>
+             </div>
+
+            <div class="tab-pane fade" id="tax" role="tabpanel" aria-labelledby="tax-tab">
+                <!-- Tax Content Here -->
+                <form class="tax-form">
+                    <div class="mb-3">
+                        <label for="taxYear" class="custom-label">Tax year</label>
+                        <input type="text" class="form-control responsive-input" id="taxYear" placeholder="2022 July - 2023 June">
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="custom-label">Name</label>
+                        <input type="text" class="form-control responsive-input" id="name" placeholder="Name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="returnSubmit" class="custom-label">Return Submit</label>
+                        <input type="text" class="form-control responsive-input" id="returnSubmit" placeholder="No">
+                    </div>
+                    <div class="mb-3">
+                        <label for="submitDate" class="custom-label">Return submit date</label>
+                        <input type="date" class="form-control responsive-input" id="submitDate" placeholder="19 Oct 2023">
+                    </div>
+                    <div class="mb-3">
+                        <label for="acknowledgementDate" class="custom-label">Acknowledgement slip receive date</label>
+                        <input type="date" class="form-control responsive-input" id="acknowledgementDate" placeholder="10 Sep 2023">
+                    </div>
+                    <div class="mb-3">
+                        <label for="certificateReceive" class="custom-label">Tax certificate receive</label>
+                        <input type="text" class="form-control responsive-input" id="certificateReceive" placeholder="No">
+                    </div>
+                    <div class="mb-3">
+                        <label for="taxExtension" class="custom-label">Tax extension</label>
+                        <input type="text" class="form-control responsive-input" id="taxExtension" placeholder="No">
+                    </div>
+                    <div class="mb-3">
+                        <label for="bankName" class="custom-label">Bank Name*</label>
+                        <input type="text" class="form-control responsive-input" id="bankName" placeholder="Bank name">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+@* ******************* MODALS start *********** *@
+
+<!-- Modal Education -->
+<div class="modal fade" id="educationModal" tabindex="-1" aria-labelledby="educationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #EDEDED; padding: 10px;">
+                <h6 class="modal-title" id="educationModalLabel" style="font-size: 18px; color: #414042;">Adding New Education</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="degree" class="custom-label">Degree</label>
+                        <input type="text" class="form-control responsive-input" id="degree" value="Bachelor in Computer Science" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="major" class="custom-label">Major</label>
+                        <select class="form-select" id="major">
+                            <option selected>Computer Engineering</option>
+                            <option>Electrical Engineering</option>
+                            <option>Mechanical Engineering</option>
+                            <option>Civil Engineering</option>
+                            <option>Chemical Engineering</option>
+                            <option>Aerospace Engineering</option>
+                            <option>Industrial Engineering</option>
+                            <option>Software Engineering</option>
+                            <option>Information Technology</option>
+                            <option>Data Science</option>
+                        </select>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="university" class="custom-label">University</label>
+                        <select class="form-select" id="university">
+                            <option selected>University of Dhaka</option>
+                            <option>Bangladesh University of Engineering and Technology (BUET)</option>
+                            <option>Jahangirnagar University</option>
+                            <option>North South University</option>
+                            <option>BRAC University</option>
+                            <option>Khulna University of Engineering and Technology (KUET)</option>
+                            <option>Chittagong University of Engineering and Technology (CUET)</option>
+                            <option>University of Rajshahi</option>
+                            <option>Dhaka International University</option>
+                            <option>United International University (UIU)</option>
+                        </select>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="startYear" class="custom-label">Start Year</label>
+                            <input type="month" class="form-control responsive-input" id="startYear" value="2018-06">
+                        </div>
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="endYear" class="custom-label">End Year</label>
+                            <input type="month" class="form-control responsive-input" id="endYear" value="2022-04">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="gpa" class="custom-label">GPA</label>
+                            <input type="number" class="form-control responsive-input" id="gpa" value="2.5" step="0.1" min="1" max="4">
+                        </div>
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="gpaOutOf" class="custom-label">Out Of</label>
+                            <input type="number" class="form-control responsive-input" id="gpaOutOf" value="4.0" disabled>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn " style=" border-color: #4AA147; border: 1px solid #00000033; font-size: 14px;" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Save Changes</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Certificate -->
+<div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="educationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #EDEDED; padding: 10px;">
+                <h6 class="modal-title" id="educationModalLabel" style="font-size: 18px; color: #414042;">Adding new  certificate</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="degree" class="custom-label">Degree</label>
+                        <input type="text" class="form-control responsive-input" id="degree" value="Bachelor in Computer Science" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="major" class="custom-label">Major</label>
+                        <select class="form-select" id="major">
+                            <option selected>Computer Engineering</option>
+                            <option>Electrical Engineering</option>
+                            <option>Mechanical Engineering</option>
+                            <option>Civil Engineering</option>
+                            <option>Chemical Engineering</option>
+                            <option>Aerospace Engineering</option>
+                            <option>Industrial Engineering</option>
+                            <option>Software Engineering</option>
+                            <option>Information Technology</option>
+                            <option>Data Science</option>
+                        </select>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="university" class="custom-label">University</label>
+                        <select class="form-select" id="university">
+                            <option selected>University of Dhaka</option>
+                            <option>Bangladesh University of Engineering and Technology (BUET)</option>
+                            <option>Jahangirnagar University</option>
+                            <option>North South University</option>
+                            <option>BRAC University</option>
+                            <option>Khulna University of Engineering and Technology (KUET)</option>
+                            <option>Chittagong University of Engineering and Technology (CUET)</option>
+                            <option>University of Rajshahi</option>
+                            <option>Dhaka International University</option>
+                            <option>United International University (UIU)</option>
+                        </select>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="startYear" class="custom-label">Start Year</label>
+                            <input type="month" class="form-control responsive-input" id="startYear" value="2018-06">
+                        </div>
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="endYear" class="custom-label">End Year</label>
+                            <input type="month" class="form-control responsive-input" id="endYear" value="2022-04">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="certificateUpload" class="custom-label">Upload Certificate</label>
+                            <div class="upload-container" id="upload-container"
+                                 ondragover="handleDragOver(event)"
+                                 ondragleave="handleDragLeave(event)"
+                                 ondrop="handleDrop(event)">
+                                <div class="text-section">
+                                    Drag & Drop <span>/</span>
+                                    <span id="file-name" style="margin-left: 10px; color: #344054;"></span>
+                                </div>
+                                <button type="button" onclick="document.getElementById('file-input').click()">
+                                    <span>Upload</span>
+                                    <img src="~/User/img/upload-trans.png" alt="Add Education" style="max-width: 30px;" class=" ps-2">
+                                    @* <i class="fas fa-upload"></i> <!-- Font Awesome Upload Icon --> *@
+                                </button>
+                                <input id="file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                            </div>
+                            <div class="progress-container mt-3" id="progress-container" style="display: none;">
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn " style=" border-color: #4AA147; border: 1px solid #00000033; font-size: 14px;" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Save Changes</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ******************* MODALS start *********** *@
+@section Scripts {
+
+    <script>
+        const toggleSwitch = document.getElementById('toggleSwitch');
+        const statusText = toggleSwitch.querySelector('.status-text');
+
+        toggleSwitch.addEventListener('click', function () {
+            this.classList.toggle('off');
+            if (this.classList.contains('off')) {
+                statusText.textContent = 'Deactive';
+            } else {
+                statusText.textContent = 'Active';
+            }
+        });
+
+
+
+    </script>
+
+    <script>
+        function handleFileUpload(event) {
+            const files = event.target.files || event.dataTransfer.files;
+            let fileName = files.length ? files[0].name : '';
+
+            const maxLength = 15; // Set your desired character limit
+            if (fileName.length > maxLength) {
+                fileName = fileName.substring(0, maxLength) + '...'; // Truncate and add ellipsis
+            }
+
+            document.getElementById('file-name').textContent = fileName;
+
+            // Show progress bar
+            document.getElementById('progress-container').style.display = 'block';
+
+            // Simulate upload progress
+            simulateFileUpload();
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            document.getElementById('upload-container').classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            document.getElementById('upload-container').classList.remove('dragover');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            document.getElementById('upload-container').classList.remove('dragover');
+            handleFileUpload(event);
+        }
+
+        function simulateFileUpload() {
+            const progressBar = document.getElementById('progress-bar');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('progress-container').style.display = 'none';
+                    }, 500); // Hide progress bar after a short delay
+                }
+            }, 300); // Simulate progress every 300ms
+        }
+
+        document.querySelector('.profile-pic').addEventListener('click', () => {
+            document.getElementById('profilePicInput').click();
+        });
+
+        document.getElementById('profilePicInput').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.querySelector('.profile-pic').style.backgroundImage = `url(${e.target.result})`;
+                    document.querySelector('.profile-pic span').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updateFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : 'No file chosen';
+            const truncatedFileName = fileName.length > 15 ? fileName.substring(0, 15) + '...' : fileName;
+            const fileNameElement = input.nextElementSibling;
+            fileNameElement.textContent = truncatedFileName;
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const bankOption = document.getElementById('bankOption');
+            const cardOption = document.getElementById('cardOption');
+            const bankForm = document.getElementById('bankForm');
+            const cardForm = document.getElementById('cardForm');
+
+            bankOption.addEventListener('click', function () {
+                bankForm.classList.add('active');
+                cardForm.classList.remove('active');
+            });
+
+            cardOption.addEventListener('click', function () {
+                cardForm.classList.add('active');
+                bankForm.classList.remove('active');
+            });
+        });
+
+        function previewSignature() {
+            var file = document.getElementById('signatureUpload').files[0];
+            var preview = document.getElementById('signaturePreview');
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                preview.classList.remove('d-none');
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "#";
+                preview.classList.add('d-none');
+            }
+        }
+
+        function setCurrentDate() {
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+        }
+
+        // Set current date on page load
+        window.onload = setCurrentDate;
+    </script>
+}

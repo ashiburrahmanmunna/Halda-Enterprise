@@ -1,0 +1,143 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+    .day {
+        border: 1px solid #D0D5DD;
+        border-radius: 10px;
+    }
+
+    .normal-day {
+        background-color: #D3F6D2;
+    }
+
+    .friday {
+        background-color: #FFA08B;
+    }
+</style>
+
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2 border-1">
+
+    <div class="row mx-0 mb-2" style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+
+        <div class="p-2 col-12 d-flex align-items-center gap-2">
+            <img alt="calander" src="~/User/img/calender.png" width="40px">
+            <h5 class="header-text-4 mb-0">January 2023 </h5>
+            
+        </div>
+
+    </div>
+
+    <div class="row mx-0 " style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+
+        <div class="pt-2 pb-2" style="border-bottom: 1px solid #D4D4D4; display: flex; justify-content: space-between; align-items: center;">
+            <span class="mt-2" style="font-weight: 500; font-size: 20px;">Workdays</span>
+        </div>
+
+
+        <div class="col-md-5 pt-4 col-12 d-flex align-items-center gap-2">
+            <div class="input-group " style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FAFAFAED; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                    <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                </span>
+            </div>
+        </div>
+
+        <div class=" text-center mt-4">
+            <div class="row g-3">
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Saturday<br>9 am - 6 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Sunday<br>9 am - 1 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Monday<br>9 am - 6 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Tuesday<br>9 am - 6 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Wednesday<br>9 am - 6 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Thursday<br>9 am - 6 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day friday">Friday<br>9 am - 6 pm</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-2 mt-3 pb-2" style="border-bottom: 1px solid #D4D4D4; display: flex; justify-content: space-between; align-items: center;">
+            <span class="mt-2" style="font-weight: 500; font-size: 20px;">Holidays</span>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <span>Paid Time Off:</span>
+            </div>
+            <div class="col-md-8">
+                <p>Both full-time and part-time employees are entitled to 18 working days...   Read more</p>
+            </div>
+            <div class="col-md-4">
+                <span>Public Holidays:</span>
+            </div>
+            <div class="col-md-8">
+                <p>Bangladesh celebrates 20 national holidays over 24 days.</p>
+            </div>
+        </div>
+
+        <div class="col-md-5 pt-4 col-12 d-flex align-items-center gap-2">
+            <div class="input-group " style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FAFAFAED; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                    <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                </span>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <h5 style="font-weight: 600;">National public holidays:</h5>
+
+            <div id="holiday-table"></div>
+            <button id="add-row-btn" class="btn " style="margin-top: 20px;"><i class="fa-solid fa-plus"></i></button>
+
+        </div>
+        <div class="d-flex justify-content-end" style="margin-top: 30px;">
+            <button type="button" class="btn btn-success" style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Save</button>
+        </div>
+
+    </div>
+
+</div>
+
+ <script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener("DOMContentLoaded", function () {
+        // Initialize Tabulator
+        var table = new Tabulator("#holiday-table", {
+            layout: "fitColumns", // Fit columns to width of table
+            placeholder: "No holidays added yet", // Display message when no data is available
+            columns: [
+                { title: "Holiday Name", field: "name", editor: "input", headerHozAlign: "center" }, // Editable text input
+                { title: "Date", field: "date", editor: "date", headerHozAlign: "center" }, // Editable date input
+                { title: "Day", field: "day", editor: "input", headerHozAlign: "center" } // Editable text input
+            ],
+            pagination: "local",
+            paginationSize: 6,
+            paginationButtonCount: 4,
+            paginationSizeSelector: [10, 25, 50, 100],
+            data: [], // Initial empty data
+        });
+
+        // Add new row when the button is clicked
+        document.getElementById("add-row-btn").addEventListener("click", function () {
+            // Add a new empty row to the bottom of the table for user input
+            table.addRow({ name: "", date: "", day: "" }, false); // Add new row at the bottom
+        });
+    });
+ </script>

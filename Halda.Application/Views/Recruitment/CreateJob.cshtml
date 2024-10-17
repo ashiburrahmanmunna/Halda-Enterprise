@@ -1,0 +1,567 @@
+﻿@{
+    ViewData["Title"] = "Job";
+    Layout = "_LayoutAdmin";
+}
+
+
+
+<input type="hidden" id="designationId" value="@ViewBag.Id" />
+<div class="container px-5 rounded border border-muted p-2 border-1" style="background: #FBFBFB;">
+    <div class="col-lg-12">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <div style="font-size: 18px; font-weight: 500; text-align: left; color: #414042;">
+                    We are hiring <img src="~/User/img/hand.png" alt="hand" style="max-width: 28px; margin-top: -5px;">
+                </div>
+
+                <div style="font-size: 48px; font-weight: 900; line-height: 55px; text-align: left; background: linear-gradient(101.58deg, #3087ED 3.71%, #31BC69 88.87%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    <input type="text" id="designationName" value="Your Designation" style="font-size: 48px; font-weight: 900; line-height: 55px; text-align: left; background: linear-gradient(101.58deg, #3087ED 3.71%, #31BC69 88.87%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; border: none; outline: none; width: 100%; padding: 0; margin: 0;">
+                    <img src="~/User/img/Clip path group.png" alt="clip-path" style="max-width: 20px; margin-top: -20px;">
+                    <br>
+                </div>
+
+
+
+            </div>
+            <div>
+                <img src="~/User/img/arrow.png" alt="arrow" class="pt-2" style="max-width: 50px; ">
+                <img src="~/User/img/ux.png" alt="arrow" class="pt-2" style="max-width: 35px; ">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            @* <div class="mt-3">
+                <span style="font-size: 14px;  font-weight: 500; line-height: 11.9px; text-align: left; color: #414042;">
+                    Full Time   //   On site <img src="~/User/img/arrow2.png" alt="arrow" class="" style="max-width: 25px; ">
+                </span>
+            </div> *@
+
+            <div class="form-group">
+                <label class="custom-title-font">Job Type:</label>
+                <div id="job-types" class="tags mt-3">
+                    <input type="text" class="form-control border-2" id="job-type-input" placeholder="Type and press Enter or comma">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="custom-title-font">Job Tag:</label>
+                <div id="job-tags" class="tags mt-3 d-flex align-items-center flex-wrap">
+                    <input type="text" class="form-control border-2" id="job-tag-input" placeholder="Type and press Enter or comma">
+                </div>
+            </div>
+
+
+            <div class="tags mt-1">
+                <p class="tag" style="font-size: 12px;">
+                    <img src="~/User/img/elements.png" alt="elements" style="max-width: 15px; max-height: 15px; margin-right: 5px;">
+                    <input type="email" id="email-input" placeholder="Enter email" style="border: none; outline: none; font-size: 12px; padding: 0; margin: 0; display: inline; width: auto;">
+                </p>
+            </div>
+
+
+        </div>
+        <div class="col-lg-6">
+            <div class="d-flex align-items-center border-bottom p-1">
+                <img src="~/User/img/calendar-04.png" alt="location" class="pt-2" style="max-width: 25px;">
+                <p class="pt-2" style="font-size: 13px; margin-left: 5px; margin-bottom: 0; font-weight: 600; color: #414042;">Last Date:</p>
+                <input type="date" id="date-input" style="border: none; outline: none; font-size: 13px; margin-left: 10px;">
+            </div>
+
+            <div class="d-flex align-items-end border-bottom p-1">
+                <img src="~/User/img/money-receive-flow-02.png" alt="location" class="pt-2" style="max-width: 25px;">
+                <p class="pt-2" style="font-size: 13px; margin-left: 5px; margin-bottom: 0; font-weight: 600; color: #414042;">৳</p>
+                <input type="text" id="salary-min" placeholder="Min" style="border: none; outline: none; font-size: 13px; margin-left: 5px; padding: 0; width: 60px;">
+                <p class="pt-2" style="font-size: 13px; margin-left: 5px; margin-bottom: 0; font-weight: 600; color: #414042;">-</p>
+                <p class="pt-2" style="font-size: 13px; margin-left: 5px; margin-bottom: 0; font-weight: 600; color: #414042;">৳</p>
+                <input type="text" id="salary-max" placeholder="Max" style="border: none; outline: none; font-size: 13px; margin-left: 5px; padding: 0; width: 60px;">
+            </div>
+
+
+            <div class="d-flex align-items-center border-bottom p-1">
+                <img src="~/User/img/location.png" alt="location" class="pt-2" style="max-width: 30px;">
+                <input type="text" id="location-input" placeholder="Enter location" style="border: none; outline: none; font-size: 13px; margin-left: 5px; padding: 0; flex-grow: 1;">
+            </div>
+
+           
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="row">
+            <!-- Description Section -->
+            <div class="col-lg-6">
+                <div class="mt-3">
+                    <div class="form-group">
+                        <label class="custom-title-font" for="description">Description:</label>
+                        <textarea class="form-control border-2" id="description" rows="10"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Requirement Milestone Section -->
+            <div class="col-lg-6">
+                <div class="container mt-3" style="max-width: 100%; background-color: #FFFFFF; border: 1px solid #ddd; border-radius: 8px; padding: 20px; box-shadow: 2px 4px 40px rgba(0, 0, 0, 0.08);">
+                    <h5>Requirement Milestone</h5>
+                    <div id="milestoneList" style="min-height: 50px;">
+                        <!-- Milestone items will be dynamically added here -->
+                    </div>
+                    <button id="addStepBtn" class="btn" style="display: flex; align-items: center; margin-top: 10px;">
+                        <img src="~/User/img/Plus Circle Icon.png" alt="Image 5" style="max-width: 20px; margin-right: 10px;">
+                        <span style="font-weight: 600;">Add Steps</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other Sections -->
+        <div class="mt-4">
+            <div class="form-group">
+                <label class="custom-title-font">Responsibilities:</label>
+                <div id="responsibilities">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control border-2">
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button class="btn fs-6 fw-bold p-1 add-responsibility mb-2" type="button" style="background: #F0F0F0;">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="custom-title-font">Qualifications:</label>
+                <div id="qualifications">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control border-2">
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button class="btn fs-6 fw-bold p-1 add-qualification mb-2" type="button" style="background: #F0F0F0;">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="custom-title-font">Benefits:</label>
+                <div id="benefits">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control border-2">
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button class="btn fs-6 fw-bold p-1 add-benefit mb-2" type="button" style="background: #F0F0F0;">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="custom-title-font">Other Information:</label>
+                <div id="other-information">
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control border-2">
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button class="btn fs-6 fw-bold p-1 add-other-information mb-2" type="button" style="background: #F0F0F0;">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row justify-content-end mt-3">
+                <div class="col-auto">
+                    <button id="save-button" type="button" class="btn btn-success ps-3 pe-3" style="background-color: #4AA147; border-color: #4AA147;">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+
+        $('.add-responsibility').click(function () {
+            $('#responsibilities').append(`
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control border-2">
+                                </div>
+                            `);
+        });
+
+        $('.add-qualification').click(function () {
+            $('#qualifications').append(`
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control border-2">
+                                </div>
+                            `);
+        });
+
+        $('.add-benefit').click(function () {
+            $('#benefits').append(`
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control border-2">
+                                </div>
+                            `);
+        });
+
+        $('.add-other-information').click(function () {
+            $('#other-information').append(`
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control border-2">
+                                </div>
+                            `);
+        });
+
+        var milestones = [];
+        var jobdesignationId = [];
+
+        $(document).ready(function () {
+            function updateSerialNumbers() {
+                $('#milestoneList .milestone-item').each(function (index) {
+                    $(this).find('.serial-number').text(index + 1);
+                });
+            }
+
+            function addMilestoneItem() {
+                var newItem = $('<div class="milestone-item">' +
+                    '<span class="serial-number" style="margin-right: 10px;"></span>' +
+                    '<select class="form-select milestone-dropdown">' +
+                    '<option value="">Select Milestone</option>' +
+                    '</select>' +
+                    '<button class="btn remove-step-btn">' +
+                    '<i class="fas fa-trash-alt"></i>' +
+                    '</button>' +
+                    '</div>');
+                $('#milestoneList').append(newItem);
+
+                var dropdown = newItem.find('.milestone-dropdown');
+
+                $.each(milestones, function (index, milestone) {
+                    // dropdown.append($('<option></option>').attr('value', milestone.id).text(milestone.description).data('type', milestone.type));
+                    dropdown.append($('<option></option>').attr('value', milestone.id).text(milestone.description).data('name', milestone.name).data('description', milestone.description).data('type', milestone.type));
+
+                });
+                updateSerialNumbers();
+
+                // Refresh sortable after adding a new item
+                $('#milestoneList').sortable('refresh');
+            }
+
+            $.ajax({
+                url: '/Recruitment/GetRecruitmentVariables', // Adjust the URL as per your actual endpoint
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    milestones = data;
+                    console.log(data); // Logs the entire data object
+
+                    // Log specific fields for each milestone
+                    $.each(milestones, function (index, milestone) {
+                        console.log('Milestone ID: ' + milestone.id);
+                        console.log('Milestone Name: ' + milestone.name);
+                        console.log('Milestone Description: ' + milestone.description);
+                        console.log('Milestone Type: ' + milestone.type);
+                    });
+
+                    // Populate initial dropdowns
+                    $('.milestone-dropdown').each(function () {
+                        var dropdown = $(this);
+                        $.each(milestones, function (index, data) {
+                            dropdown.append($('<option></option>').attr('value', data.id).text(data.description).data('milestone', {
+                                id: data.id,
+                                description: data.description,
+                                name: data.name
+                            }));
+                        });
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error fetching recruitment variables: ' + error);
+                }
+            });
+
+
+            $('#addStepBtn').on('click', function () {
+                addMilestoneItem();
+            });
+
+            $('#milestoneList').on('click', '.remove-step-btn', function () {
+                $(this).closest('.milestone-item').remove();
+                updateSerialNumbers();
+            });
+
+            $('#milestoneList').sortable({
+                update: function (event, ui) {
+                    updateSerialNumbers();
+                }
+            }).disableSelection();
+        });
+        // Function to load job details on page load
+        $(document).ready(function () {
+            var designationId = $('#designationId').val();
+            if (designationId) {
+                $.ajax({
+                    url: '/Recruitment/GetDetailsById',
+                    method: 'GET',
+                    data: { id: designationId },
+                    success: function (response) {
+                        if (response.success) {
+                            var data = response.data;
+                            console.log(data);
+                            $('#designationName').val(data.designation);
+                            $('#description').val(data.description);
+                            jobdesignationId = data.designationId;
+
+                        //    milestones = response.data.milestones;
+                            $('#milestoneList').empty();
+                            data.milestones.forEach(function (milestone, index) {
+                                addMilestoneItem(milestone, index + 1, true); // Pass true to mark existing milestones as selected
+                            });
+
+                            // Populate responsibilities
+                            populateInputFields('responsibilities', data.responsibilities);
+
+                            // Populate qualifications
+                            populateInputFields('qualifications', data.qualifications);
+
+                            // Populate benefits
+                            populateInputFields('benefits', data.benefits);
+
+                            // Populate other information
+                            populateInputFields('other-information', data.otherInformation);
+
+                            // Set other fields like job type, job tags, last date, salary, location if needed
+                            // Example: $('#job-type-input').val(data.jobType);
+                        } else {
+                            alert('Failed to load job details: ' + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error loading job details: ' + error);
+                    }
+                });
+            }
+        });
+
+        function addMilestoneItem(milestone, index, isSelected) {
+            var milestoneItem = `
+                <div class="milestone-item" data-serial="${index}">
+                    <span class="serial-number">${index}</span>
+                    <select class="form-control milestone-dropdown select2-milestones">
+                        <option value="${milestone.id}" data-type="${milestone.type}" selected>${milestone.description}</option>
+                    </select>
+                    <button class="btn btn-danger remove-step-btn" type="button"><i class="fas fa-trash-alt"></i></button>
+                </div>
+            `;
+            $('#milestoneList').append(milestoneItem);
+            $('.select2-milestones').select2({
+                data: milestones.map(m => ({
+                    id: m.id,
+                    text: m.description,
+                    type: m.type
+                }))
+            });
+        }
+
+        // Function to populate input fields dynamically
+        function populateInputFields(containerId, values) {
+            var container = $('#' + containerId);
+            container.empty(); // Clear existing content before populating
+
+            if (values && values.length > 0) {
+                values.forEach(function (value) {
+                    addInput(container, value);
+                });
+            } else {
+                // Add one empty input field if no values exist
+                addInput(container, '');
+            }
+        }
+
+        // Function to add new input field dynamically
+        function addInput(container, value) {
+            var inputGroup = $('<div class="input-group mb-2"></div>');
+            var input = $('<input type="text" class="form-control border-2">');
+            input.val(value);
+            inputGroup.append(input);
+            container.append(inputGroup);
+        }
+
+        // Handle form submission
+       
+
+        // Function to get values from input fields
+        function getInputValues(containerId) {
+            var values = [];
+            $('#' + containerId + ' input').each(function () {
+                var inputValue = $(this).val().trim(); // Trim to handle empty spaces
+                if (inputValue !== '') {
+                    values.push(inputValue);
+                }
+            });
+            return values;
+        }
+
+        // Function to get tags from container
+        function getTags(containerId) {
+            var tags = [];
+            $(containerId + ' .tag').each(function () {
+                tags.push($(this).text().trim());
+            });
+            return tags;
+        }
+
+        function gatherFormData() {
+            const designationId = $('#designationId').val();
+            const designationName = $('#designationName').val();
+            const email = $('#email-input').val();
+            const lastDate = $('#date-input').val();
+            const salaryMin = $('#salary-min').val();
+            const salaryMax = $('#salary-max').val();
+            const location = $('#location-input').val();
+            const description = $('#description').val();
+            const jobDescriptionId = $('#designationId').val();
+            const jobTypes = [];
+            $('#job-types .tag').each(function () {
+                jobTypes.push($(this).clone().children().remove().end().text().trim());
+            });
+
+            const jobTags = [];
+            $('#job-tags .tag').each(function () {
+                jobTags.push($(this).clone().children().remove().end().text().trim());
+            });
+
+            const responsibilities = [];
+            $('#responsibilities input').each(function () {
+                responsibilities.push($(this).val());
+            });
+
+            const qualifications = [];
+            $('#qualifications input').each(function () {
+                qualifications.push($(this).val());
+            });
+
+            const benefits = [];
+            $('#benefits input').each(function () {
+                benefits.push($(this).val());
+            });
+
+            const otherInformation = [];
+            $('#other-information input').each(function () {
+                otherInformation.push($(this).val());
+            });
+
+
+            var milestonesData = [];
+
+            $('#milestoneList .milestone-item').each(function (index) {
+                var milestoneId = $(this).find('.milestone-dropdown option:selected').val(); // Assuming value is the id
+                var milestoneDescription = $(this).find('.milestone-dropdown option:selected').text();
+                var milestoneName = $(this).find('.milestone-dropdown option:selected').data('name');
+                var milestoneSerial = $(this).find('.serial-number').text();
+                var milestoneType = $(this).find('.milestone-dropdown option:selected').data('type'); // Assuming 'type' is stored in data attribute
+
+                milestonesData.push({
+                    // id: milestoneId,
+                    name: milestoneName,
+                    description: milestoneDescription,
+                    serial: milestoneSerial,
+                    type: milestoneType // Adjust this based on your actual data structure
+                });
+            });
+
+
+
+            return {
+                DesignationId: jobdesignationId,
+                DesignationName: designationName,
+                JobTypes: jobTypes,
+                JobTags: jobTags,
+                Email: email,
+                LastDate: lastDate,
+                SalaryMin: salaryMin,
+                SalaryMax: salaryMax,
+                Location: location,
+                Description: description,
+                Responsibilities: responsibilities,
+                Qualifications: qualifications,
+                Benefits: benefits,
+                OtherInformation: otherInformation,
+                milestones: milestonesData
+            };
+        }
+
+        $('#save-button').click(function () {
+            const formData = gatherFormData();
+            console.log("Form Data: ", formData);
+
+            $.ajax({
+                url: '@Url.Action("CreateJob", "Recruitment")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    alert('Job post created successfully!');
+                    window.location.href = '@Url.Action("JobTemplate", "Recruitment")';
+                },
+                error: function (xhr, status, error) {
+                    alert('Error creating job post: ' + xhr.responseText);
+                }
+            });
+        });
+
+
+
+
+        // Event handler for adding tags dynamically
+
+        $(document).ready(function () {
+            var jobTypeInput = $('#job-type-input');
+            var jobTagInput = $('#job-tag-input');
+
+            jobTypeInput.on('keypress', function (e) {
+                if (e.which === 13 || e.which === 44) { // Enter key or comma key
+                    e.preventDefault();
+                    var inputVal = $(this).val().trim();
+                    if (inputVal !== '') {
+                        addTag(inputVal, '#job-types');
+                        $(this).val(''); // Clear input field
+                    }
+                }
+            });
+
+            jobTagInput.on('keypress', function (e) {
+                if (e.which === 13 || e.which === 44) { // Enter key or comma key
+                    e.preventDefault();
+                    var inputVal = $(this).val().trim();
+                    if (inputVal !== '') {
+                        addTag(inputVal, '#job-tags');
+                        $(this).val(''); // Clear input field
+                    }
+                }
+            });
+
+            function addTag(value, containerId) {
+                var container = $(containerId);
+                var tag = $('<span class="tag"></span>').text(value);
+                var removeBtn = $('<span class="remove-tag">&times;</span>').click(function () {
+                    $(this).parent().remove();
+                });
+                tag.append(removeBtn);
+                container.append(tag);
+            }
+        });
+
+
+
+    </script>
+}
+
+
+
+
+

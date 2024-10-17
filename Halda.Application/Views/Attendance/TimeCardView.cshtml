@@ -1,0 +1,235 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+<style>
+    .card-metric {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+        .card-metric h3 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .card-metric p {
+            margin: 0;
+            font-size: 14px;
+        }
+</style>
+
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2 border-1">
+
+    <div class="row my-2">
+        <div class="col-md-4">
+            <div class="input-group " style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFFFFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                    <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                </span>
+            </div>
+        </div>
+        <div class="col-md-8 d-flex justify-content-end">
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #FFFFFF; color: #414042; border: 1px solid #CED4DA;">
+                    Monthly
+                    <i class="fas fa-caret-down ms-2"></i> <!-- Font Awesome down icon -->
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#" onclick="setDropdownText('Monthly')">Monthly</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setDropdownText('Yearly')">Yearly</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setDropdownText('Weekly')">Weekly</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mx-0 mb-2 " style="background-color: #FFFFFF; border-radius: 8px;  box-shadow: 0px 0px 10px 0px #0000000D; border: 0.5px solid #B1B1B1 ">
+        <h6 class="my-3 pb-2" style="border-bottom: 0.5px solid #B1B1B1">Job Card Report   II   Date Range: 1 February to 28 February 2022</h6>
+        <div class="row mx-0 pb-3" style="border-bottom: 0.5px solid #B1B1B1">
+            <div class="col-md-2 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
+                <img src="/User/img/robin.png" alt="Profile Picture" class="pt-1 ps-md-3" style="max-width: 160px; max-height: 160px; border-radius: 50%;">
+            </div>
+            <div class="col-md-4 ps-4">
+                <div class="mb-2 mt-3 d-flex align-items-center">
+                    <h6 class="mb-0 me-2">Employee ID     :  </h6>
+                    <p class="mb-0">GTR-123</p>
+                </div>
+
+                <div class="mb-2 d-flex align-items-center">
+                    <h6 class="mb-0 me-2">Name                    :  </h6>
+                    <p class="mb-0">Robin</p>
+                </div>
+
+                <div class="mb-2 d-flex align-items-center">
+                    <h6 class="mb-0 me-2">Designation      : </h6>
+                    <p class="mb-0">UI/UX Designer</p>
+                </div>
+
+                <div class="mb-2 d-flex align-items-center">
+                    <h6 class="mb-0 me-2">Department     :  </h6>
+                    <p class="mb-0">Business Operation</p>
+                </div>
+
+            </div>
+            <div class="col-md-6 ps-4">
+                <div class="mb-2 mt-3 d-flex align-items-center">
+                    <h6 class="mb-0 me-2">Blood Group   : </h6>
+                    <p class="mb-0">B+</p>
+                </div>
+
+                <div class="mb-2 d-flex align-items-center">
+                    <h6 class="mb-0 me-2">Office Location : </h6>
+                    <p class="mb-0">DHK Office</p>
+                </div>
+
+                <div class="mb-2 d-flex align-items-center">
+                    <h6 class="mb-0 me-2">Join Date              :</h6>
+                    <p class="mb-0">11 March, 2023</p>
+                </div>
+
+                <div class="mb-2 d-flex align-items-center">
+                    <h6 class="mb-0 me-2">Release Date      : </h6>
+                    <p class="mb-0">11 March, 2023</p>
+                </div>
+            </div>
+        </div>
+        <div class="row p-2 mx-0">
+            <div class="col-3 mb-2">
+                <div style="background-color: #F9FAFB; border-radius: 12px; padding: 8px;">
+                    <div class="d-flex align-items-center mb-0 pb-0 ps-2">
+                        <h4 class="pb-0 mb-0" style="color: #1DAC3D; font-weight: 700; font-size: 24px;">24 Days</h4>
+                        <p class="ps-2 pt-2 pb-0 mb-0" style="color: #E61739; font-weight: 400; font-size: 14px;">(5 Early Out’s)</p>
+                    </div>
+                    <p class="mt-0 pt-0 ps-2" style="color: #667085; font-weight: 400; font-size: 14px;">Present</p>
+                </div>
+            </div>
+
+            <div class="col-3 mb-2">
+                <div style="background-color: #F9FAFB; border-radius: 12px; padding: 8px;">
+                    <div class="d-flex align-items-center mb-0 pb-0 ps-2">
+                        <h4 class="pb-0 mb-0" style="color: #414042; font-weight: 700; font-size: 24px;">Late</h4>
+                    </div>
+                    <p class="mt-0 pt-0 ps-2" style="color: #667085; font-weight: 400; font-size: 14px;">Present</p>
+                </div>
+            </div>
+
+            <div class="col-3 mb-2">
+                <div style="background-color: #F9FAFB; border-radius: 12px; padding: 8px;">
+                    <div class="d-flex align-items-center mb-0 pb-0 ps-2">
+                        <h4 class="pb-0 mb-0" style="color: #414042; font-weight: 700; font-size: 24px;">+ 7 hr 30 min</h4>
+                    </div>
+                    <p class="mt-0 pt-0 ps-2" style="color: #667085; font-weight: 400; font-size: 14px;">Difference</p>
+                </div>
+            </div>
+
+            <div class="col-3 mb-2">
+                <div style="background-color: #F9FAFB; border-radius: 12px; padding: 8px;">
+                    <div class="d-flex align-items-center mb-0 pb-0 ps-2">
+                        <h4 class="pb-0 mb-0" style="color: #414042; font-weight: 700; font-size: 24px;">2</h4>
+                    </div>
+                    <p class="mt-0 pt-0 ps-2" style="color: #667085; font-weight: 400; font-size: 14px;">Incomplete records</p>
+                </div>
+            </div>
+
+            <div class="col-3 mb-2">
+                <div style="background-color: #F9FAFB; border-radius: 12px; padding: 8px;">
+                    <div class="d-flex align-items-center mb-0 pb-0 ps-2">
+                        <h4 class="pb-0 mb-0" style="color: #414042; font-weight: 700; font-size: 24px;">4 Days</h4>
+                    </div>
+                    <p class="mt-0 pt-0 ps-2" style="color: #667085; font-weight: 400; font-size: 14px;">Absent</p>
+                </div>
+            </div>
+
+            <div class="col-3 mb-2">
+                <div style="background-color: #F9FAFB; border-radius: 12px; padding: 8px;">
+                    <div class="d-flex align-items-center mb-0 pb-0 ps-2">
+                        <h4 class="pb-0 mb-0" style="color: #414042; font-weight: 700; font-size: 24px;">1 Days</h4>
+                    </div>
+                    <p class="mt-0 pt-0 ps-2" style="color: #667085; font-weight: 400; font-size: 14px;">Leave</p>
+                </div>
+            </div>
+
+            <div class="col-3 mb-2">
+                <div>
+                    <div class="d-flex justify-content-between">
+                        <!-- First Section -->
+                        <div class="pe-2" style="background-color: #F9FAFB; border-radius: 12px; padding: 8px;">
+                            <div class="d-flex align-items-center mb-0 pb-0">
+                                <h4 class="pb-0 mb-0" style="color: #414042; font-weight: 700; font-size: 24px;">2</h4>
+                            </div>
+                            <p class="mt-0 pt-0" style="color: #667085; font-weight: 400; font-size: 14px;">Missed shift</p>
+                        </div>
+
+                        <!-- Second Section -->
+                        <div style="background-color: #F9FAFB; border-radius: 12px; padding: 8px;">
+                            <div class="d-flex align-items-center mb-0 pb-0">
+                                <h4 class="pb-0 mb-0" style="color: #414042; font-weight: 700; font-size: 24px;">1 Days</h4>
+                            </div>
+                            <p class="mt-0 pt-0" style="color: #667085; font-weight: 400; font-size: 14px;">Overtime</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-3 mb-2">
+                <div style="background-color: #F9FAFB; border-radius: 12px; padding: 8px;">
+                    <div class="d-flex align-items-center mb-0 pb-0 ps-2">
+                        <h4 class="pb-0 mb-0" style="color: #414042; font-weight: 700; font-size: 24px;">+ 2 hr 10 min</h4>
+                    </div>
+                    <p class="mt-0 pt-0 ps-2" style="color: #667085; font-weight: 400; font-size: 14px;">Approved OT</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="attendance-table" class="mt-4"></div>
+    </div>
+    </div>
+
+    
+</div>
+
+<script>
+    
+
+    // Sample data for the table
+    var tableData = [
+        { date: "2023-06-01", status: "Present", checkIn: "9:00 am", checkOut: "6:00 pm", late: "00:06", worked: "9h 00m", overtime: "-", difference: "-", remarks: "-" },
+        { date: "2023-06-02", status: "Present", checkIn: "8:50 am", checkOut: "5:30 pm", late: "00:00", worked: "8h 40m", overtime: "+1h 30m", difference: "-20min", remarks: "-" },
+        { date: "2023-06-03", status: "Present", checkIn: "9:00 am", checkOut: "7:30 am", late: "00:06", worked: "9h 30m", overtime: "+1h 30m", difference: "+1h 30m", remarks: "-" },
+        { date: "2023-06-04", status: "Absent", checkIn: "No Record", checkOut: "No Record", late: "00:00", worked: "-", overtime: "+1h 30m", difference: "0hr", remarks: "-" },
+        { date: "2023-06-05", status: "Holiday", checkIn: "-", checkOut: "-", late: "-", worked: "-", overtime: "-", difference: "-", remarks: "-" },
+        { date: "2023-06-07", status: "Leave", checkIn: "-", checkOut: "-", late: "-", worked: "-", overtime: "-", difference: "-", remarks: "Sick Leave" }
+    ];
+
+    // Wait for the DOM to fully load before initializing Tabulator
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize Tabulator
+        var table = new Tabulator("#attendance-table", {
+            data: tableData,
+            layout: "fitColumns",
+            columns: [
+                { title: "Date", field: "date" },
+                { title: "Status", field: "status" },
+                { title: "Check In", field: "checkIn" },
+                { title: "Check Out", field: "checkOut" },
+                { title: "Late", field: "late" },
+                { title: "Worked", field: "worked" },
+                { title: "Overtime", field: "overtime" },
+                { title: "Difference", field: "difference" },
+                { title: "Remarks", field: "remarks" }
+            ],
+        });
+    });
+    function setDropdownText(period) {
+        document.getElementById('dropdownMenuButton').innerHTML = period + ' <i class="fas fa-caret-down ms-2"></i>';
+    }
+
+</script>

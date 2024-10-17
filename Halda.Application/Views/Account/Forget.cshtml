@@ -1,0 +1,33 @@
+﻿@model OtpVm;
+
+<div class="register-box">
+    <div class="card">
+        <div class="card-body register-card-body">
+            <!-- Your existing content here -->
+            <h4>Enter Your Email to Get OTP</h4>
+            <form asp-action="Forget" method="post">
+                <div class="input-group mb-3">
+                    <input asp-for="UserEmail" class="form-control" placeholder="Enter you EmailAddress" required="required" />
+            
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-building"></span>
+                        </div>
+                    </div>
+                </div>
+                <div><span asp-validation-for="UserEmail" class="text-danger"></span></div>
+            
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="button-41">Send OTP</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

@@ -1,0 +1,945 @@
+﻿@model RegisterModel
+
+
+
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "_LayoutLogin";
+}
+@section Styles{
+    <style>
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            align-items: ;
+            margin-top: 10px;
+        }
+
+        .input-container {
+            position: relative;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+            .input-container input {
+                width: 100%;
+                padding: 10px;
+                padding-left: 35px; /* Space for the icon */
+                border: 0.5px solid #D6D9DE;
+                border-radius: 4px;
+            }
+
+            .input-container .icon {
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #ccc;
+            }
+
+        .tab-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            cursor: pointer;
+            padding: 5px 10px;
+            color: #A0A0A0;
+            font-weight: 500;
+        }
+
+            .tab.active {
+                color: #495057;
+                border-bottom: 2px solid #28a745; /* green underline */
+            }
+
+        .login-btn {
+            width: 100%;
+            font-weight: 700;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .login-btn:hover {
+                background-color: #45a049;
+            }
+
+        input::placeholder {
+            font-size: 16px !important; /* Adjust font size */
+            font-weight: 400 !important; /* Adjust font weight */
+            color: #97909E !important; /* Optional: Customize placeholder color */
+        }
+
+        .font-Montserrat {
+            font-family: 'Montserrat' !important;
+        }
+
+    </style>
+}
+
+
+<div class="login-box " style="font-family: 'Montserrat' !important;">
+
+    <div class="card shadow-lg " style="border: solid; border-color: #ffff; border-radius: 10px;box-shadow: 0px 0px 30px 0px #9C9D9E14; width: 400px;">
+        <div class="card-body login-card-body px-4">
+            <div class="login-logo d-flex justify-content-center pt-2">
+                <h3 style="font-weight: 500; font-style: normal; line-height: normal; color: #403D3D; font-size: 30px;">
+                    Sign up
+                </h3>
+            </div>
+
+            <div class="d-flex justify-content-center px-2 ">
+                <p class="login-box-msg text-center pb-0 mb-0" style="color: #839496; font-weight: 400; font-size: 15px;">
+                    Create account to start<br />
+                     using Halda
+                </p>
+            </div>
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+
+            <form asp-action="Register" method="post">
+
+                <div class="login-form">
+                   @*  <div class="tab-container gap-5 mt-0 pt-0">
+                        <span id="email-tab" class="tab active">Email</span>
+                        <span id="phone-tab" class="tab">Phone</span>
+                    </div> *@
+
+                    <h6 style="color: #839496; font-weight: 400; font-size: 16px;">Name</h6>
+                    <div class="input-container">
+                        <input asp-for="PostId" id="PostId" value="@ViewBag.PostId" hidden />
+                        <i id="icon" class="bi bi-person icon"></i>
+                        <input type="text" asp-for="UserName" class="font-Montserrat" placeholder="Enter your name" required="required">
+                    </div>
+                    <h6 style="color: #839496; font-weight: 700; font-size: 16px;" class="font-Montserrat">Email</h6>
+                    <div class="input-container">
+                        
+                        <i id="icon" class="bi bi-envelope icon"></i>
+                        <input type="text" asp-for="Email" class="font-Montserrat" placeholder="Enter your email" required="required">
+                    </div>
+                    <h6 style="color: #839496; font-weight: 400; font-size: 16px;">Phone</h6>
+                    <div class="input-container">
+
+                        <i id="icon" class="bi bi-telephone icon"></i>
+                        <input type="text" asp-for="PhoneNumber" class="font-Montserrat" placeholder="Enter your phone number" required="required">
+                    </div>
+                    <h6 style="color: #839496; font-weight: 700; font-size: 16px;" class="font-Montserrat">Password</h6>
+                    <div class="input-container">
+                        <i id="showPasswordToggle" class="bi bi-eye icon" onclick="togglePasswordVisibility()"></i>
+                        <input type="password" asp-for="Password" id="password" name="password" class="font-Montserrat" placeholder="Enter your password" required="required">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <button type="submit" class="login-btn mt-2 font-Montserrat">Register</button>
+
+                       @*  <div class="col-12 mt-3 text-center">
+                            <h6 style="color: #69686A;">Already have an account? 
+                                <a asp-controller="Account" asp-action="Login" style="text-decoration: none; color: #4AA147;">Sign In</a>
+                            </h6>
+                        </div> *@
+                    </div>
+                    </div>
+
+
+            </form>
+
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+</div>
+
+<script>
+
+    document.getElementById('email-tab').addEventListener('click', function () {
+        document.getElementById('icon').className = 'bi bi-envelope icon';
+        document.getElementById('userName').placeholder = 'Enter your email';
+        document.getElementById('email-tab').classList.add('active');
+        document.getElementById('phone-tab').classList.remove('active');
+    });
+
+    document.getElementById('phone-tab').addEventListener('click', function () {
+        document.getElementById('icon').className = 'bi bi-telephone icon';
+        document.getElementById('userName').placeholder = 'Enter your phone';
+        document.getElementById('phone-tab').classList.add('active');
+        document.getElementById('email-tab').classList.remove('active');
+    });
+
+
+
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("password");
+        var showPasswordToggle = document.getElementById("showPasswordToggle");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            showPasswordToggle.classList.remove("bi", "bi-eye-slash");
+            showPasswordToggle.classList.add("bi", "bi-eye");
+        } else {
+            passwordInput.type = "password";
+            showPasswordToggle.classList.remove("bi", "bi-eye");
+            showPasswordToggle.classList.add("bi", "bi-eye-slash");
+        }
+    }
+</script>
+@* <style>
+    
+
+    .password-criteria-container {
+        position: relative;
+        margin-top: 10px;
+        text-align: left;
+    }
+
+    .password-criteria {
+        position: absolute;
+        width: 300px;
+        left: -650px;
+        top: -230%; /* Set the top position to move the criteria box above the input box */
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 5px;
+        text-align: left;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        display: none;
+    }
+
+        .password-criteria.show {
+            display: block;
+        }
+
+    #set {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    #count {
+        margin-right: 10px;
+    }
+
+    #check0,
+    /* #check1, */
+    #check2,
+    #check3,
+    #check4,
+    #check5,
+    #check6 {
+        display: flex;
+        justify-content: left;
+        align-items: center;
+        margin-top: 5px;
+        color: red;
+    }
+
+        #check0 .far,
+        /* #check1 .far, */
+        #check2 .far,
+        #check3 .far,
+        #check4 .far,
+        #check5 .far,
+        #check6 .far {
+            margin-right: 5px;
+        }
+
+        #check0 span,
+        /* #check1 span, */
+        #check2 span,
+        #check3 span,
+        #check4 span,
+        #check5 span,
+        #check6 span {
+            font-size: 14px;
+        }
+</style> *@
+
+@* <div class="register-box">
+    <div class="card shadow-lg" style="border: solid; border-color: #ffff; border-radius: 10px" >
+        <div class="card-body register-card-body">
+            <div class="register-logo">
+                <p><b>Sign Up</b></p>
+            </div>
+            <p class="login-box-msg">Create account to start using Halda</p>
+
+            <form asp-action="Register" class="mb-2" method="post" onsubmit="return validateForm()">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @if(ViewBag.ComId != null)
+                {
+                    <input type="hidden" asp-for="userCompanyID" value=@ViewBag.ComId />
+                }
+
+                <div class="input-group mb-3">
+                    <input asp-for="UserName" class="form-control" placeholder="Enter Your Name" required="required" onblur="checkUserNameExistence()" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                @*<div id="userNameStatus"></div>
+
+                <div class="input-group mb-3">
+                    <input asp-for="Email" id="Email" type="email" class="form-control" placeholder="Email" required="required" onblur="checkEmailValidity()" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="emailStatus"></div>
+
+                <div class="input-group mb-3">
+                    <input asp-for="PhoneNumber" class="form-control" placeholder="Phone Number" required="required" onblur="checkPhoneNumber()" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fa-solid fa-phone"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="phoneNumberStatus"></div>
+
+                <div class="input-group mb-3">
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Password" required="required" id="password" oninput="check()" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+
+                    <div class="password-criteria-container">
+                        <div class="password-criteria" id="passwordCriteria">
+                            <div id="set">
+                                <div id="count">Length : 0</div>
+                                <i id="see" onclick="see()" class="far fa-eye"></i>
+                            </div>
+                            <div id="check0">
+                                <i class="far fa-check-circle"></i>  <span> Length Minimun 8.</span>
+                            </div>
+                            @*  <div id="check1">
+                            <i class="far fa-check-circle"></i>  <span> Length less than 10.</span>
+                            </div> 
+                            <div id="check2">
+                                <i class="far fa-check-circle"></i>  <span> Contains numerical character.</span>
+                            </div>
+                            <div id="check3">
+                                <i class="far fa-check-circle"></i>  <span> Contains special character.</span>
+                            </div>
+                            <div id="check4">
+                                <i class="far fa-check-circle"></i>  <span> Shouldn't contain spaces.</span>
+                            </div>
+                            <div id="check5">
+                                <i class="far fa-check-circle"></i>  <span> Contains at least one lowercase letter.</span>
+                            </div>
+                            <div id="check6">
+                                <i class="far fa-check-circle"></i>  <span> Contains at least one uppercase letter.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <input asp-for="PostId" type="hidden" id="PostId" value="@ViewBag.PostId" />
+
+
+
+                <div class="row">
+                    <div class="col-4">
+                        <button type="submit" class="button-41">Register</button>
+                    </div>
+                </div>
+            </form>
+            <a asp-action="Login" asp-route-postId="@ViewBag.PostId" style="text-decoration: none; font-size: 15px;" class="text-center">I already have an account</a>
+
+            @* <a asp-action="Login" style="text-decoration: none; font-size: 15px;" class="text-center">I already have an account</a> 
+        </div>
+    </div>
+</div> 
+
+
+
+<script>
+    var is_visible = false;
+
+    function see() {
+        var input = document.getElementById("password");
+        var see = document.getElementById("see");
+
+        if (is_visible) {
+            input.type = 'password';
+            is_visible = false;
+            see.style.color = 'gray';
+        } else {
+            input.type = 'text';
+            is_visible = true;
+            see.style.color = '#262626';
+        }
+    }
+
+    function toggleCriteria() {
+        var criteriaContainer = document.getElementById("passwordCriteria");
+        criteriaContainer.classList.toggle("show");
+    }
+
+    function check() {
+        var input = document.getElementById("password").value;
+
+        input = input.trim();
+        document.getElementById("password").value = input;
+        document.getElementById("count").innerText = "Length : " + input.length;
+        if (input.length >= 8) {
+            document.getElementById("check0").style.color = "green";
+        } else {
+            document.getElementById("check0").style.color = "red";
+        }
+
+        // if (input.length <= 10) {
+        //     document.getElementById("check1").style.color = "green";
+        // } else {
+        //     document.getElementById("check1").style.color = "red";
+        // }
+
+        if (input.match(/[0-9]/i)) {
+            document.getElementById("check2").style.color = "green";
+        } else {
+            document.getElementById("check2").style.color = "red";
+        }
+
+        if (input.match(/[^A-Za-z0-9-' ']/i)) {
+            document.getElementById("check3").style.color = "green";
+        } else {
+            document.getElementById("check3").style.color = "red";
+        }
+
+        if (input.match(' ')) {
+            document.getElementById("check4").style.color = "red";
+        } else {
+            document.getElementById("check4").style.color = "green";
+        }
+
+        if (input.match(/[a-z]/)) {
+            document.getElementById("check5").style.color = "green";
+        } else {
+            document.getElementById("check5").style.color = "red";
+        }
+
+        if (input.match(/[A-Z]/)) {
+            document.getElementById("check6").style.color = "green";
+        } else {
+            document.getElementById("check6").style.color = "red";
+        }
+
+        var allCriteriaMet = input.length >= 8 &&
+            input.match(/[0-9]/i) &&
+            input.match(/[^A-Za-z0-9-' ']/i) &&
+            !input.match(' ') &&
+            input.match(/[a-z]/) &&
+            input.match(/[A-Z]/);
+
+        if (allCriteriaMet) {
+            document.getElementById("passwordCriteria").style.display = "none";
+        } else {
+            document.getElementById("passwordCriteria").style.display = "block";
+        } // Show/hide criteria based on input
+    }
+
+</script>
+
+
+<script>
+    async function checkEmailExistence() {
+        const emailInput = document.getElementById("Email");
+        const email = emailInput.value;
+
+        if (email) {
+            const response = await fetch(`/Account/EmailCheck?email=${encodeURIComponent(email)}`);
+            const result = await response.text();
+
+            const emailStatusDiv = document.getElementById("emailStatus");
+            console.log(result);
+
+            if (result === "EmailExists") {
+                emailStatusDiv.textContent = "This email address already exists.";
+                emailStatusDiv.style.color = "red";
+            } else if (result === "EmailDoesNotExist") {
+                emailStatusDiv.textContent = "This email address is available.";
+                emailStatusDiv.style.color = "green";
+            } else {
+                emailStatusDiv.textContent = "";
+            }
+        }
+    }
+
+
+    async function checkUserNameExistence() {
+        const userNameInput = document.getElementById("UserName");
+        const userName = userNameInput.value;
+
+        if (userName) {
+            const response = await fetch(`/Account/UserNameCheck?name=${encodeURIComponent(userName)}`);
+            const result = await response.text();
+
+            const userNameStatusDiv = document.getElementById("userNameStatus");
+            console.log(result);
+
+            if (result === "UserNameExists") {
+                userNameStatusDiv.textContent = "This username already exists.";
+                userNameStatusDiv.style.color = "red";
+            } else if (result === "UserNameDoesNotExist") {
+                userNameStatusDiv.textContent = "This username is available.";
+                userNameStatusDiv.style.color = "green";
+            } else {
+                userNameStatusDiv.textContent = "";
+            }
+        }
+    }
+
+
+    function checkPhoneNumber() {
+        const phoneNumberInput = document.getElementById("PhoneNumber");
+        const phoneNumber = phoneNumberInput.value;
+
+        const phoneNumberStatusDiv = document.getElementById("phoneNumberStatus");
+
+        if (phoneNumber.length === 11 && /^\d+$/.test(phoneNumber)) {
+            phoneNumberStatusDiv.textContent = "";
+        } else {
+            phoneNumberStatusDiv.textContent = "Phone number must be exactly 11 digits and contain only numbers.";
+            phoneNumberStatusDiv.style.color = "red";
+        }
+    }
+
+
+</script>
+
+
+
+<script>
+    // Define the validateForm function globally
+    function validateForm() {
+        console.log("Validating form...");
+
+        // Validate User Name
+        var userNameInput = document.getElementById("UserName");
+        var userNameStatusDiv = document.getElementById("userNameStatus");
+        var userName = userNameInput.value.trim();
+        if (!userName) {
+            userNameStatusDiv.textContent = "User name is required.";
+            userNameStatusDiv.style.color = "red";
+            return false;
+        }
+
+        // Validate Email
+        const emailInput = document.getElementById("Email");
+        var emailInput = document.getElementById("Email");
+        var emailStatusDiv = document.getElementById("emailStatus");
+        var email = emailInput.value.trim();
+        if (!email) {
+            emailStatusDiv.textContent = "Email is required.";
+            emailStatusDiv.style.color = "red";
+            return false;
+        }
+
+        // Check if email exists
+        if (emailStatusDiv.style.color === "red") {
+            return false;
+        }
+
+        // Validate Phone Number
+        var phoneNumberInput = document.getElementById("PhoneNumber");
+        var phoneNumberStatusDiv = document.getElementById("phoneNumberStatus");
+        var phoneNumber = phoneNumberInput.value.trim();
+        if (phoneNumber.length !== 11 || !/^\d+$/.test(phoneNumber)) {
+            phoneNumberStatusDiv.textContent = "Phone number must be exactly 11 digits and contain only numbers.";
+            phoneNumberStatusDiv.style.color = "red";
+            return false;
+        }
+
+        // Check if phone number exists
+        if (phoneNumberStatusDiv.textContent !== "") {
+            return false;
+        }
+
+        // Validate Password
+        var passwordInput = document.getElementById("password");
+        var password = passwordInput.value.trim();
+        if (!checkPasswordCriteria()) {
+            // Show password criteria message if not met
+            document.getElementById("passwordCriteria").classList.add("show");
+            return false;
+        }
+
+        // All validation checks passed, allow form submission
+        console.log("Form validation passed");
+        return true;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        function checkPasswordCriteria() {
+            var passwordInput = document.getElementById("password");
+            var password = passwordInput.value.trim();
+
+            var allCriteriaMet = password.length >= 8 &&
+                password.match(/[0-9]/i) &&
+                password.match(/[^A-Za-z0-9-' ']/i) &&
+                !password.match(' ') &&
+                password.match(/[a-z]/) &&
+                password.match(/[A-Z]/);
+
+            if (allCriteriaMet) {
+                document.getElementById("passwordCriteria").style.display = "none";
+            } else {
+                document.getElementById("passwordCriteria").style.display = "block";
+            }
+        }
+
+        var is_visible = false;
+
+        function see() {
+            var input = document.getElementById("password");
+            var see = document.getElementById("see");
+
+            if (is_visible) {
+                input.type = 'password';
+                is_visible = false;
+                see.style.color = 'gray';
+            } else {
+                input.type = 'text';
+                is_visible = true;
+                see.style.color = '#262626';
+            }
+        }
+
+
+    });
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to toggle password visibility
+        var is_visible = false;
+        function see() {
+            var input = document.getElementById("password");
+            var see = document.getElementById("see");
+
+            if (is_visible) {
+                input.type = 'password';
+                is_visible = false;
+                see.style.color = 'gray';
+            } else {
+                input.type = 'text';
+                is_visible = true;
+                see.style.color = '#262626';
+            }
+        }
+
+        // Function to toggle password criteria visibility
+        function toggleCriteria() {
+            var criteriaContainer = document.getElementById("passwordCriteria");
+            criteriaContainer.classList.toggle("show");
+        }
+
+        // Function to validate password criteria
+        function check() {
+            var input = document.getElementById("password").value;
+
+            input = input.trim();
+            document.getElementById("password").value = input;
+            document.getElementById("count").innerText = "Length : " + input.length;
+            if (input.length >= 8) {
+                document.getElementById("check0").style.color = "green";
+            } else {
+                document.getElementById("check0").style.color = "red";
+            }
+
+            // if (input.length <= 10) {
+            //     document.getElementById("check1").style.color = "green";
+            // } else {
+            //     document.getElementById("check1").style.color = "red";
+            // }
+
+            if (input.match(/[0-9]/i)) {
+                document.getElementById("check2").style.color = "green";
+            } else {
+                document.getElementById("check2").style.color = "red";
+            }
+
+            if (input.match(/[^A-Za-z0-9-' ']/i)) {
+                document.getElementById("check3").style.color = "green";
+            } else {
+                document.getElementById("check3").style.color = "red";
+            }
+
+            if (input.match(' ')) {
+                document.getElementById("check4").style.color = "red";
+            } else {
+                document.getElementById("check4").style.color = "green";
+            }
+
+            if (input.match(/[a-z]/)) {
+                document.getElementById("check5").style.color = "green";
+            } else {
+                document.getElementById("check5").style.color = "red";
+            }
+
+            if (input.match(/[A-Z]/)) {
+                document.getElementById("check6").style.color = "green";
+            } else {
+                document.getElementById("check6").style.color = "red";
+            }
+
+            var allCriteriaMet = input.length >= 8 &&
+                input.match(/[0-9]/i) &&
+                input.match(/[^A-Za-z0-9-' ']/i) &&
+                !input.match(' ') &&
+                input.match(/[a-z]/) &&
+                input.match(/[A-Z]/);
+
+            if (allCriteriaMet) {
+                document.getElementById("passwordCriteria").style.display = "none";
+            } else {
+                document.getElementById("passwordCriteria").style.display = "block";
+            } // Show/hide criteria based on input
+
+            toggleCriteria();
+        }
+
+        async function checkEmailExistence() {
+            const emailInput = document.getElementById("Email");
+            const email = emailInput.value;
+
+            if (email) {
+                const response = await fetch(`/Account/EmailCheck?email=${encodeURIComponent(email)}`);
+                const result = await response.text();
+
+                const emailStatusDiv = document.getElementById("emailStatus");
+                console.log(result);
+
+                if (result === "EmailExists") {
+                    emailStatusDiv.textContent = "This email address already exists.";
+                    emailStatusDiv.style.color = "red";
+                } else if (result === "EmailDoesNotExist") {
+                    emailStatusDiv.textContent = "This email address is available.";
+                    emailStatusDiv.style.color = "green";
+                } else {
+                    emailStatusDiv.textContent = "";
+                }
+            }
+        }
+
+
+        async function checkUserNameExistence() {
+            const userNameInput = document.getElementById("UserName");
+            const userName = userNameInput.value;
+
+            if (userName) {
+                const response = await fetch(`/Account/UserNameCheck?name=${encodeURIComponent(userName)}`);
+                const result = await response.text();
+
+                const userNameStatusDiv = document.getElementById("userNameStatus");
+                console.log(result);
+
+                if (result === "UserNameExists") {
+                    userNameStatusDiv.textContent = "This username already exists.";
+                    userNameStatusDiv.style.color = "red";
+                } else if (result === "UserNameDoesNotExist") {
+                    userNameStatusDiv.textContent = "This username is available.";
+                    userNameStatusDiv.style.color = "green";
+                } else {
+                    userNameStatusDiv.textContent = "";
+                }
+            }
+        }
+
+
+        function checkPhoneNumber() {
+            const phoneNumberInput = document.getElementById("PhoneNumber");
+            const phoneNumber = phoneNumberInput.value;
+
+            const phoneNumberStatusDiv = document.getElementById("phoneNumberStatus");
+
+            if (phoneNumber.length === 11 && /^\d+$/.test(phoneNumber)) {
+                phoneNumberStatusDiv.textContent = "";
+            } else {
+                phoneNumberStatusDiv.textContent = "Phone number must be exactly 11 digits and contain only numbers.";
+                phoneNumberStatusDiv.style.color = "red";
+            }
+        }
+
+        // Main form validation function
+        function validateForm() {
+            console.log("Validating form...");
+
+            // Validate User Name
+            var userNameInput = document.getElementById("UserName");
+            var userNameStatusDiv = document.getElementById("userNameStatus");
+            var userName = userNameInput.value.trim();
+            if (!userName) {
+                userNameStatusDiv.textContent = "User name is required.";
+                userNameStatusDiv.style.color = "red";
+                return false;
+            } else {
+                userNameStatusDiv.textContent = "";
+            }
+
+            // Validate Email
+            var emailInput = document.getElementById("Email");
+            var emailStatusDiv = document.getElementById("emailStatus");
+            var email = emailInput.value.trim();
+            if (!email) {
+                emailStatusDiv.textContent = "Email is required.";
+                emailStatusDiv.style.color = "red";
+                return false;
+            } else if (emailStatusDiv.style.color === "red") {
+                return false;
+            } else {
+                emailStatusDiv.textContent = "";
+            }
+
+            // Validate Phone Number
+            var phoneNumberInput = document.getElementById("PhoneNumber");
+            var phoneNumberStatusDiv = document.getElementById("phoneNumberStatus");
+            var phoneNumber = phoneNumberInput.value.trim();
+            if (phoneNumber.length !== 11 || !/^\d+$/.test(phoneNumber)) {
+                phoneNumberStatusDiv.textContent = "Phone number must be exactly 11 digits and contain only numbers.";
+                phoneNumberStatusDiv.style.color = "red";
+                return false;
+            } else {
+                phoneNumberStatusDiv.textContent = "";
+            }
+
+            // Validate Password
+            var passwordInput = document.getElementById("password");
+            var password = passwordInput.value.trim();
+            if (!checkPasswordCriteria()) {
+                // Show password criteria message if not met
+                document.getElementById("passwordCriteria").classList.add("show");
+                return false;
+            } else {
+                document.getElementById("passwordCriteria").classList.remove("show");
+            }
+
+            // All validation checks passed, allow form submission
+            console.log("Form validation passed");
+            return true;
+        }
+
+        // Function to check password criteria
+        function checkPasswordCriteria() {
+            var passwordInput = document.getElementById("password");
+            var password = passwordInput.value.trim();
+
+            // Your password criteria validation logic...
+
+            return allCriteriaMet;
+        }
+    });
+</script>
+
+
+<script>
+
+
+    function checkEmailValidity() {
+        const emailInput = document.getElementById("Email");
+        const email = emailInput.value.trim();
+
+        const emailStatusDiv = document.getElementById("emailStatus");
+
+        const emailPattern = /^[a-zA-Z0-9._-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+        if (email.match(emailPattern)) {
+            // emailStatusDiv.textContent = "Valid email format.";
+            // emailStatusDiv.style.color = "green";
+            checkEmailExistence()
+        } else {
+            emailStatusDiv.textContent = "Invalid email format.";
+            emailStatusDiv.style.color = "red";
+        }
+    }
+
+
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function validateForm() {
+            console.log("Validating form...");
+
+            // Validate User Name
+            var userNameInput = document.getElementById("UserName");
+            var userNameStatusDiv = document.getElementById("userNameStatus");
+            var userName = userNameInput.value.trim();
+            if (!userName) {
+                userNameStatusDiv.textContent = "User name is required.";
+                userNameStatusDiv.style.color = "red";
+                return false;
+            }
+
+            // Validate Email
+            var emailInput = document.getElementById("Email");
+            var emailStatusDiv = document.getElementById("emailStatus");
+            var email = emailInput.value.trim();
+            if (!email) {
+                emailStatusDiv.textContent = "Email is required.";
+                emailStatusDiv.style.color = "red";
+                return false;
+            }
+
+            // Check if email exists
+            if (emailStatusDiv.style.color === "red") {
+                return false;
+            }
+
+            // Validate Phone Number
+            var phoneNumberInput = document.getElementById("PhoneNumber");
+            var phoneNumberStatusDiv = document.getElementById("phoneNumberStatus");
+            var phoneNumber = phoneNumberInput.value.trim();
+            if (phoneNumber.length !== 11 || !/^\d+$/.test(phoneNumber)) {
+                phoneNumberStatusDiv.textContent = "Phone number must be exactly 11 digits and contain only numbers.";
+                phoneNumberStatusDiv.style.color = "red";
+                return false;
+            }
+
+            // Check if phone number exists
+            if (phoneNumberStatusDiv.textContent !== "") {
+                return false;
+            }
+
+            // Validate Password
+            var passwordInput = document.getElementById("password");
+            var passwordCriteria = /* Your password validation logic */;
+            if (!passwordCriteria) {
+                // Show password criteria message if not met
+                document.getElementById("passwordCriteria").classList.add("show");
+                return false;
+            }
+
+            // All validation checks passed, allow form submission
+            console.log("Form validation passed");
+            return true;
+
+        }
+    });
+</script>*@

@@ -1,0 +1,3271 @@
+﻿@using Halda.Core.Enums
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+    
+</style>
+
+<div class="container mt-1 rounded border border-muted p-2 border-1" style="background: #FBFBFB;">
+    <!-- Profile Section -->
+    <div class="row mb-2">
+        <!-- Profile Image -->
+        <div class="col-4 col-md-2 d-flex justify-content-center justify-content-md-start mb-3 mb-md-0">
+            <img src="~/User/img/robin.png" alt="Profile Picture" class="pt-3 ps-md-3" style="max-width: 150px; max-height: 150px; border-radius: 50%;">
+        </div>
+        <!-- Profile Details -->
+        <div class="col-8 col-md-10 d-flex flex-column justify-content-center">
+            <h5 class="mb-1" style="color:#414042; font-weight: 700;">Borhan Uddin</h5>
+            <p class="mb-1 profile-custom-p">jr.programmer</p>
+            <div class="d-flex align-items-center mb-1">
+                <img src="~/User/img/smart-phone-01.png" alt="Phone Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">01906750597</p>
+            </div>
+            <div class="d-flex align-items-center mb-1">
+                <img src="~/User/img/mail-01.png" alt="Email Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">smborhan.cse@gmail.com</p>
+            </div>
+            <div class="d-flex align-items-center">
+                <img src="~/User/img/time-02.png" alt="Last Active Icon" class="img-fluid" style="max-width: 15px; margin-right: 8px;">
+                <p class="mb-0 profile-custom-p">Last Active time today - 12.00 PM</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row border-bottom pb-2 mt-1">
+        <div class="col-12 d-flex align-items-center gap-2">
+            <div class="toggle-switch d-flex align-items-center" id="toggleSwitch">
+                <div class="status-text">Active</div>
+                <div class="slider"></div>
+            </div>
+
+            <div class="tag-container d-flex gap-1">
+                <span class="tag">Training</span>
+                <span class="tag">Learning</span>
+                <span class="tag">Development</span>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="col-12 mt-2">
+        <ul class="nav custom-pills mb-1 pb-2" id="custom-pills-tab" role="tablist" style="border-bottom: 0.5px solid #D4D4D4;">
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link active" id="personal-tab" data-bs-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">Personal</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="education-tab" data-bs-toggle="tab" href="#education" role="tab" aria-controls="education" aria-selected="false">Education</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="family-tab" data-bs-toggle="tab" href="#family" role="tab" aria-controls="family" aria-selected="false">Family</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="nominee-tab" data-bs-toggle="tab" href="#nominee" role="tab" aria-controls="nominee" aria-selected="false">Nominee</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact Details</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="document-tab" data-bs-toggle="tab" href="#document" role="tab" aria-controls="document" aria-selected="false">Document</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="bank-details-tab" data-bs-toggle="tab" href="#bank-details" role="tab" aria-controls="bank-details" aria-selected="false">Bank details</button>
+            </li>
+            <li class="nav-item me-2" role="presentation">
+                <button class="nav-link custom-nav-link" id="tax-tab" data-bs-toggle="tab" href="#tax" role="tab" aria-controls="tax" aria-selected="false">Tax</button>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                <!-- Personal Content Here -->
+
+                <div class="card-header d-flex justify-content-between align-items-center" style="cursor: pointer; background-color: #EDEDED; padding: 10px; border-radius: 5px;">
+                    <h5 style="margin: 0;">Basic Information</h5>
+                    <div class="ms-auto">
+                        
+                        <button id="editButton" type="button" class="btn  d-flex align-items-center custom-btn-hal" style="font-size: 20px; padding: 7px 7px; " onclick="EmpToggleEditMode()">
+                            <h6 id="buttonText" style="font-weight: 500;" class="mb-0 me-2  ">Edit</h6>
+                            <img id="buttonIcon" src="~/User/img/edit.svg" alt="Last Active Icon" style="max-width: 25px; ">
+                           @*  <i id="buttonIcon" class="bi bi-pencil-square p-1 ms-1  "></i> *@
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <div class="row mx-md-3 pt-2">
+                        <!-- First Name -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">First Name</span>
+                            <h6 id="firstName" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="firstNameInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Last Name</span>
+                            <h6 id="lastName" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="lastNameInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Father's Name -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Father's Name</span>
+                            <h6 id="fatherName" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="fatherNameInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Mother's Name -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Mother's Name</span>
+                            <h6 id="motherName" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="motherNameInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Date of Birth</span>
+                            <h6 id="dob" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="dobInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="date">
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Gender</span>
+                            <h6 id="gender" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="genderInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Religion -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Religion</span>
+                            <h6 id="religion" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="religionInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Marital Status -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Marital Status</span>
+                            <h6 id="maritalStatus" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="maritalStatusInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Nationality -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Nationality</span>
+                            <h6 id="nationality" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="nationalityInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- NID -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">National ID</span>
+                            <h6 id="nid" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="nidInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text" placeholder="Enter National ID">
+                        </div>
+
+                        <!-- Passport Issue Date -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Passport Issue Date</span>
+                            <h6 id="passportIssueDate" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="passportIssueDateInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="date">
+                        </div>
+
+                        <!-- Passport Number -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Passport Number</span>
+                            <h6 id="passportNumber" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="passportNumberInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Secondary Mobile No. -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Secondary Mobile No.</span>
+                            <h6 id="secondaryMobile" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="secondaryMobileInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Primary Mobile No. -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Primary Mobile No.</span>
+                            <h6 id="primaryMobile" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="primaryMobileInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Primary Email -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Primary Email</span>
+                            <h6 id="primaryEmail" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="primaryEmailInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="email">
+                        </div>
+
+                        <!-- Emergency Contact -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Emergency Contact</span>
+                            <h6 id="emergencyContact" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="emergencyContactInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text">
+                        </div>
+
+                        <!-- Salary Profile ID -->
+                        <div class="col-md-6 col-6 mb-1">
+                            <span class="custom-placeholder">Salary Profile ID</span>
+                            <h6 id="salaryProfileId" class="editable-field mt-1" style="font-weight: 700;"></h6>
+                            <input id="salaryProfileIdInput" class="edit-input form-control d-none" style=" width: 75% !important;" type="text" placeholder="Enter Salary Profile ID">
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="education" role="tabpanel" aria-labelledby="education-tab">
+                <!-- Education Content Here -->
+                <div class="card-body">
+                    <div class="row mx-md-2 pt-md-2">
+                        <div class="col-md-6 col-6">
+                            <h6 class="pt-3">Past Education</h6>
+                        </div>
+                        <div class="col-md-6 col-6 d-flex justify-content-end">
+                            <!-- Add Education Button -->
+                            <button style="font-weight: 500; border: 1px solid #D0D5DD;" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#educationModal">
+                                <i class="fa-solid fa-plus"></i>
+                                <span class="button-text">Add education</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Academic Education Section -->
+                    <div class="row mx-md-2 pt-2 pt-md-2" id="academicEducation"></div>
+
+                    <div class="row mx-md-2 pt-md-2">
+                        <div class="col-md-6 col-6">
+                            <h6 class="pt-3">Professional Certification</h6>
+                        </div>
+                        <div class="col-md-6 col-6 d-flex justify-content-end">
+                            <!-- Add Certificate Button -->
+                            <button style="font-weight: 500; border: 1px solid #D0D5DD;" type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#certificateModal">
+                                <i class="fa-solid fa-plus"></i>
+                                <span class="button-text">Add certificate</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Professional Certification Section -->
+                    <div class="row mx-md-2 pt-2 pt-md-2" id="professionalEducation"></div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="family" role="tabpanel" aria-labelledby="family-tab">
+                <!-- Family Content Here -->
+                <div class="mx-md-2">
+                    <!-- Edit Button -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">Father’s Details</h6>
+                        <button type="button" id="editButtonFather" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;">
+                           <h6 class="mb-0" style="font-weight: 500;"></h6>
+                            <img  src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                            @* <i class="fa-solid fa-pen-to-square ps-2" style="color: #FFFFFF; font-weight: 600; font-size: 17px;"></i> *@
+                        </button>
+
+                        <button type="button" id="saveButtonFather" class="btn custom-btn-hal p-1 d-flex align-items-center d-none">
+                            <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+                            <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                            @* <i class="fa-solid fa-floppy-disk ps-2" style="color: #FFFFFF; font-weight: 600; font-size: 17px;"></i> *@
+                        </button>
+
+                    </div>
+
+                    <!-- Content -->
+                    <div class="row" style="padding-bottom: 10px; border-bottom: 1px solid #D4D4D4;">
+                        <!-- Profile Picture -->
+                        <div class="col-md-3">
+                            <div class="profile-pic mb-3">
+                                <span><img id="profilePic" src="~/User/img/main-upload.png" alt="Profile Pic" class="upload-button"></span>
+                                <input type="file" id="profilePicInput" class="d-none" accept="image/*">
+                            </div>
+                        </div>
+                        <!-- Details -->
+                        <div class="col-md-9">
+                            <div class="row">
+                                <input type="hidden" id="fatherId">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">First Name</span>
+                                    <h6 id="firstNameFather" class="view-mode-father d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="firstNameFatherInput" class="form-control edit-mode-father d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Last Name</span>
+                                    <h6 id="lastNameFather" class="view-mode-father d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="lastNameFatherInput" class="form-control edit-mode-father d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Occupation</span>
+                                    <h6 id="occupationFather" class="view-mode-father d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="occupationFatherInput" class="form-control edit-mode-father d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Date of Birth</span>
+                                    <h6 id="dobFather" class="view-mode-father d-none" style="font-weight: 700;"></h6>
+                                    <input type="date" id="dobFatherInput" class="form-control edit-mode-father d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Alive</span>
+                                    <h6 id="aliveFather" class="view-mode-father d-none" style="font-weight: 700;"></h6>
+                                    <select id="aliveFatherInput" class="form-control edit-mode-father d-none">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Age as of today</span>
+                                    <h6 id="ageFather" class="view-mode-father d-none" style="font-weight: 700;"></h6>
+                                    <input type="number" id="ageFatherInput" class="form-control edit-mode-father d-none" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mother’s Details -->
+                    <div class="d-flex pt-2 justify-content-between align-items-center">
+                        <h6 class="mb-0">Mother’s Details</h6>
+                        <button type="button" id="editButtonMother" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;">
+                           <h6 class="mb-0" style="font-weight: 500;"></h6>
+ <img  src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                        </button>
+
+                        <button type="button" id="saveButtonMother" class="btn custom-btn-hal p-1 d-flex align-items-center d-none">
+                            <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+                            <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                        </button>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="row" style="padding-bottom: 10px; border-bottom: 1px solid #D4D4D4;">
+                        <!-- Profile Picture -->
+                        <div class="col-md-3">
+                            <div class="profile-pic mb-3">
+                                <span><img id="profilePicMother" src="~/User/img/main-upload.png" alt="Profile Pic" class="upload-button"></span>
+                                <input type="file" id="profilePicMotherInput" class="d-none" accept="image/*">
+                            </div>
+                        </div>
+                        <!-- Details -->
+                        <div class="col-md-9">
+                            <div class="row">
+                                <input type="hidden" id="motherId">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">First Name</span>
+                                    <h6 id="firstNameMother" class="view-mode-mother d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="firstNameMotherInput" class="form-control edit-mode-mother d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Last Name</span>
+                                    <h6 id="lastNameMother" class="view-mode-mother d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="lastNameMotherInput" class="form-control edit-mode-mother d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Occupation</span>
+                                    <h6 id="occupationMother" class="view-mode-mother d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="occupationMotherInput" class="form-control edit-mode-mother d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Date of Birth</span>
+                                    <h6 id="dobMother" class="view-mode-mother d-none" style="font-weight: 700;"></h6>
+                                    <input type="date" id="dobMotherInput" class="form-control edit-mode-mother d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Alive</span>
+                                    <h6 id="aliveMother" class="view-mode-mother d-none" style="font-weight: 700;"></h6>
+                                    <select id="aliveMotherInput" class="form-control edit-mode-mother d-none">
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Age as of today</span>
+                                    <h6 id="ageMother" class="view-mode-mother d-none" style="font-weight: 700;"></h6>
+                                    <input type="number" id="ageMotherInput" class="form-control edit-mode-mother d-none" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="nominee" role="tabpanel" aria-labelledby="nominee-tab">
+                <!-- Nominee Content Here -->
+
+                <div class="mx-md-2">
+
+                    <!-- First Nominee’s Details -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">First Nominee’s Details</h6>
+                        <button type="button" id="editButtonNomineeOne" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;">
+                            <h6 class="mb-0" style="font-weight: 500;"></h6>
+                             <img  src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                        </button>
+
+                        <button type="button" id="saveButtonNomineeOne" class="btn custom-btn-hal p-1 d-flex align-items-center d-none">
+                            <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+                            <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                        </button>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="row" style="padding-bottom: 10px; border-bottom: 1px solid #D4D4D4;">
+                        <!-- Profile Picture -->
+                        <div class="col-md-3">
+                            <div class="profile-pic mb-3">
+                                <span><img id="profilePicNomineeOne" src="~/User/img/main-upload.png" alt="Profile Pic" class="upload-button"></span>
+                                <input type="file" id="profilePicNomineeOneInput" class="d-none" accept="image/*">
+                            </div>
+                        </div>
+                        <!-- Details -->
+                        <div class="col-md-9">
+                            <div class="row">
+                                <input type="hidden" id="nomineeOneId">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">First Name</span>
+                                    <h6 id="firstNameNomineeOne" class="view-mode-nominee-one d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="firstNameNomineeOneInput" class="form-control edit-mode-nominee-one d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Last Name</span>
+                                    <h6 id="lastNameNomineeOne" class="view-mode-nominee-one d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="lastNameNomineeOneInput" class="form-control edit-mode-nominee-one d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Occupation</span>
+                                    <h6 id="occupationNomineeOne" class="view-mode-nominee-one d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="occupationNomineeOneInput" class="form-control edit-mode-nominee-one d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Date of Birth</span>
+                                    <h6 id="dobNomineeOne" class="view-mode-nominee-one d-none" style="font-weight: 700;"></h6>
+                                    <input type="date" id="dobNomineeOneInput" class="form-control edit-mode-nominee-one d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Relationship</span>
+                                    <h6 id="relationshipNomineeOne" class="view-mode-nominee-one d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="relationshipNomineeOneInput" class="form-control edit-mode-nominee-one d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Age as of today</span>
+                                    <h6 id="ageNomineeOne" class="view-mode-nominee-one d-none" style="font-weight: 700;"></h6>
+                                    <input type="number" id="ageNomineeOneInput" class="form-control edit-mode-nominee-one d-none" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Second Nominee’s Details -->
+                    <div class="d-flex pt-2 justify-content-between align-items-center">
+                        <h6 class="mb-0">Second Nominee’s Details</h6>
+                        <button type="button" id="editButtonNomineeTwo" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;">
+                            <h6 class="mb-0" style="font-weight: 500;"></h6>
+                            <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                        </button>
+
+                        <button type="button" id="saveButtonNomineeTwo" class="btn custom-btn-hal p-1 d-flex align-items-center d-none">
+                            <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+ <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                        </button>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="row" style="padding-bottom: 10px; border-bottom: 1px solid #D4D4D4;">
+                        <!-- Profile Picture -->
+                        <div class="col-md-3">
+                            <div class="profile-pic mb-3">
+                                <span><img id="profilePicNomineeTwo" src="~/User/img/main-upload.png" alt="Profile Pic" class="upload-button"></span>
+                                <input type="file" id="profilePicNomineeTwoInput" class="d-none" accept="image/*">
+                            </div>
+                        </div>
+                        <!-- Details -->
+                        <div class="col-md-9">
+                            <div class="row">
+                                <input type="hidden" id="nomineeTwoId">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">First Name</span>
+                                    <h6 id="firstNameNomineeTwo" class="view-mode-nominee-two d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="firstNameNomineeTwoInput" class="form-control edit-mode-nominee-two d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Last Name</span>
+                                    <h6 id="lastNameNomineeTwo" class="view-mode-nominee-two d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="lastNameNomineeTwoInput" class="form-control edit-mode-nominee-two d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Occupation</span>
+                                    <h6 id="occupationNomineeTwo" class="view-mode-nominee-two d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="occupationNomineeTwoInput" class="form-control edit-mode-nominee-two d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Date of Birth</span>
+                                    <h6 id="dobNomineeTwo" class="view-mode-nominee-two d-none" style="font-weight: 700;"></h6>
+                                    <input type="date" id="dobNomineeTwoInput" class="form-control edit-mode-nominee-two d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Relationship</span>
+                                    <h6 id="relationshipNomineeTwo" class="view-mode-nominee-two d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="relationshipNomineeTwoInput" class="form-control edit-mode-nominee-two d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Age as of today</span>
+                                    <h6 id="ageNomineeTwo" class="view-mode-nominee-two d-none" style="font-weight: 700;"></h6>
+                                    <input type="number" id="ageNomineeTwoInput" class="form-control edit-mode-nominee-two d-none" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                <!-- Contact Details Content Here -->
+                <div class="mx-md-2 row">
+
+                    <div class="row" style="border-bottom: 1px solid #D4D4D4;">
+                        <div class="col-12 col-md-6 p-2" style="border-right: 1px solid #D4D4D4; ">
+                            <div class="d-flex pt-2 justify-content-between align-items-center">
+                                <h6 class="mb-0">Present Address</h6>
+                                <button type="button" id="editButtonPresentAddress" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;">
+                                    <h6 class="mb-0" style="font-weight: 500;"></h6>
+                                    <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                                </button>
+
+                                <button type="button" id="saveButtonPresentAddress" class="btn custom-btn-hal p-1 d-flex align-items-center d-none">
+                                     <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+ <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                                </button>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="row" style="padding-bottom: 10px; ">
+                                <input type="hidden" id="addressId">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Apartment/Building</span>
+                                    <h6 id="apartment" class="view-mode-present d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="apartmentInput" class="form-control edit-mode-present d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Street</span>
+                                    <h6 id="street" class="view-mode-present d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="streetInput" class="form-control edit-mode-present d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">City</span>
+                                    <h6 id="city" class="view-mode-present d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="cityInput" class="form-control edit-mode-present d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">District</span>
+                                    <h6 id="district" class="view-mode-present d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="districtInput" class="form-control edit-mode-present d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Country</span>
+                                    <h6 id="country" class="view-mode-present d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="countryInput" class="form-control edit-mode-present d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Postal/Zip Code</span>
+                                    <h6 id="postal" class="view-mode-present d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="postalInput" class="form-control edit-mode-present d-none">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 p-2">
+                            <div class="d-flex pt-2 justify-content-between align-items-center" style="padding-left: 12px;">
+                                <h6 class="mb-0">Permanent Address</h6>
+                                <button type="button" id="editButtonPermanentAddress" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;">
+                                    <h6 class="mb-0" style="font-weight: 500;"></h6>
+ <img  src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                                </button>
+
+                                <button type="button" id="saveButtonPermanentAddress" class="btn custom-btn-hal p-1 d-flex align-items-center d-none">
+                                    <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+                                    <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                                </button>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="row" style="padding-bottom: 10px; padding-left: 12px;">
+                                <input type="hidden" id="permanentAddressId">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Apartment/Building</span>
+                                    <h6 id="permanentApartment" class="view-mode-permanent d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="permanentApartmentInput" class="form-control edit-mode-permanent d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Street</span>
+                                    <h6 id="permanentStreet" class="view-mode-permanent d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="permanentStreetInput" class="form-control edit-mode-permanent d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">City</span>
+                                    <h6 id="permanentCity" class="view-mode-permanent d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="permanentCityInput" class="form-control edit-mode-permanent d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">District</span>
+                                    <h6 id="permanentDistrict" class="view-mode-permanent d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="permanentDistrictInput" class="form-control edit-mode-permanent d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Country</span>
+                                    <h6 id="permanentCountry" class="view-mode-permanent d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="permanentCountryInput" class="form-control edit-mode-permanent d-none">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Postal/Zip Code</span>
+                                    <h6 id="permanentPostal" class="view-mode-permanent d-none" style="font-weight: 700;"></h6>
+                                    <input type="text" id="permanentPostalInput" class="form-control edit-mode-permanent d-none">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-md-6 p-2" style="border-right: 1px solid #D4D4D4; ">
+                            <div class="d-flex pt-2 justify-content-between align-items-center">
+                                <h6 class="mb-0">Emergency Contacts <span style="background-color: #E0D1FC; padding: 5px; border-radius: 6px;">First</span></h6>
+                                <button type="button" id="editButtonEmergencyContacts" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;">
+                                    <h6 class="mb-0" style="font-weight: 500;"></h6>
+                                    <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                                </button>
+                                <button type="button" id="saveButtonEmergencyContacts" class="btn custom-btn-hal p-1 d-flex align-items-center d-none" style="padding: 7px 7px;">
+                                    <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+                                    <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                                </button>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="row" style="padding-bottom: 10px; ">
+                                <input type="hidden" id="contactId">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">First Name</span>
+                                    <h6 id="EmergencyFirstName" class="view-mode-emergency" style="font-weight: 700;">Nazrul</h6>
+                                    <input type="text" id="EmergencyFirstNameInput" class="form-control edit-mode-emergency d-none" value="">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Last Name</span>
+                                    <h6 id="EmergencyLastName" class="view-mode-emergency" style="font-weight: 700;">Islam</h6>
+                                    <input type="text" id="EmergencyLastNameInput" class="form-control edit-mode-emergency d-none" value="">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Relationship</span>
+                                    <h6 id="EmergencyRelationship" class="view-mode-emergency" style="font-weight: 700;">Father</h6>
+                                    <input type="text" id="EmergencyRelationshipInput" class="form-control edit-mode-emergency d-none" value="">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Phone Number</span>
+                                    <h6 id="EmergencyPhoneNumber" class="view-mode-emergency" style="font-weight: 700;">+880894563</h6>
+                                    <input type="text" id="EmergencyPhoneNumberInput" class="form-control edit-mode-emergency d-none" value="">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Occupation</span>
+                                    <h6 id="EmergencyOccupation" class="view-mode-emergency" style="font-weight: 700;">Farmer</h6>
+                                    <input type="text" id="EmergencyOccupationInput" class="form-control edit-mode-emergency d-none" value="">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Office Address</span>
+                                    <h6 id="EmergencyOfficeAddress" class="view-mode-emergency" style="font-weight: 700;">N/A</h6>
+                                    <input type="text" id="EmergencyOfficeAddressInput" class="form-control edit-mode-emergency d-none" value="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-6 p-2" >
+                            <div class="d-flex pt-2 justify-content-between align-items-center" style="padding-left: 12px;">
+                                <h6 class="mb-0">Emergency Contacts <span style="background-color: #E0D1FC; padding: 5px; border-radius: 6px;">Second</span></h6>
+                                <button type="button" id="editButtonEmergencyContactTwo" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;">
+                                    <h6 class="mb-0" style="font-weight: 500;"></h6>
+                                    <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                                </button>
+                                <button type="button" id="saveButtonEmergencyContactTwo" class="btn custom-btn-hal p-1 d-flex align-items-center d-none" style="padding: 7px 7px;">
+                                    <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+                                    <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                                </button>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="row" style="padding-bottom: 10px; padding-left: 12px; ">
+                                <input type="hidden" id="contactIdTwo">
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">First Name</span>
+                                    <h6 id="EmergencyFirstNameTwo" class="view-mode-emergency-two" style="font-weight: 700;">Nazrul</h6>
+                                    <input type="text" id="EmergencyFirstNameInputTwo" class="form-control edit-mode-emergency-two d-none" value="">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Last Name</span>
+                                    <h6 id="EmergencyLastNameTwo" class="view-mode-emergency-two" style="font-weight: 700;">Islam</h6>
+                                    <input type="text" id="EmergencyLastNameInputTwo" class="form-control edit-mode-emergency-two d-none" value="">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Relationship</span>
+                                    <h6 id="EmergencyRelationshipTwo" class="view-mode-emergency-two" style="font-weight: 700;">Father</h6>
+                                    <input type="text" id="EmergencyRelationshipInputTwo" class="form-control edit-mode-emergency-two d-none" value="">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Phone Number</span>
+                                    <h6 id="EmergencyPhoneNumberTwo" class="view-mode-emergency-two" style="font-weight: 700;">+880894563</h6>
+                                    <input type="text" id="EmergencyPhoneNumberInputTwo" class="form-control edit-mode-emergency-two d-none" value="">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Occupation</span>
+                                    <h6 id="EmergencyOccupationTwo" class="view-mode-emergency-two" style="font-weight: 700;">Farmer</h6>
+                                    <input type="text" id="EmergencyOccupationInputTwo" class="form-control edit-mode-emergency-two d-none" value="">
+                                </div>
+                                <div class="col-md-6 col-6 mb-1">
+                                    <span class="custom-placeholder">Office Address</span>
+                                    <h6 id="EmergencyOfficeAddressTwo" class="view-mode-emergency-two" style="font-weight: 700;">N/A</h6>
+                                    <input type="text" id="EmergencyOfficeAddressInputTwo" class="form-control edit-mode-emergency-two d-none" value="">
+                                </div>
+                            </div>
+                        </div>
+                   </div>
+
+                   
+
+                    
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="document" role="tabpanel" aria-labelledby="document-tab">
+                <!-- Document Content Here -->
+                <div class="row pt-3 g-5 mb-4 text-center">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/pdf 2.png" alt="Resume" class="doc-upload" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">Resume</p>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/pdf 2.png" alt="Resume" class="doc-upload" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">Offer letter</p>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/db view.png" alt="Resume" class="doc-upload-db" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">Pay-slip</p>
+                    </div>
+
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/db view.png" alt="Resume" class="doc-upload-db" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">Birth Certificate </p>
+                    </div>
+
+
+
+
+                    <!-- Repeat for other file upload items -->
+                </div>
+
+                <div class="row g-4 mb-4 text-center">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/pdf 2.png" alt="Resume" class="doc-upload" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">National ID Card <br /> (Front Side)</p>
+                    </div>
+
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/pdf 2.png" alt="Resume" class="doc-upload" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">National ID Card <br /> (Back Side)</p>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="card p-3 position-relative">
+                            <img src="~/User/img/pdf 2.png" alt="Resume" class="doc-upload" style="">
+                            <img src="/User/img/main-upload.png" alt="Upload Icon" class="position-absolute" style="top: 10px; right: 10px; max-width: 30px;">
+                            <input type="file" name="resume" accept=".pdf" onchange="updateFileName(this)" class="position-absolute top-0 start-0 w-100 h-100 opacity-0 cursor-pointer">
+                            <div class="small text-muted mt-2 onboard-file-name">No file chosen</div>
+                        </div>
+                        <p class="upoload-doc-header">Passport</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h6>Declaration</h6>
+                    <p class="card-declar">
+                        Congratulation! You have shortlisted for the next round. To be selected for the final viva you need to send us an assignment. Please note, only selected candidates will get the opportunity.
+                    </p>
+                    <div class="row mb-3 align-items-center">
+                        <!-- Employee Signature Upload -->
+                        <div class="col-md-2">
+                            <label for="signatureUpload" class="custom-label">Employee signature</label>
+                            <div class="signature-upload position-relative border rounded" style="width: 175px; height: 44px; display: flex; align-items: center; overflow: hidden;">
+                                <!-- Signature Preview -->
+                                <img id="signaturePreview" src="#" alt="Signature Preview" class="position-absolute d-none" style="left: 0; top: 0; height: 100%; object-fit: contain;">
+                                <!-- Upload Icon -->
+                                <label for="signatureUpload" class="position-absolute" style="top: 0; right: 0; padding: 10px; cursor: pointer;">
+                                    <img src="/User/img/main-upload.png" alt="Upload Icon" style="max-width: 30px;">
+                                </label>
+                                <!-- File Input -->
+                                <input type="file" id="signatureUpload" name="signatureUpload" accept="image/*" class="form-control responsive-input position-absolute" style="top: 0; left: 0; width: 100%; height: 100%; opacity: 0;" onchange="previewSignature()">
+                            </div>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="col-md-3">
+                            <label for="date" class="custom-label">Date</label>
+                            <div class="date-input">
+                                <input type="date" class="form-control responsive-input" id="date">
+                            </div>
+                        </div>
+
+                        <!-- Save Button -->
+                        <div class="col-md-7 text-end">
+                            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px; margin-top: 30px;">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Repeat for other file upload items -->
+            </div>
+
+            <div class="tab-pane fade" id="bank-details" role="tabpanel" aria-labelledby="bank-details-tab">
+                <!-- Bank Details Content Here -->
+                <div class="container mt-3">
+                    <div style="display: flex; align-items: center;">
+                        <h6 style="margin-right: 20px; margin-top: 5px;">Select Account Type*</h6>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="accountType" id="bankOption" value="bank" checked>
+                            <label class="form-check-label" for="bankOption">Bank</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="accountType" id="cardOption" value="card">
+                            <label class="form-check-label" for="cardOption">Credit Card</label>
+                        </div>
+                    </div>
+
+
+                    <form id="bankForm" class="form-section active ">
+
+                        <div class="d-flex  justify-content-end align-items-end" style="margin-top: -35px;">
+                            @* <h6 class="mb-0">Bank Details</h6> *@
+                            <button type="button" id="editButtonBankDetails" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;">
+                                <h6 class="mb-0" style="font-weight: 500;"></h6>
+                                <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                            </button>
+                            <button type="button" id="saveButtonBankDetails" class="btn custom-btn-hal p-1 d-flex align-items-center d-none" style="padding: 7px 7px;">
+                                <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+                                <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                            </button>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="row pt-3" style="padding-bottom: 10px;">
+                            <input type="hidden" id="bankDetailsId">
+
+                            <div class="mb-2">
+                                <span class="custom-label">Account Name</span>
+                                <h6 id="accountName" class="view-mode-bank d-none" style="font-weight: 700;"></h6>
+                                <input type="text" id="accountNameInput" class="form-control edit-mode-bank d-none">
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="custom-label">Account Number</span>
+                                <h6 id="accountNumber" class="view-mode-bank d-none" style="font-weight: 700;"></h6>
+                                <input type="text" id="accountNumberInput" class="form-control edit-mode-bank d-none">
+                            </div>
+
+                            <div class=" mb-2">
+                                <span class="custom-label">Bank Name</span>
+                                <h6 id="bankName" class="view-mode-bank d-none" style="font-weight: 700;"></h6>
+                                <input type="text" id="bankNameInput" class="form-control edit-mode-bank d-none">
+                            </div>
+
+                            <div class=" mb-2">
+                                <span class="custom-label">Routing Number</span>
+                                <h6 id="routingNumber" class="view-mode-bank d-none" style="font-weight: 700;"></h6>
+                                <input type="text" id="routingNumberInput" class="form-control edit-mode-bank d-none">
+                            </div>
+
+                            <div class=" mb-2">
+                                <span class="custom-label">Branch</span>
+                                <h6 id="branch" class="view-mode-bank d-none" style="font-weight: 700;"></h6>
+                                <input type="text" id="branchInput" class="form-control edit-mode-bank d-none">
+                            </div>
+                        </div>
+                    </form>
+
+                    <form id="cardForm" class="form-section">
+                        <div class="d-flex  justify-content-end align-items-end" style="margin-top: -35px;">
+                            @* <h6 class="mb-0">Credit Card Details</h6> *@
+                            <button type="button" id="editButtonCardDetails" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;"> 
+                                <h6 class="mb-0" style="font-weight: 500;"></h6>
+                                <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                            </button>
+                            <button type="button" id="saveButtonCardDetails" class="btn custom-btn-hal p-1 d-flex align-items-center d-none" style="padding: 7px 7px;">
+                                <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+                                <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                            </button>
+                        </div>
+
+                        <!-- Content -->
+                        <div class="row pt-3" style="padding-bottom: 10px;">
+                            <input type="hidden" id="cardDetailsId">
+
+                            <div class="mb-2">
+                                <span class="custom-label">Card Holder Name</span>
+                                <h6 id="cardHolderName" class="view-mode-card d-none" style="font-weight: 700;"></h6>
+                                <input type="text" id="cardHolderNameInput" class="form-control edit-mode-card d-none">
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="custom-label">Card Number</span>
+                                <h6 id="cardNumber" class="view-mode-card d-none" style="font-weight: 700;"></h6>
+                                <input type="text" id="cardNumberInput" class="form-control edit-mode-card d-none">
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="custom-label">Expiry Date</span>
+                                <h6 id="expiryDate" class="view-mode-card d-none" style="font-weight: 700;"></h6>
+                                <input type="date" id="expiryDateInput" class="form-control edit-mode-card d-none">
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="custom-label">CVV</span>
+                                <h6 id="cvv" class="view-mode-card d-none" style="font-weight: 700;"></h6>
+                                <input type="text" id="cvvInput" class="form-control edit-mode-card d-none">
+                            </div>
+                        </div>
+                    </form>
+
+                    
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="tax" role="tabpanel" aria-labelledby="tax-tab">
+                <div class="p-2 row">
+                    <div class="d-flex pt-2 justify-content-between align-items-center">
+                        <h6 class="mb-0">Tax Information</h6>
+                        <button type="button" id="editButtonTax" class="btn custom-btn-hal p-1 d-flex align-items-center" style="padding: 7px 7px;">
+                            <h6 class="mb-0" style="font-weight: 500;"></h6>
+                            <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                        </button>
+                        <button type="button" id="saveButtonTax" class="btn custom-btn-hal p-1 d-flex align-items-center d-none" style="padding: 7px 7px;">
+                            <h6 class="mb-0 me-1" style="font-weight: 500;">Save</h6>
+                            <img src="~/User/img/edit.svg" alt="Last Active Icon" style="width: 25px; ">
+                        </button>
+                    </div>
+                   <div class="col-12 col-md-6">
+                       
+
+                        <!-- Content -->
+                        <div class="row" style="padding-bottom: 10px;">
+                            <input type="hidden" id="TaxId">
+                            <div class="col-12 mb-1">
+                                <span class="custom-placeholder">Tax Year</span>
+                                <h6 id="taxYear" class="view-mode-tax d-none" style="font-weight: 700;"></h6>
+                                <input type="date" class="form-control edit-mode-tax d-none" id="taxYearInput" placeholder="YYYY-MM-DD">
+                            </div>
+                            <div class="col-12 mb-1">
+                                <span class="custom-placeholder">Name</span>
+                                <h6 id="name" class="view-mode-tax d-none" style="font-weight: 700;"></h6>
+                                <input type="text" class="form-control edit-mode-tax d-none" id="nameInput" placeholder="Name">
+                            </div>
+                            <div class="col-12 mb-1">
+                                <span class="custom-placeholder">Return Submit</span>
+                                <h6 id="returnSubmit" class="view-mode-tax d-none" style="font-weight: 700;"></h6>
+                                <select class="form-control edit-mode-tax d-none" id="returnSubmitInput">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-1">
+                                <span class="custom-placeholder">Return Submit Date</span>
+                                <h6 id="submitDate" class="view-mode-tax d-none" style="font-weight: 700;"></h6>
+                                <input type="date" class="form-control edit-mode-tax d-none" id="submitDateInput">
+                            </div>
+                            <div class="col-12 mb-1">
+                                <span class="custom-placeholder">Acknowledgement Slip Receive Date</span>
+                                <h6 id="acknowledgementDate" class="view-mode-tax d-none" style="font-weight: 700;"></h6>
+                                <input type="date" class="form-control edit-mode-tax d-none" id="acknowledgementDateInput">
+                            </div>
+                            <div class="col-12 mb-1">
+                                <span class="custom-placeholder">Tax Certificate Received</span>
+                                <h6 id="certificateReceive" class="view-mode-tax d-none" style="font-weight: 700;"></h6>
+                                <select class="form-control edit-mode-tax d-none" id="certificateReceiveInput">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                            <div class="col-12 mb-1">
+                                <span class="custom-placeholder">Tax Extension</span>
+                                <h6 id="taxExtension" class="view-mode-tax d-none" style="font-weight: 700;"></h6>
+                                <select class="form-control edit-mode-tax d-none" id="taxExtensionInput">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+
+                        </div>
+                   </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@* ******************* MODALS start *********** *@
+<!-- Modal Education -->
+<div class="modal fade" id="educationModal" tabindex="-1" aria-labelledby="educationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #EDEDED; padding: 10px;">
+                <h6 class="modal-title" id="educationModalLabel" style="font-size: 18px; color: #414042;">Adding New Education</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="employeeEduForm">
+                    <div class="mb-2">
+                        <label for="degreeTitle" class="custom-label">Degree</label>
+                        <input type="text" class="form-control responsive-input" id="degreeTitle" placeholder="Enter your degree">
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="subjectName" class="custom-label">Subject</label>
+                        <input type="text" class="form-control responsive-input" id="subjectName" placeholder="Enter your subject">
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="instituteName" class="custom-label">Institute Name</label>
+                        <input type="text" class="form-control responsive-input" id="instituteName" placeholder="Enter your institute name">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="startYear" class="custom-label">Start Year</label>
+                            <input type="month" class="form-control responsive-input" id="startYear" value="2018-06">
+                        </div>
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="endYear" class="custom-label">End Year</label>
+                            <input type="month" class="form-control responsive-input" id="endYear" value="2022-04">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="gpaGrade" class="custom-label">GPA</label>
+                            <input type="number" class="form-control responsive-input" id="gpaGrade" value="2.5" step="0.01" min="1" max="5">
+                        </div>
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="gpaOutOf" class="custom-label">GPA Out Of</label>
+                            <input type="number" class="form-control responsive-input" id="gpaOutOf" value="4.0" min="4" max="5" >
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="border-color: #4AA147; border: 1px solid #00000033; font-size: 14px;" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="saveEduBtn" style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Certificate -->
+<div class="modal fade" id="certificateModal" tabindex="-1" aria-labelledby="certificateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #EDEDED; padding: 10px;">
+                <h6 class="modal-title" id="certificateModalLabel" style="font-size: 18px; color: #414042;">Adding new  certificate</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="employeeEduFormProfess">
+                    <div class="mb-2">
+                        <label for="coursename" class="custom-label">Course Name</label>
+                        <input type="text" class="form-control responsive-input" id="coursename" placeholder="Enter your Course Name">
+                    </div>
+
+                    <div class="mb-2">
+                        <label for="organization" class="custom-label">Issuing Organization</label>
+                        <input type="text" class="form-control responsive-input" id="organization" placeholder="Enter Issuing Organization">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="startYearProfess" class="custom-label">Start Year</label>
+                            <input type="month" class="form-control responsive-input" id="startYearProfess" value="2018-06">
+                        </div>
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="endYearProfess" class="custom-label">End Year</label>
+                            <input type="month" class="form-control responsive-input" id="endYearProfess" value="2022-04">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-12 mb-3">
+                            <label for="resultType" class="custom-label">Result Status</label>
+                            <input type="text" class="form-control responsive-input" id="resultType" placeholder="Enter result type (e.g., Competent, Pass, 1st Class)">
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="certificateUpload" class="custom-label">Upload Certificate</label>
+                            <div class="upload-container" id="upload-container"
+                                 ondragover="handleDragOver(event)"
+                                 ondragleave="handleDragLeave(event)"
+                                 ondrop="handleDrop(event)">
+                                <div class="text-section">
+                                    Drag & Drop <span>/</span>
+                                    <span id="file-name" style="margin-left: 10px; color: #344054;"></span>
+                                </div>
+                                <button type="button" onclick="document.getElementById('file-input').click()">
+                                    <span>Upload</span>
+                                    <img src="/User/img/upload-trans.png" alt="Add Education" style="max-width: 30px;" class=" ps-2">
+                                    @* <i class="fas fa-upload"></i> <!-- Font Awesome Upload Icon --> *@
+                                </button>
+                                <input id="file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                            </div>
+                            <div class="progress-container mt-3" id="progress-container" style="display: none;">
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" id="progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn " style=" border-color: #4AA147; border: 1px solid #00000033; font-size: 14px;" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="saveProfessEduBtn" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Add</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal EDIT Education -->
+<div class="modal fade" id="editEducationModal" tabindex="-1" aria-labelledby="editEducationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #EDEDED; padding: 10px;">
+                <h6 class="modal-title" id="editEducationModalLabel" style="font-size: 18px; color: #414042;">Editing Education</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="editEmployeeEduForm">
+                    <div class="mb-2">
+                        <label for="editDegreeTitle" class="custom-label">Degree</label>
+                        <input type="text" class="form-control responsive-input" id="editDegreeTitle" placeholder="Enter your degree">
+                    </div>
+                    <div class="mb-2">
+                        <label for="editSubjectName" class="custom-label">Subject</label>
+                        <input type="text" class="form-control responsive-input" id="editSubjectName" placeholder="Enter your subject">
+                    </div>
+                    <div class="mb-2">
+                        <label for="editInstituteName" class="custom-label">Institute Name</label>
+                        <input type="text" class="form-control responsive-input" id="editInstituteName" placeholder="Enter your institute name">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="editStartYear" class="custom-label">Start Year</label>
+                            <input type="date" class="form-control responsive-input" id="editStartYear">
+                        </div>
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="editEndYear" class="custom-label">End Year</label>
+                            <input type="date" class="form-control responsive-input" id="editEndYear">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="editGpaGrade" class="custom-label">GPA</label>
+                            <input type="number" class="form-control responsive-input" id="editGpaGrade" step="0.01" min="1" max="5">
+                        </div>
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="editGpaOutOf" class="custom-label">GPA Out Of</label>
+                            <input type="number" class="form-control responsive-input" id="editGpaOutOf" min="4" max="5">
+                        </div>
+                    </div>
+                    <!-- Hidden input for employeeId -->
+                    <input type="hidden" id="editEmployeeId">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="editSaveEduBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal EDIT Certificate -->
+<div class="modal fade" id="editCertificateModal" tabindex="-1" aria-labelledby="editCertificateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #EDEDED; padding: 10px;">
+                <h6 class="modal-title" id="editCertificateModalLabel" style="font-size: 18px; color: #414042;">Editing Certificate</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="editEmployeeCertForm">
+                    <div class="mb-2">
+                        <label for="editCourseName" class="custom-label">Course Name</label>
+                        <input type="text" class="form-control responsive-input" id="editCourseName" placeholder="Enter course name">
+                    </div>
+                    <div class="mb-2">
+                        <label for="editOrganization" class="custom-label">Issuing Organization</label>
+                        <input type="text" class="form-control responsive-input" id="editOrganization" placeholder="Enter issuing organization">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="editStartYearCert" class="custom-label">Start Year</label>
+                            <input type="date" class="form-control responsive-input" id="editStartYearCert">
+                        </div>
+                        <div class="col-md-6 col-6 mb-3">
+                            <label for="editEndYearCert" class="custom-label">End Year</label>
+                            <input type="date" class="form-control responsive-input" id="editEndYearCert">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <label for="editResultType" class="custom-label">Result Status</label>
+                            <input type="text" class="form-control responsive-input" id="editResultType" placeholder="Enter result status (e.g., Competent, Pass, 1st Class)">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="editCertUpload" class="custom-label">Upload Certificate</label>
+                            <div class="upload-container" id="edit-upload-container"
+                                 ondragover="handleDragOver(event)"
+                                 ondragleave="handleDragLeave(event)"
+                                 ondrop="handleDrop(event)">
+                                <div class="text-section">
+                                    Drag & Drop <span>/</span>
+                                    <span id="edit-file-name" style="margin-left: 10px; color: #344054;"></span>
+                                </div>
+                                <button type="button" onclick="document.getElementById('edit-file-input').click()">
+                                    <span>Upload</span>
+                                    <img src="/User/img/upload-trans.png" alt="Upload Certificate" style="max-width: 30px;" class="ps-2">
+                                </button>
+                                <input id="edit-file-input" type="file" style="display: none;" onchange="handleFileUpload(event)">
+                            </div>
+                            <div class="progress-container mt-3" id="edit-progress-container" style="display: none;">
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" id="edit-progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Hidden input for certificateId -->
+                    <input type="hidden" id="editCertificateId">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" id="editSaveCertBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* ******************* MODALS END *********** *@
+@section Scripts {
+
+    <script>
+        const employeeId = "9398f8c8-2b71-403e-953e-869e3f1bfcb0";
+
+        const InfoType = {
+            Father: 0,
+            Mother: 1,
+            Nominee1: 2,
+            Nominee2: 3
+        };
+
+        const AddressType = {
+            Present: 0,
+            Permanent: 1
+        };
+
+        const EmergencyContactType = {
+            EmergencyOne: 0,
+            EmergencyTwo: 1
+        };
+
+        const AccountType ={
+            Bank: 0,
+            CreditCard: 1
+        }
+
+
+        $(document).ready(function () {        
+            // Fetch employee data
+            // Fetch and display employee data on page load
+            fetchEmployeeData(employeeId);
+          
+            // Attach click handler for the Edit/Save button
+            $('#toggleEditButton').on('click', function () {
+                EmpToggleEditMode();  // Toggle between view and edit mode
+            });
+
+            getFatherInfo(); // Fetch and display data when page loads
+
+            getMotherInfo(); // Fetch and display data when page loads
+
+            getNomineeOneInfo(); // Fetch nominee one data on page load
+
+            getNomineeTwoInfo(); // Fetch nominee two data on page load
+
+            getPresentAddressInfo();
+            getPermanentAddressInfo();
+
+            // Fetch data for Emergency Contact One and Two when the page loads
+            getEmergencyContactOneInfo(); // Fetch Emergency Contact One data
+            getEmergencyContactTwoInfo(); // Fetch Emergency Contact Two data
+
+            // Event listeners for Emergency Contact One
+            $('#editButtonEmergencyContacts').click(function () {
+                enableEditModeEmergencyContactOne(); // Enable edit mode for Emergency Contact One
+            });
+
+            $('#saveButtonEmergencyContacts').click(function () {
+                saveEmergencyContactOneInfo(); // Save Emergency Contact One information
+            });
+
+            // Event listeners for Emergency Contact Two
+            $('#editButtonEmergencyContactTwo').click(function () {
+                enableEditModeEmergencyContactTwo(); // Enable edit mode for Emergency Contact Two
+            });
+
+            $('#saveButtonEmergencyContactTwo').click(function () {
+                saveEmergencyContactTwoInfo(); // Save Emergency Contact Two information
+            });
+
+            getBankDetails();
+
+            getCardDetails();
+
+            // Initial function call to load existing tax info
+            getTaxInfo();
+
+            // Set up event listeners for the edit and save buttons
+            $('#editButtonTax').click(function () {
+                enableEditModeTax(); // Handle edit button click
+            });
+
+            $('#saveButtonTax').click(function () {
+                saveTaxInfo(); // Handle save button click
+            });
+
+            // Initial data fetch
+            
+
+            function resetModalForm(modalId) {
+                const $modal = $(modalId);
+                $modal.find('form')[0].reset();
+                $modal.find('input, select').val('');
+                $modal.removeData('eduId');
+            }
+
+            function handleModalHide(e) {
+                resetModalForm(`#${e.target.id}`);
+            }
+
+            $('#educationModal, #certificateModal, #editEducationModal, #editCertificateModal').on('hidden.bs.modal', handleModalHide);
+
+            fetchEducationRecords().then(response => {
+                academicRecords = response.filter(record => record.certificationType === 0);
+                professionalRecords = response.filter(record => record.certificationType === 1);
+                updateEducationDOM();
+            }).catch(error => console.log("Error fetching education records:", error));
+
+            $('#saveEduBtn').on('click', function (e) {
+                e.preventDefault();
+                const formData = {
+                    Title: $('#degreeTitle').val(),
+                    SubjectName: $('#subjectName').val(),
+                    Institute: $('#instituteName').val(),
+                    StartYear: $('#startYear').val(),
+                    EndYear: $('#endYear').val(),
+                    Grade: $('#gpaGrade').val(),
+                    CertificationType: 0,
+                    EmployeeId: employeeId
+                };
+
+                addEducation(formData).then(response => {
+                    alert(response);
+                    $('#educationModal').modal('hide');
+                    return fetchEducationRecords();
+                }).then(response => {
+                    academicRecords = response.filter(record => record.certificationType === 0);
+                    updateAcademicEducationDOM();
+                    resetEducationModal();
+                }).catch(error => {
+                    console.error("Error details:", error);
+                    alert("An error occurred: " + (error.responseText || error.statusText));
+                });
+            });
+
+            $('#saveProfessEduBtn').on('click', function (e) {
+                e.preventDefault();
+                const formData = {
+                    SubjectName: $('#coursename').val(),
+                    Institute: $('#organization').val(),
+                    StartYear: $('#startYearProfess').val(),
+                    EndYear: $('#endYearProfess').val(),
+                    Grade: $('#resultType').val(),
+                    CertificationType: 1,
+                    EmployeeId: employeeId
+                };
+
+                addEducation(formData).then(response => {
+                    alert(response);
+                    $('#certificateModal').modal('hide');
+                    return fetchEducationRecords();
+                }).then(response => {
+                    professionalRecords = response.filter(record => record.certificationType === 1);
+                    updateProfessionalEducationDOM();
+                    resetCertificateModal();
+                }).catch(error => {
+                    console.error("Error details:", error);
+                    alert("An error occurred: " + (error.responseText || error.statusText));
+                });
+            });
+
+            $(document).on('click', '.edit-education, .edit-certificate', function () {
+                const eduId = $(this).data('id');
+                const isAcademic = $(this).hasClass('edit-education');
+                const record = isAcademic
+                    ? academicRecords.find(edu => edu.id === eduId)
+                    : professionalRecords.find(edu => edu.id === eduId);
+
+                if (record) {
+                    const modalId = isAcademic ? '#editEducationModal' : '#editCertificateModal';
+                    const formFields = isAcademic
+                        ? ['#editDegreeTitle', '#editSubjectName', '#editInstituteName', '#editStartYear', '#editEndYear', '#editGpaGrade']
+                        : ['#editCourseName', '#editOrganization', '#editStartYearCert', '#editEndYearCert', '#editResultType'];
+                    const recordFields = isAcademic
+                        ? ['title', 'subjectName', 'institute', 'startYear', 'endYear', 'grade']
+                        : ['subjectName', 'institute', 'startYear', 'endYear', 'grade'];
+
+                    formFields.forEach((field, index) => {
+                        $(field).val(record[recordFields[index]]);
+                    });
+
+                    $(modalId).data('eduId', eduId);
+                }
+            });
+
+            $('#editSaveEduBtn, #editSaveCertBtn').on('click', function (e) {
+                e.preventDefault();
+                const isAcademic = $(this).attr('id') === 'editSaveEduBtn';
+                const modalId = isAcademic ? '#editEducationModal' : '#editCertificateModal';
+                const eduId = $(modalId).data('eduId');
+
+                const formData = isAcademic ? {
+                    title: $('#editDegreeTitle').val(),
+                    subjectName: $('#editSubjectName').val(),
+                    institute: $('#editInstituteName').val(),
+                    startYear: $('#editStartYear').val(),
+                    endYear: $('#editEndYear').val(),
+                    grade: $('#editGpaGrade').val(),
+                    certificationType: 0,
+                    employeeId: employeeId
+                } : {
+                    subjectName: $('#editCourseName').val(),
+                    institute: $('#editOrganization').val(),
+                    startYear: $('#editStartYearCert').val(),
+                    endYear: $('#editEndYearCert').val(),
+                    grade: $('#editResultType').val(),
+                    certificationType: 1,
+                    employeeId: employeeId
+                };
+
+                updateEducation(eduId, formData).then(() => {
+                    alert('Education record updated successfully');
+                    $(modalId).modal('hide');
+                    return fetchEducationRecords();
+                }).then(response => {
+                    academicRecords = response.filter(record => record.certificationType === 0);
+                    professionalRecords = response.filter(record => record.certificationType === 1);
+                    updateEducationDOM();
+                }).catch(error => {
+                    console.error("Error details:", error);
+                    alert('Error updating education record: ' + (error.responseText || error.statusText));
+                });
+            });
+
+            $(document).on('click', '.delete-education', function () {
+                const eduId = $(this).data('id');
+                if (confirm('Are you sure you want to delete this education record?')) {
+                    deleteEducation(eduId).then(() => {
+                        return fetchEducationRecords();
+                    }).then(response => {
+                        academicRecords = response.filter(record => record.certificationType === 0);
+                        professionalRecords = response.filter(record => record.certificationType === 1);
+                        updateEducationDOM();
+                    }).catch(error => {
+                        console.error("Error details:", error);
+                        alert('Failed to delete education record. Please try again. Error: ' + (error.responseText || error.statusText));
+                    });
+                }
+            });
+           
+        });
+
+        // *************###################  Divider #######################*************
+
+        // ************* Employee Script Start ******************
+
+        // Function to fetch employee data
+        function fetchEmployeeData(employeeId) {
+            $.ajax({
+                url: `/Employee/GetEmployeeById?id=${employeeId}`,
+                type: 'GET',
+                success: function (employee) {
+                    displayEmployeeData(employee.data);
+                    EmpPopulateEditInputs(employee.data);
+                },
+                error: function (xhr, status, error) {
+                    alert('Error fetching employee data');
+                }
+            });
+        }
+
+        // Function to display employee data in the view-only fields
+        function displayEmployeeData(employee) {
+            $('#firstName').text(employee.firstName);
+            $('#lastName').text(employee.lastName);
+            $('#fatherName').text(employee.fatherName);
+            $('#motherName').text(employee.motherName);
+            $('#dob').text(new Date(employee.dob).toLocaleDateString());
+            $('#gender').text(employee.gender);
+            $('#religion').text(employee.religion);
+            $('#maritalStatus').text(employee.meritalStatus); // Corrected typo
+            $('#nationality').text(employee.nationality);
+            $('#nid').text(employee.nid);
+            $('#passportIssueDate').text(employee.passportIssueDate ? new Date(employee.passportIssueDate).toLocaleDateString() : 'N/A');
+            $('#passportNumber').text(employee.passportNumber);
+            $('#secondaryMobile').text(employee.secMNo);
+            $('#primaryMobile').text(employee.primaryMNo);
+            $('#primaryEmail').text(employee.primaryEmail);
+            $('#emergencyContact').text(employee.emergencyContact);
+            $('#salaryProfileId').text(employee.salaryProfileId);
+        }
+
+        // Function to populate input fields for editing
+        function EmpPopulateEditInputs(employee) {
+            $('#firstNameInput').val(employee.firstName);
+            $('#lastNameInput').val(employee.lastName);
+            $('#fatherNameInput').val(employee.fatherName);
+            $('#motherNameInput').val(employee.motherName);
+            $('#dobInput').val(employee.dob.split('T')[0]);  // Assuming dob is in ISO format
+            $('#genderInput').val(employee.gender);
+            $('#religionInput').val(employee.religion);
+            $('#maritalStatusInput').val(employee.meritalStatus); // Corrected typo
+            $('#nationalityInput').val(employee.nationality);
+            $('#nidInput').val(employee.nid);
+            $('#passportIssueDateInput').val(employee.passportIssueDate ? employee.passportIssueDate.split('T')[0] : '');  // Corrected for input
+            $('#passportNumberInput').val(employee.passportNumber);
+            $('#secondaryMobileInput').val(employee.secMNo);
+            $('#primaryMobileInput').val(employee.primaryMNo);
+            $('#primaryEmailInput').val(employee.primaryEmail);
+            $('#emergencyContactInput').val(employee.emergencyContact);
+            $('#salaryProfileIdInput').val(employee.salaryProfileId);
+        }
+
+        // Function to update employee data via AJAX
+        function updateEmployeeData(employeeId, updatedEmployee) {
+            $.ajax({
+                url: `/Employee/UpdateEmployee?id=${employeeId}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedEmployee),
+                success: function (response) {
+                    alert('Employee data updated successfully');
+                    displayEmployeeData(response); // Update view-only fields with the new data
+                },
+                error: function (xhr, status, error) {
+                    alert('Error updating employee data: ' + xhr.responseText);
+                }
+            });
+        }
+
+        // Global flag to track if in edit mode
+        let EmpIsEditMode = false;
+
+        // Function to toggle between edit and view modes
+        function EmpToggleEditMode() {
+            const editableFields = document.querySelectorAll('.editable-field');
+            const editInputs = document.querySelectorAll('.edit-input');
+            const buttonText = document.getElementById('buttonText');
+            const buttonIcon = document.getElementById('buttonIcon');
+
+            // Toggle input visibility based on mode
+            editableFields.forEach(field => field.classList.toggle('d-none'));
+            editInputs.forEach(input => input.classList.toggle('d-none'));
+
+            // Toggle between edit and save mode using the flag
+            if (EmpIsEditMode) {
+                // Save changes and toggle to view mode
+                EmployeesaveChanges(employeeId); // Assuming employeeId is available in scope
+                buttonText.textContent = 'Edit';
+                buttonIcon.classList.remove('fa-floppy-disk');
+                buttonIcon.classList.add('fa-pen-to-square');
+            } else {
+                // Switch to edit mode
+                buttonText.textContent = 'Save';
+                buttonIcon.classList.remove('fa-pen-to-square');
+                buttonIcon.classList.add('fa-floppy-disk');
+            }
+
+            // Toggle the flag
+            EmpIsEditMode = !EmpIsEditMode;
+        }
+
+
+        // Function to save changes
+        function EmployeesaveChanges(employeeId) {
+            const updatedEmployee = {
+                id: employeeId,
+                firstName: $('#firstNameInput').val(),
+                lastName: $('#lastNameInput').val(),
+                fatherName: $('#fatherNameInput').val(),
+                motherName: $('#motherNameInput').val(),
+                dob: $('#dobInput').val(),
+                gender: $('#genderInput').val(),
+                religion: $('#religionInput').val(),
+                meritalStatus: $('#maritalStatusInput').val(), // Corrected typo
+                nationality: $('#nationalityInput').val(),
+                nid: $('#nidInput').val(),
+                passportIssueDate: $('#passportIssueDateInput').val() || null,
+                passportNumber: $('#passportNumberInput').val(),
+                secMNo: $('#secondaryMobileInput').val(),
+                primaryMNo: $('#primaryMobileInput').val(),
+                primaryEmail: $('#primaryEmailInput').val(),
+                emergencyContact: $('#emergencyContactInput').val(),
+                salaryProfileId: $('#salaryProfileIdInput').val()
+            };
+
+            updateEmployeeData(employeeId, updatedEmployee); // Call the update function
+        }
+
+        // ************* Employee Script END ******************
+
+        // *************###################  Divider #######################*************
+
+        // ************* Employee Education Script Start ******************
+
+        let academicRecords = [];
+        let professionalRecords = [];
+
+        function fetchEducationRecords() {
+            return $.ajax({
+                url: `/Employee/GetEducationByEmployeeId?employeeId=${employeeId}`,
+                type: 'GET'
+            });
+        }
+
+        function updateEducationDOM() {
+            updateAcademicEducationDOM();
+            updateProfessionalEducationDOM();
+        }
+
+        function updateAcademicEducationDOM() {
+            const academicHTML = academicRecords.map(edu => `
+                <div class="col-md-6 col-12 mb-3 mb-md-2">
+                    <div class="education-card">
+                        <div class="education-header row d-flex">
+                            <div class="col-10">
+                                <h5 class="education-title">${edu.title}</h5>
+                                <p class="education-subtitle">${edu.subjectName}</p>
+                            </div>
+                            <div class="col-2 d-flex justify-content-end align-items-start">
+                                <button class="btn btn-link p-0 me-1 edit-education" data-id="${edu.id}" data-bs-toggle="modal" data-bs-target="#editEducationModal">
+                                                      <img src="/User/img/edit.svg" alt="Last Active Icon" style="width: 21px; ">
+                                </button>
+                                <button class="btn btn-link p-0 delete-education" data-id="${edu.id}">
+                                                   <img src="/User/img/delete.svg" alt="Last Active Icon" style="width: 21px; ">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="education-info">
+                            <h6 class="education-institution">${edu.institute}</h6>
+                        </div>
+                        <div class="education-details">
+                            <div class="education-detail me-md-5 me-3">
+                                                          <img src="/User/img/graduate-male.svg" class="me-1" alt="Last Active Icon" style="width: 25px; ">
+                                <h6 class="detail-text">${edu.grade} CGPA</h6>
+                            </div>
+                            <div class="education-detail">
+                                                                  <img src="/User/img/calendar-minus-02.svg" class="me-1" alt="Last Active Icon" style="width: 25px; ">
+                                <h6 class="detail-text">${edu.startYear} - ${edu.endYear}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            $('#academicEducation').html(academicHTML);
+        }
+
+        function updateProfessionalEducationDOM() {
+            const professionalHTML = professionalRecords.map(edu => `
+                <div class="col-md-4 col-sm-6 col-12 mb-2">
+                    <div class="course-card">
+                        <div class="row">
+                            <div class="col-7 col-sm-8">
+                                <h5 class="course-title">${edu.subjectName}</h5>
+                                <span class="course-provider">${edu.institute}</span>
+                            </div>
+                            <div class="col-5 col-sm-4 d-flex justify-content-end align-items-start">
+                                <button class="btn btn-link p-0 me-1 edit-certificate" data-id="${edu.id}" data-bs-toggle="modal" data-bs-target="#editCertificateModal">
+                                                 <img src="/User/img/edit.svg" alt="Last Active Icon" style="width: 21px; ">
+                                </button>
+                                <button class="btn btn-link p-0 delete-education" data-id="${edu.id}">
+                                                  <img src="/User/img/delete.svg" alt="Last Active Icon" style="width: 21px; ">
+                                </button>
+                            </div>
+                             <div class="col-12 d-flex align-items-center mt-3">
+                                                         <img src="/User/img/calendar-minus-02.svg" class="me-1" alt="Last Active Icon" style="width: 25px; ">
+                                 <h6 class="course-duration mb-0">${edu.startYear} - ${edu.endYear}</h6>
+                             </div>
+
+                            <h6 class="course-platform">${edu.grade}</h6>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            $('#professionalEducation').html(professionalHTML);
+        }
+
+        function formatDateForPostgres(dateString) {
+            const date = new Date(dateString);
+            return date.toISOString().split('T')[0];
+        }
+
+        function addEducation(formData) {
+            if (formData.StartYear) {
+                formData.StartYear = formatDateForPostgres(formData.StartYear);
+            }
+            if (formData.EndYear) {
+                formData.EndYear = formatDateForPostgres(formData.EndYear);
+            }
+
+            return $.ajax({
+                type: "POST",
+                url: '/Employee/SaveEmployeeEdu',
+                contentType: "application/json",
+                data: JSON.stringify(formData)
+            });
+        }
+
+        function updateEducation(eduId, formData) {
+            if (formData.startYear) {
+                formData.startYear = formatDateForPostgres(formData.startYear);
+            }
+            if (formData.endYear) {
+                formData.endYear = formatDateForPostgres(formData.endYear);
+            }
+
+            return $.ajax({
+                url: `/education/${eduId}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(formData)
+            });
+        }
+
+        function deleteEducation(eduId) {
+            return $.ajax({
+                url: `/education/${eduId}`,
+                type: 'DELETE'
+            });
+        }
+
+        function resetEducationModal() {
+            // Reset text fields
+            document.getElementById("degreeTitle").value = '';
+            document.getElementById("subjectName").value = '';
+            document.getElementById("instituteName").value = '';
+
+            // Reset month fields
+            document.getElementById("startYear").value = '2018-06'; // or you can leave it blank ''
+            document.getElementById("endYear").value = '2022-04';
+
+            // Reset GPA fields
+            document.getElementById("gpaGrade").value = 2.5;
+            document.getElementById("gpaOutOf").value = 4.0;
+        }
+
+        function resetCertificateModal() {
+            // Reset text fields
+            document.getElementById("coursename").value = '';
+            document.getElementById("organization").value = '';
+            document.getElementById("resultType").value = '';
+
+            // Reset month fields
+            document.getElementById("startYearProfess").value = '2018-06'; // or set to blank ''
+            document.getElementById("endYearProfess").value = '2022-04';  // or set to blank ''
+
+            // Reset file upload section
+            document.getElementById("file-input").value = '';
+            document.getElementById("file-name").textContent = ''; // Reset file name display
+            document.getElementById("progress-container").style.display = 'none'; // Hide progress bar
+            document.getElementById("progress-bar").style.width = '0%'; // Reset progress bar
+            document.getElementById("progress-bar").textContent = '0%';
+        }
+
+
+        // ************* Employee Education Script End ******************
+
+        // *************###################  Divider #######################*************
+
+        // ************* Employee Family And Nominee Info Script Start ******************
+
+        // #########$$$$$$$$$$ For Father ##########%%%%%%%%%%
+
+        // Fetch father information via AJAX
+        function getFatherInfo() {
+            $.ajax({
+                url: '/Employee/GetFamilyNomineeInfo',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    var fatherInfo = response.find(function (info) {
+                        return info.infoType === InfoType.Father; // InfoType = 0 means Father
+                    });
+
+                    if (fatherInfo) {
+                        // Populate view with existing data
+                        $('#firstNameFather').text(fatherInfo.firstName).removeClass('d-none');
+                        $('#lastNameFather').text(fatherInfo.lastName).removeClass('d-none');
+                        $('#occupationFather').text(fatherInfo.occupation).removeClass('d-none');
+                        $('#dobFather').text(fatherInfo.doB).removeClass('d-none');
+                        $('#aliveFather').text(fatherInfo.alive ? "Yes" : "No").removeClass('d-none');
+                        $('#ageFather').text(fatherInfo.age + ' years').removeClass('d-none');
+                        $('#fatherId').val(fatherInfo.id); // Set existing ID
+                        $('#editButtonFather').removeAttr('disabled'); // Enable the edit button
+                        EmpFatherToggleViewMode(true); // Show view mode
+                    } else {
+                        // Data not found, prepare for new entry
+                        $('#fatherId').val(null); // Set ID to null
+                        EmpFatherToggleViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    // Show edit mode if there's an error fetching data
+                    EmpFatherToggleViewMode(false);
+                }
+            });
+        }
+
+        // Save or update father information via AJAX
+        function saveFatherInfo() {
+            const updatedData = {
+                id: $('#fatherId').val(), // Send null for new entry if no ID
+                firstName: $('#firstNameFatherInput').val().trim(),
+                lastName: $('#lastNameFatherInput').val().trim(),
+                occupation: $('#occupationFatherInput').val().trim(),
+                doB: $('#dobFatherInput').val().trim(),
+                alive: $('#aliveFatherInput').val() === "true",
+                age: $('#ageFatherInput').val().trim(),
+                employeeId: employeeId,
+                infoType: 0, // InfoType for Father
+                relationship: 'Father' // Set relationship to Father
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateFamilyNomineeInfo',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    alert('Father information updated successfully');
+                    getFatherInfo(); // Refresh data after successful save
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating father information. Please try again.');
+                }
+            });
+        }
+
+        function EmpFatherToggleViewMode(isViewMode) {
+            if (isViewMode) {
+                // Show view mode, hide edit mode
+                $('.view-mode-father').removeClass('d-none');
+                $('.edit-mode-father').addClass('d-none');
+                $('#editButtonFather').removeClass('d-none');
+                $('#saveButtonFather').addClass('d-none'); // Hide save button in view mode
+            } else {
+                // Show edit mode, hide view mode
+                $('.edit-mode-father').removeClass('d-none');
+                $('.view-mode-father').addClass('d-none');
+                $('#editButtonFather').addClass('d-none'); // Hide edit button in edit mode
+                $('#saveButtonFather').removeClass('d-none'); // Show save button
+            }
+        }
+
+
+        // Enable edit mode for father information
+        function enableEditModeFather() {
+            EmpFatherToggleViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#firstNameFatherInput').val($('#firstNameFather').text().trim());
+            $('#lastNameFatherInput').val($('#lastNameFather').text().trim());
+            $('#occupationFatherInput').val($('#occupationFather').text().trim());
+            $('#dobFatherInput').val($('#dobFather').text().trim());
+            $('#aliveFatherInput').val($('#aliveFather').text().trim() === "Yes" ? "true" : "false");
+
+            // Initialize age calculation
+            updateAgeFather();
+        }
+
+        // Update father's age when the date of birth changes
+        function updateAgeFather() {
+            const dob = new Date($('#dobFatherInput').val());
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const dobMonthDay = dob.getMonth() * 100 + dob.getDate();
+            const todayMonthDay = today.getMonth() * 100 + today.getDate();
+            if (todayMonthDay < dobMonthDay) {
+                age--;
+            }
+            $('#ageFatherInput').val(age);
+        }
+
+        // Event listeners
+        $('#editButtonFather').click(function () {
+            enableEditModeFather(); // Handle edit button click
+        });
+
+        $('#saveButtonFather').click(function () {
+            saveFatherInfo(); // Handle save button click
+        });
+
+        $('#dobFatherInput').on('change', function () {
+            updateAgeFather(); // Update age when date of birth changes
+        });
+
+        // #########$$$$$$$$$$ For Mother ##########%%%%%%%%%%
+
+        // Fetch mother information via AJAX
+        function getMotherInfo() {
+            $.ajax({
+                url: '/Employee/GetFamilyNomineeInfo',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    var motherInfo = response.find(function (info) {
+                        return info.infoType === InfoType.Mother; // Use InfoType object
+                    });
+
+                    if (motherInfo) {
+                        // Populate view with existing data
+                        $('#firstNameMother').text(motherInfo.firstName).removeClass('d-none');
+                        $('#lastNameMother').text(motherInfo.lastName).removeClass('d-none');
+                        $('#occupationMother').text(motherInfo.occupation).removeClass('d-none');
+                        $('#dobMother').text(motherInfo.doB).removeClass('d-none');
+                        $('#aliveMother').text(motherInfo.alive ? "Yes" : "No").removeClass('d-none');
+                        $('#ageMother').text(motherInfo.age + ' years').removeClass('d-none');
+                        $('#motherId').val(motherInfo.id); // Set existing ID
+                        $('#editButtonMother').removeAttr('disabled'); // Enable the edit button
+                        EmpMotherToggleViewMode(true); // Show view mode
+                    } else {
+                        // Data not found, prepare for new entry
+                        $('#motherId').val(null); // Set ID to null
+                        EmpMotherToggleViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    // Show edit mode if there's an error fetching data
+                    EmpMotherToggleViewMode(false);
+                }
+            });
+        }
+
+        // Save or update mother information via AJAX
+        function saveMotherInfo() {
+            const updatedData = {
+                id: $('#motherId').val(), // Send null for new entry if no ID
+                firstName: $('#firstNameMotherInput').val().trim(),
+                lastName: $('#lastNameMotherInput').val().trim(),
+                occupation: $('#occupationMotherInput').val().trim(),
+                doB: $('#dobMotherInput').val().trim(),
+                alive: $('#aliveMotherInput').val() === "true",
+                age: $('#ageMotherInput').val().trim(),
+                employeeId: employeeId,
+                infoType: InfoType.Mother, // Use InfoType object
+                relationship: 'Mother' // Set relationship to Mother
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateFamilyNomineeInfo',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    alert('Mother information updated successfully');
+                    getMotherInfo(); // Refresh data after successful save
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating mother information. Please try again.');
+                }
+            });
+        }
+
+        // Toggle between view and edit modes for mother
+        function EmpMotherToggleViewMode(isViewMode) {
+            if (isViewMode) {
+                // Show view mode, hide edit mode
+                $('.view-mode-mother').removeClass('d-none');
+                $('.edit-mode-mother').addClass('d-none');
+                $('#editButtonMother').removeClass('d-none');
+                $('#saveButtonMother').addClass('d-none'); // Make sure save button is hidden in view mode
+            } else {
+                // Show edit mode, hide view mode
+                $('.edit-mode-mother').removeClass('d-none');
+                $('.view-mode-mother').addClass('d-none');
+                $('#editButtonMother').addClass('d-none'); // Hide edit button in edit mode
+                $('#saveButtonMother').removeClass('d-none'); // Show save button
+            }
+        }
+
+        // Enable edit mode for mother information
+        function enableEditModeMother() {
+            EmpMotherToggleViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#firstNameMotherInput').val($('#firstNameMother').text().trim());
+            $('#lastNameMotherInput').val($('#lastNameMother').text().trim());
+            $('#occupationMotherInput').val($('#occupationMother').text().trim());
+            $('#dobMotherInput').val($('#dobMother').text().trim());
+            $('#aliveMotherInput').val($('#aliveMother').text().trim() === "Yes" ? "true" : "false");
+
+            // Initialize age calculation
+            updateAgeMother();
+        }
+
+        // Update mother's age when the date of birth changes
+        function updateAgeMother() {
+            const dob = new Date($('#dobMotherInput').val());
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const dobMonthDay = dob.getMonth() * 100 + dob.getDate();
+            const todayMonthDay = today.getMonth() * 100 + today.getDate();
+            if (todayMonthDay < dobMonthDay) {
+                age--;
+            }
+            $('#ageMotherInput').val(age);
+        }
+
+        // Event listeners for Mother
+        $('#editButtonMother').click(function () {
+            enableEditModeMother(); // Handle edit button click
+        });
+
+        $('#saveButtonMother').click(function () {
+            saveMotherInfo(); // Handle save button click
+        });
+
+        $('#dobMotherInput').on('change', function () {
+            updateAgeMother(); // Update age when date of birth changes
+        });
+
+        // #########$$$$$$$$$$ For Nominee One ##########%%%%%%%%%%
+
+        // Fetch nominee one information via AJAX
+        function getNomineeOneInfo() {
+            $.ajax({
+                url: '/Employee/GetFamilyNomineeInfo',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    var nomineeOneInfo = response.find(function (info) {
+                        return info.infoType === InfoType.Nominee1; // Use InfoType object
+                    });
+
+                    if (nomineeOneInfo) {
+                        // Populate view with existing data
+                        $('#firstNameNomineeOne').text(nomineeOneInfo.firstName).removeClass('d-none');
+                        $('#lastNameNomineeOne').text(nomineeOneInfo.lastName).removeClass('d-none');
+                        $('#occupationNomineeOne').text(nomineeOneInfo.occupation).removeClass('d-none');
+                        $('#dobNomineeOne').text(nomineeOneInfo.doB).removeClass('d-none');
+                        $('#relationshipNomineeOne').text(nomineeOneInfo.relationship).removeClass('d-none');
+                        $('#ageNomineeOne').text(nomineeOneInfo.age + ' years').removeClass('d-none');
+                        $('#nomineeOneId').val(nomineeOneInfo.id); // Set existing ID
+                        $('#editButtonNomineeOne').removeAttr('disabled'); // Enable the edit button
+                        EmpNomineeOneToggleViewMode(true); // Show view mode
+                    } else {
+                        // Data not found, prepare for new entry
+                        $('#nomineeOneId').val(null); // Set ID to null
+                        EmpNomineeOneToggleViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    // Show edit mode if there's an error fetching data
+                    EmpNomineeOneToggleViewMode(false);
+                }
+            });
+        }
+
+        // Save or update nominee one information via AJAX
+        function saveNomineeOneInfo() {
+            const updatedData = {
+                id: $('#nomineeOneId').val(), // Send null for new entry if no ID
+                firstName: $('#firstNameNomineeOneInput').val().trim(),
+                lastName: $('#lastNameNomineeOneInput').val().trim(),
+                occupation: $('#occupationNomineeOneInput').val().trim(),
+                doB: $('#dobNomineeOneInput').val().trim(),
+                relationship: $('#relationshipNomineeOneInput').val().trim(),
+                alive: true, // Set nominee as alive by default
+                age: $('#ageNomineeOneInput').val().trim(),
+                employeeId: employeeId,
+                infoType: InfoType.Nominee1 // Use InfoType object for nominee one
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateFamilyNomineeInfo',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    alert('Nominee one information updated successfully');
+                    getNomineeOneInfo(); // Refresh data after successful save
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating nominee one information. Please try again.');
+                }
+            });
+        }
+
+        // Toggle between view and edit modes for nominee one
+        function EmpNomineeOneToggleViewMode(isViewMode) {
+            if (isViewMode) {
+                // Show view mode, hide edit mode
+                $('.view-mode-nominee-one').removeClass('d-none');
+                $('.edit-mode-nominee-one').addClass('d-none');
+                $('#editButtonNomineeOne').removeClass('d-none');
+                $('#saveButtonNomineeOne').addClass('d-none'); // Make sure save button is hidden in view mode
+            } else {
+                // Show edit mode, hide view mode
+                $('.edit-mode-nominee-one').removeClass('d-none');
+                $('.view-mode-nominee-one').addClass('d-none');
+                $('#editButtonNomineeOne').addClass('d-none'); // Hide edit button in edit mode
+                $('#saveButtonNomineeOne').removeClass('d-none'); // Show save button
+            }
+        }
+
+        // Enable edit mode for nominee one information
+        function enableEditModeNomineeOne() {
+            EmpNomineeOneToggleViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#firstNameNomineeOneInput').val($('#firstNameNomineeOne').text().trim());
+            $('#lastNameNomineeOneInput').val($('#lastNameNomineeOne').text().trim());
+            $('#occupationNomineeOneInput').val($('#occupationNomineeOne').text().trim());
+            $('#dobNomineeOneInput').val($('#dobNomineeOne').text().trim());
+            $('#relationshipNomineeOneInput').val($('#relationshipNomineeOne').text().trim());
+            updateAgeNomineeOne(); // Update age field when switching to edit mode
+        }
+
+        // Calculate and update the age for nominee one based on DOB input
+        function updateAgeNomineeOne() {
+            const dob = new Date($('#dobNomineeOneInput').val());
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const dobMonthDay = dob.getMonth() * 100 + dob.getDate();
+            const todayMonthDay = today.getMonth() * 100 + today.getDate();
+            if (todayMonthDay < dobMonthDay) {
+                age--;
+            }
+            $('#ageNomineeOneInput').val(age);
+        }
+
+        // Event listeners for nominee one
+        $('#editButtonNomineeOne').click(function () {
+            enableEditModeNomineeOne(); // Handle edit button click
+        });
+
+        $('#saveButtonNomineeOne').click(function () {
+            saveNomineeOneInfo(); // Handle save button click
+        });
+
+        $('#dobNomineeOneInput').on('change', function () {
+            updateAgeNomineeOne(); // Update age when DOB changes
+        });
+
+
+        // #########$$$$$$$$$$ For Nominee Two ##########%%%%%%%%%%
+
+        // Fetch nominee two information via AJAX
+        function getNomineeTwoInfo() {
+            $.ajax({
+                url: '/Employee/GetFamilyNomineeInfo',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    var nomineeTwoInfo = response.find(function (info) {
+                        return info.infoType === InfoType.Nominee2; // Use InfoType object for nominee two
+                    });
+
+                    if (nomineeTwoInfo) {
+                        // Populate view with existing data
+                        $('#firstNameNomineeTwo').text(nomineeTwoInfo.firstName).removeClass('d-none');
+                        $('#lastNameNomineeTwo').text(nomineeTwoInfo.lastName).removeClass('d-none');
+                        $('#occupationNomineeTwo').text(nomineeTwoInfo.occupation).removeClass('d-none');
+                        $('#dobNomineeTwo').text(nomineeTwoInfo.doB).removeClass('d-none');
+                        $('#relationshipNomineeTwo').text(nomineeTwoInfo.relationship).removeClass('d-none');
+                        $('#ageNomineeTwo').text(nomineeTwoInfo.age + ' years').removeClass('d-none');
+                        $('#nomineeTwoId').val(nomineeTwoInfo.id); // Set existing ID
+                        $('#editButtonNomineeTwo').removeAttr('disabled'); // Enable the edit button
+                        EmpNomineeTwoToggleViewMode(true); // Show view mode
+                    } else {
+                        // Data not found, prepare for new entry
+                        $('#nomineeTwoId').val(null); // Set ID to null
+                        EmpNomineeTwoToggleViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    // Show edit mode if there's an error fetching data
+                    EmpNomineeTwoToggleViewMode(false);
+                }
+            });
+        }
+
+        // Save or update nominee two information via AJAX
+        function saveNomineeTwoInfo() {
+            const updatedData = {
+                id: $('#nomineeTwoId').val(), // Send null for new entry if no ID
+                firstName: $('#firstNameNomineeTwoInput').val().trim(),
+                lastName: $('#lastNameNomineeTwoInput').val().trim(),
+                occupation: $('#occupationNomineeTwoInput').val().trim(),
+                doB: $('#dobNomineeTwoInput').val().trim(),
+                relationship: $('#relationshipNomineeTwoInput').val().trim(),
+                alive: true, // Set nominee as alive by default
+                age: $('#ageNomineeTwoInput').val().trim(),
+                employeeId: employeeId,
+                infoType: InfoType.Nominee2 // Use InfoType object for nominee two
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateFamilyNomineeInfo',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    alert('Nominee two information updated successfully');
+                    getNomineeTwoInfo(); // Refresh data after successful save
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating nominee two information. Please try again.');
+                }
+            });
+        }
+
+        // Toggle between view and edit modes for nominee two
+        function EmpNomineeTwoToggleViewMode(isViewMode) {
+            if (isViewMode) {
+                // Show view mode, hide edit mode
+                $('.view-mode-nominee-two').removeClass('d-none');
+                $('.edit-mode-nominee-two').addClass('d-none');
+                $('#editButtonNomineeTwo').removeClass('d-none');
+                $('#saveButtonNomineeTwo').addClass('d-none'); // Make sure save button is hidden in view mode
+            } else {
+                // Show edit mode, hide view mode
+                $('.edit-mode-nominee-two').removeClass('d-none');
+                $('.view-mode-nominee-two').addClass('d-none');
+                $('#editButtonNomineeTwo').addClass('d-none'); // Hide edit button in edit mode
+                $('#saveButtonNomineeTwo').removeClass('d-none'); // Show save button
+            }
+        }
+
+        // Enable edit mode for nominee two information
+        function enableEditModeNomineeTwo() {
+            EmpNomineeTwoToggleViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#firstNameNomineeTwoInput').val($('#firstNameNomineeTwo').text().trim());
+            $('#lastNameNomineeTwoInput').val($('#lastNameNomineeTwo').text().trim());
+            $('#occupationNomineeTwoInput').val($('#occupationNomineeTwo').text().trim());
+            $('#dobNomineeTwoInput').val($('#dobNomineeTwo').text().trim());
+            $('#relationshipNomineeTwoInput').val($('#relationshipNomineeTwo').text().trim());
+            updateAgeNomineeTwo(); // Update age field when switching to edit mode
+        }
+
+        // Calculate and update the age for nominee two based on DOB input
+        function updateAgeNomineeTwo() {
+            const dob = new Date($('#dobNomineeTwoInput').val());
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const dobMonthDay = dob.getMonth() * 100 + dob.getDate();
+            const todayMonthDay = today.getMonth() * 100 + today.getDate();
+            if (todayMonthDay < dobMonthDay) {
+                age--;
+            }
+            $('#ageNomineeTwoInput').val(age);
+        }
+
+        // Event listeners for nominee two
+        $('#editButtonNomineeTwo').click(function () {
+            enableEditModeNomineeTwo(); // Handle edit button click
+        });
+
+        $('#saveButtonNomineeTwo').click(function () {
+            saveNomineeTwoInfo(); // Handle save button click
+        });
+
+        $('#dobNomineeTwoInput').on('change', function () {
+            updateAgeNomineeTwo(); // Update age when DOB changes
+        });
+
+        
+        // ************* Employee Family And Nominee Info Script END ******************
+
+
+        // ************* Employee address Info Script Start ******************
+
+        // Fetch present address information via AJAX
+        function getPresentAddressInfo() {
+            $.ajax({
+                url: '/Employee/GetEmployeeAddress',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    var presentAddressInfo = response.find(function (address) {
+                        return address.addressTypes === AddressType.Present; // Use AddressType enum for Present Address
+                    });
+
+                    if (presentAddressInfo) {
+                        // Populate view with existing data
+                        $('#apartment').text(presentAddressInfo.apartment).removeClass('d-none');
+                        $('#street').text(presentAddressInfo.street).removeClass('d-none');
+                        $('#city').text(presentAddressInfo.city).removeClass('d-none');
+                        $('#district').text(presentAddressInfo.district).removeClass('d-none');
+                        $('#country').text(presentAddressInfo.country).removeClass('d-none');
+                        $('#postal').text(presentAddressInfo.postal).removeClass('d-none');
+                        $('#addressId').val(presentAddressInfo.id); // Set existing ID
+                        $('#editButtonPresentAddress').removeAttr('disabled'); // Enable the edit button
+                        EmpPresentAddressToggleViewMode(true); // Show view mode
+                    } else {
+                        // Data not found, prepare for new entry
+                        $('#addressId').val(null); // Set ID to null
+                        EmpPresentAddressToggleViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    // Show edit mode if there's an error fetching data
+                    EmpPresentAddressToggleViewMode(false);
+                }
+            });
+        }
+
+        // Save or update present address information via AJAX
+        function savePresentAddressInfo() {
+            const updatedData = {
+                id: $('#addressId').val(), // Send null for new entry if no ID
+                apartment: $('#apartmentInput').val().trim(),
+                street: $('#streetInput').val().trim(),
+                city: $('#cityInput').val().trim(),
+                district: $('#districtInput').val().trim(),
+                country: $('#countryInput').val().trim(),
+                postal: $('#postalInput').val().trim(),
+                employeeId: employeeId,
+                addressTypes: AddressType.Present // Use AddressType enum for Present Address
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateEmployeeAddress',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    alert('Present address information updated successfully');
+                    getPresentAddressInfo(); // Refresh data after successful save
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating present address information. Please try again.');
+                }
+            });
+        }
+
+        function EmpPresentAddressToggleViewMode(isViewMode) {
+            if (isViewMode) {
+                // Show view mode, hide edit mode
+                $('.view-mode-present').removeClass('d-none');
+                $('.edit-mode-present').addClass('d-none');
+                $('#editButtonPresentAddress').removeClass('d-none');
+                $('#saveButtonPresentAddress').addClass('d-none'); // Hide save button in view mode
+            } else {
+                // Show edit mode, hide view mode
+                $('.edit-mode-present').removeClass('d-none');
+                $('.view-mode-present').addClass('d-none');
+                $('#editButtonPresentAddress').addClass('d-none'); // Hide edit button in edit mode
+                $('#saveButtonPresentAddress').removeClass('d-none'); // Show save button
+            }
+        }
+
+
+        // Enable edit mode for present address information
+        function enableEditModePresentAddress() {
+            EmpPresentAddressToggleViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#apartmentInput').val($('#apartment').text().trim());
+            $('#streetInput').val($('#street').text().trim());
+            $('#cityInput').val($('#city').text().trim());
+            $('#districtInput').val($('#district').text().trim());
+            $('#countryInput').val($('#country').text().trim());
+            $('#postalInput').val($('#postal').text().trim());
+        }
+
+        // Event listeners for present address
+        $('#editButtonPresentAddress').click(function () {
+            enableEditModePresentAddress(); // Handle edit button click
+        });
+
+        $('#saveButtonPresentAddress').click(function () {
+            savePresentAddressInfo(); // Handle save button click
+        });
+
+        
+        // ************* Employee Address Info Script END ******************
+
+        // ************* Employee Permannent Address Info Script Start ******************
+
+        // Fetch permanent address information via AJAX
+        function getPermanentAddressInfo() {
+            $.ajax({
+                url: '/Employee/GetEmployeeAddress',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    var permanentAddressInfo = response.find(function (address) {
+                        return address.addressTypes === AddressType.Permanent; // Use AddressType enum for Permanent Address
+                    });
+
+                    if (permanentAddressInfo) {
+                        // Populate view with existing data
+                        $('#permanentApartment').text(permanentAddressInfo.apartment).removeClass('d-none');
+                        $('#permanentStreet').text(permanentAddressInfo.street).removeClass('d-none');
+                        $('#permanentCity').text(permanentAddressInfo.city).removeClass('d-none');
+                        $('#permanentDistrict').text(permanentAddressInfo.district).removeClass('d-none');
+                        $('#permanentCountry').text(permanentAddressInfo.country).removeClass('d-none');
+                        $('#permanentPostal').text(permanentAddressInfo.postal).removeClass('d-none');
+                        $('#permanentAddressId').val(permanentAddressInfo.id); // Set existing ID
+                        $('#editButtonPermanentAddress').removeAttr('disabled'); // Enable the edit button
+                        EmpPermanentAddressToggleViewMode(true); // Show view mode
+                    } else {
+                        // Data not found, prepare for new entry
+                        $('#permanentAddressId').val(null); // Set ID to null
+                        EmpPermanentAddressToggleViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    // Show edit mode if there's an error fetching data
+                    EmpPermanentAddressToggleViewMode(false);
+                }
+            });
+        }
+
+        // Save or update permanent address information via AJAX
+        function savePermanentAddressInfo() {
+            const updatedData = {
+                id: $('#permanentAddressId').val(), // Send null for new entry if no ID
+                apartment: $('#permanentApartmentInput').val().trim(),
+                street: $('#permanentStreetInput').val().trim(),
+                city: $('#permanentCityInput').val().trim(),
+                district: $('#permanentDistrictInput').val().trim(),
+                country: $('#permanentCountryInput').val().trim(),
+                postal: $('#permanentPostalInput').val().trim(),
+                employeeId: employeeId,
+                addressTypes: AddressType.Permanent // Use AddressType enum for Permanent Address
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateEmployeeAddress',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    alert('Permanent address information updated successfully');
+                    getPermanentAddressInfo(); // Refresh data after successful save
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating permanent address information. Please try again.');
+                }
+            });
+        }
+
+        function EmpPermanentAddressToggleViewMode(isViewMode) {
+            if (isViewMode) {
+                // Show view mode, hide edit mode
+                $('.view-mode-permanent').removeClass('d-none');
+                $('.edit-mode-permanent').addClass('d-none');
+                $('#editButtonPermanentAddress').removeClass('d-none'); // Enable edit button
+                $('#saveButtonPermanentAddress').addClass('d-none'); // Hide save button
+            } else {
+                // Show edit mode, hide view mode
+                $('.edit-mode-permanent').removeClass('d-none');
+                $('.view-mode-permanent').addClass('d-none');
+                $('#editButtonPermanentAddress').addClass('d-none'); // Hide edit button
+                $('#saveButtonPermanentAddress').removeClass('d-none'); // Show save button and enable it
+            }
+        }
+
+
+
+        // Enable edit mode for permanent address information
+        function enableEditModePermanentAddress() {
+            EmpPermanentAddressToggleViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#permanentApartmentInput').val($('#permanentApartment').text().trim());
+            $('#permanentStreetInput').val($('#permanentStreet').text().trim());
+            $('#permanentCityInput').val($('#permanentCity').text().trim());
+            $('#permanentDistrictInput').val($('#permanentDistrict').text().trim());
+            $('#permanentCountryInput').val($('#permanentCountry').text().trim());
+            $('#permanentPostalInput').val($('#permanentPostal').text().trim());
+        }
+
+        // Event listeners for permanent address
+        $('#editButtonPermanentAddress').click(function () {
+            enableEditModePermanentAddress(); // Handle edit button click
+        });
+
+        $('#saveButtonPermanentAddress').click(function () {
+            savePermanentAddressInfo(); // Handle save button click
+        });
+
+
+        // ************* Employee Permannent Address Info Script end ******************
+
+        // ************* Employee Emegency contact  Script Start ******************
+
+        // Fetch Emergency Contact One information via AJAX
+        function getEmergencyContactOneInfo() {
+            $.ajax({
+                url: '/Employee/GetEmergencyContact',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    var emergencyContactOneInfo = response.find(function (contact) {
+                        return contact.contactType === EmergencyContactType.EmergencyOne; // Use EmergencyContactType enum
+                    });
+
+                    if (emergencyContactOneInfo) {
+                        // Populate view with existing data
+                        $('#EmergencyFirstName').text(emergencyContactOneInfo.firstName).removeClass('d-none');
+                        $('#EmergencyLastName').text(emergencyContactOneInfo.lastName).removeClass('d-none');
+                        $('#EmergencyRelationship').text(emergencyContactOneInfo.relationship).removeClass('d-none');
+                        $('#EmergencyPhoneNumber').text(emergencyContactOneInfo.phoneNumber).removeClass('d-none');
+                        $('#EmergencyOccupation').text(emergencyContactOneInfo.occupation).removeClass('d-none');
+                        $('#EmergencyOfficeAddress').text(emergencyContactOneInfo.officeAddress).removeClass('d-none');
+                        $('#contactId').val(emergencyContactOneInfo.id); // Set existing ID
+                        $('#editButtonEmergencyContacts').removeAttr('disabled'); // Enable the edit button
+                        EmpEmergencyContactToggleViewMode(true); // Show view mode
+                    } else {
+                        // Data not found, prepare for new entry
+                        $('#contactId').val(null); // Set ID to null
+                        EmpEmergencyContactToggleViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    // Show edit mode if there's an error fetching data
+                    EmpEmergencyContactToggleViewMode(false);
+                }
+            });
+        }
+
+        // Save or update Emergency Contact One information via AJAX
+        function saveEmergencyContactOneInfo() {
+            const updatedData = {
+                id: $('#contactId').val(), // Send null for new entry if no ID
+                contactType: EmergencyContactType.EmergencyOne,
+                firstName: $('#EmergencyFirstNameInput').val().trim(),
+                lastName: $('#EmergencyLastNameInput').val().trim(),
+                relationship: $('#EmergencyRelationshipInput').val().trim(),
+                phoneNumber: $('#EmergencyPhoneNumberInput').val().trim(),
+                occupation: $('#EmergencyOccupationInput').val().trim(),
+                officeAddress: $('#EmergencyOfficeAddressInput').val().trim(),
+                employeeId: employeeId
+                 
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateEmergencyContact',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    alert('Emergency contact information updated successfully');
+                    getEmergencyContactOneInfo(); // Refresh data after successful save
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating emergency contact information. Please try again.');
+                }
+            });
+        }
+
+        // Toggle between view and edit modes for Emergency Contact One
+        function EmpEmergencyContactToggleViewMode(isViewMode) {
+            if (isViewMode) {
+                // Show view mode, hide edit mode
+                $('.view-mode-emergency').removeClass('d-none');
+                $('.edit-mode-emergency').addClass('d-none');
+                $('#editButtonEmergencyContacts').removeClass('d-none');
+                $('#saveButtonEmergencyContacts').addClass('d-none'); // Hide save button in view mode
+            } else {
+                // Show edit mode, hide view mode
+                $('.edit-mode-emergency').removeClass('d-none');
+                $('.view-mode-emergency').addClass('d-none');
+                $('#editButtonEmergencyContacts').addClass('d-none'); // Hide edit button in edit mode
+                $('#saveButtonEmergencyContacts').removeClass('d-none'); // Show save button
+            }
+        }
+
+        // Enable edit mode for Emergency Contact One information
+        function enableEditModeEmergencyContactOne() {
+            EmpEmergencyContactToggleViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#EmergencyFirstNameInput').val($('#EmergencyFirstName').text().trim());
+            $('#EmergencyLastNameInput').val($('#EmergencyLastName').text().trim());
+            $('#EmergencyRelationshipInput').val($('#EmergencyRelationship').text().trim());
+            $('#EmergencyPhoneNumberInput').val($('#EmergencyPhoneNumber').text().trim());
+            $('#EmergencyOccupationInput').val($('#EmergencyOccupation').text().trim());
+            $('#EmergencyOfficeAddressInput').val($('#EmergencyOfficeAddress').text().trim());
+        }
+
+        
+
+        // ************* Employee Emegency contact second Script Start ******************
+
+        // Fetch Emergency Contact Two information via AJAX
+        function getEmergencyContactTwoInfo() {
+            $.ajax({
+                url: '/Employee/GetEmergencyContact',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    var emergencyContactTwoInfo = response.find(function (contact) {
+                        return contact.contactType === EmergencyContactType.EmergencyTwo; // Use EmergencyContactType enum
+                    });
+
+                    if (emergencyContactTwoInfo) {
+                        // Populate view with existing data
+                        $('#EmergencyFirstNameTwo').text(emergencyContactTwoInfo.firstName).removeClass('d-none');
+                        $('#EmergencyLastNameTwo').text(emergencyContactTwoInfo.lastName).removeClass('d-none');
+                        $('#EmergencyRelationshipTwo').text(emergencyContactTwoInfo.relationship).removeClass('d-none');
+                        $('#EmergencyPhoneNumberTwo').text(emergencyContactTwoInfo.phoneNumber).removeClass('d-none');
+                        $('#EmergencyOccupationTwo').text(emergencyContactTwoInfo.occupation).removeClass('d-none');
+                        $('#EmergencyOfficeAddressTwo').text(emergencyContactTwoInfo.officeAddress).removeClass('d-none');
+                        $('#contactIdTwo').val(emergencyContactTwoInfo.id); // Set existing ID
+                        $('#editButtonEmergencyContactTwo').removeAttr('disabled'); // Enable the edit button
+                        EmpEmergencyContactTwoToggleViewMode(true); // Show view mode
+                    } else {
+                        // Data not found, prepare for new entry
+                        $('#contactIdTwo').val(null); // Set ID to null
+                        EmpEmergencyContactTwoToggleViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    // Show edit mode if there's an error fetching data
+                    EmpEmergencyContactTwoToggleViewMode(false);
+                }
+            });
+        }
+
+        // Save or update Emergency Contact Two information via AJAX
+        function saveEmergencyContactTwoInfo() {
+            const updatedData = {
+                id: $('#contactIdTwo').val(), // Send null for new entry if no ID
+                contactType: EmergencyContactType.EmergencyTwo,
+                firstName: $('#EmergencyFirstNameInputTwo').val().trim(),
+                lastName: $('#EmergencyLastNameInputTwo').val().trim(),
+                relationship: $('#EmergencyRelationshipInputTwo').val().trim(),
+                phoneNumber: $('#EmergencyPhoneNumberInputTwo').val().trim(),
+                occupation: $('#EmergencyOccupationInputTwo').val().trim(),
+                officeAddress: $('#EmergencyOfficeAddressInputTwo').val().trim(),
+                employeeId: employeeId
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateEmergencyContact',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    alert('Emergency contact information updated successfully');
+                    getEmergencyContactTwoInfo(); // Refresh data after successful save
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating emergency contact information. Please try again.');
+                }
+            });
+        }
+
+        // Toggle between view and edit modes for Emergency Contact Two
+        function EmpEmergencyContactTwoToggleViewMode(isViewMode) {
+            if (isViewMode) {
+                // Show view mode, hide edit mode
+                $('.view-mode-emergency-two').removeClass('d-none');
+                $('.edit-mode-emergency-two').addClass('d-none');
+                $('#editButtonEmergencyContactTwo').removeClass('d-none');
+                $('#saveButtonEmergencyContactTwo').addClass('d-none'); // Hide save button in view mode
+            } else {
+                // Show edit mode, hide view mode
+                $('.edit-mode-emergency-two').removeClass('d-none');
+                $('.view-mode-emergency-two').addClass('d-none');
+                $('#editButtonEmergencyContactTwo').addClass('d-none'); // Hide edit button in edit mode
+                $('#saveButtonEmergencyContactTwo').removeClass('d-none'); // Show save button
+            }
+        }
+
+        // Enable edit mode for Emergency Contact Two information
+        function enableEditModeEmergencyContactTwo() {
+            EmpEmergencyContactTwoToggleViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#EmergencyFirstNameInputTwo').val($('#EmergencyFirstNameTwo').text().trim());
+            $('#EmergencyLastNameInputTwo').val($('#EmergencyLastNameTwo').text().trim());
+            $('#EmergencyRelationshipInputTwo').val($('#EmergencyRelationshipTwo').text().trim());
+            $('#EmergencyPhoneNumberInputTwo').val($('#EmergencyPhoneNumberTwo').text().trim());
+            $('#EmergencyOccupationInputTwo').val($('#EmergencyOccupationTwo').text().trim());
+            $('#EmergencyOfficeAddressInputTwo').val($('#EmergencyOfficeAddressTwo').text().trim());
+        }
+
+        
+
+        // ************* Employee Emegency contact  Script end ******************
+
+
+        // ************* Employee Bank Script Start ******************
+
+        // Fetch bank details via AJAX
+        function getBankDetails() {
+            $.ajax({
+                url: '/Employee/GetBankDetails',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    var bankDetails = response.find(function (detail) {
+                        return detail.accType === AccountType.Bank;
+                    });
+
+                    if (bankDetails) {
+                        // Populate view with existing data
+                        $('#accountName').text(bankDetails.accHolderName).removeClass('d-none');
+                        $('#accountNumber').text(bankDetails.accNumber).removeClass('d-none');
+                        $('#bankName').text(bankDetails.bankName).removeClass('d-none');
+                        $('#routingNumber').text(bankDetails.routingNumber).removeClass('d-none');
+                        $('#branch').text(bankDetails.branchName).removeClass('d-none');
+                        $('#bankDetailsId').val(bankDetails.id); // Set existing ID
+                        $('#editButtonBankDetails').removeAttr('disabled');
+                        toggleBankDetailsViewMode(true); // Show view mode
+                    } else {
+                        // No data found, prepare for new entry
+                        $('#bankDetailsId').val(null); // Set ID to null
+                        toggleBankDetailsViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    toggleBankDetailsViewMode(false);
+                }
+            });
+        }
+
+        // Save or update bank details via AJAX
+        function saveBankDetails() {
+            const updatedBankData = {
+                id: $('#bankDetailsId').val(), // Send null if no ID exists
+                accHolderName: $('#accountNameInput').val().trim(),
+                accNumber: $('#accountNumberInput').val().trim(),
+                bankName: $('#bankNameInput').val().trim(),
+                routingNumber: $('#routingNumberInput').val().trim(),
+                branchName: $('#branchInput').val().trim(),
+                employeeId: employeeId,
+                accType: AccountType.Bank
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateBankDetails',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedBankData),
+                success: function (response) {
+                    alert('Bank details updated successfully');
+                    getBankDetails(); // Refresh data after saving
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating bank details. Please try again.');
+                }
+            });
+        }
+
+        // Toggle between view and edit modes for bank details
+        function toggleBankDetailsViewMode(isViewMode) {
+            if (isViewMode) {
+                // Show view mode, hide edit mode
+                $('.view-mode-bank').removeClass('d-none');
+                $('.edit-mode-bank').addClass('d-none');
+                $('#editButtonBankDetails').removeClass('d-none');
+                $('#saveButtonBankDetails').addClass('d-none'); // Hide save button in view mode
+            } else {
+                // Show edit mode, hide view mode
+                $('.edit-mode-bank').removeClass('d-none');
+                $('.view-mode-bank').addClass('d-none');
+                $('#editButtonBankDetails').addClass('d-none'); // Hide edit button in edit mode
+                $('#saveButtonBankDetails').removeClass('d-none'); // Show save button
+            }
+        }
+
+        // Enable edit mode for bank details
+        function enableEditModeBankDetails() {
+            toggleBankDetailsViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#accountNameInput').val($('#accountName').text().trim());
+            $('#accountNumberInput').val($('#accountNumber').text().trim());
+            $('#bankNameInput').val($('#bankName').text().trim());
+            $('#routingNumberInput').val($('#routingNumber').text().trim());
+            $('#branchInput').val($('#branch').text().trim());
+        }
+
+        // Event listeners for bank details
+        $('#editButtonBankDetails').click(function () {
+            enableEditModeBankDetails(); // Handle edit button click
+        });
+
+        $('#saveButtonBankDetails').click(function () {
+            saveBankDetails(); // Handle save button click
+        });
+
+       // ########## Card Script start ############
+
+        // Fetch credit card details via AJAX
+        function getCardDetails() {
+            $.ajax({
+                url: '/Employee/GetBankDetails',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    var cardDetails = response.find(function (detail) {
+                        return detail.accType === AccountType.CreditCard;
+                    });
+
+                    if (cardDetails) {
+                        // Populate view with existing data
+                        $('#cardHolderName').text(cardDetails.accHolderName).removeClass('d-none');
+                        $('#cardNumber').text(cardDetails.accNumber).removeClass('d-none');
+                        $('#expiryDate').text(cardDetails.expiryDate).removeClass('d-none');
+                        $('#cvv').text(cardDetails.cvv).removeClass('d-none');
+                        $('#cardDetailsId').val(cardDetails.id); // Set existing ID
+                        $('#editButtonCardDetails').removeAttr('disabled');
+                        toggleCardDetailsViewMode(true); // Show view mode
+                    } else {
+                        // No data found, prepare for new entry
+                        $('#cardDetailsId').val(null); // Set ID to null
+                        toggleCardDetailsViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    toggleCardDetailsViewMode(false);
+                }
+            });
+        }
+
+        // Save or update credit card details via AJAX
+        function saveCardDetails() {
+            const updatedCardData = {
+                id: $('#cardDetailsId').val(), // Send null if no ID exists
+                accHolderName: $('#cardHolderNameInput').val().trim(),
+                accNumber: $('#cardNumberInput').val().trim(),
+                expiryDate: $('#expiryDateInput').val().trim(),
+                cvv: $('#cvvInput').val().trim(),
+                employeeId: employeeId,
+                accType: AccountType.CreditCard
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateBankDetails',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedCardData),
+                success: function (response) {
+                    alert('Credit card details updated successfully');
+                    getCardDetails(); // Refresh data after saving
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating credit card details. Please try again.');
+                }
+            });
+        }
+
+        // Toggle between view and edit modes for credit card details
+        function toggleCardDetailsViewMode(isViewMode) {
+            if (isViewMode) {
+                // Show view mode, hide edit mode
+                $('.view-mode-card').removeClass('d-none');
+                $('.edit-mode-card').addClass('d-none');
+                $('#editButtonCardDetails').removeClass('d-none');
+                $('#saveButtonCardDetails').addClass('d-none'); // Hide save button in view mode
+            } else {
+                // Show edit mode, hide view mode
+                $('.edit-mode-card').removeClass('d-none');
+                $('.view-mode-card').addClass('d-none');
+                $('#editButtonCardDetails').addClass('d-none'); // Hide edit button in edit mode
+                $('#saveButtonCardDetails').removeClass('d-none'); // Show save button
+            }
+        }
+
+        // Enable edit mode for credit card details
+        function enableEditModeCardDetails() {
+            toggleCardDetailsViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#cardHolderNameInput').val($('#cardHolderName').text().trim());
+            $('#cardNumberInput').val($('#cardNumber').text().trim());
+            $('#expiryDateInput').val($('#expiryDate').text().trim());
+            $('#cvvInput').val($('#cvv').text().trim());
+        }
+
+        // Event listeners for credit card details
+        $('#editButtonCardDetails').click(function () {
+            enableEditModeCardDetails(); // Handle edit button click
+        });
+
+        $('#saveButtonCardDetails').click(function () {
+            saveCardDetails(); // Handle save button click
+        });
+
+
+        // ########## Card Script stEnD ############
+
+        // ************* Employee Bank Script End ******************
+
+        // ************* Employee Tax Info Script Start ******************
+
+        function getTaxInfo() {
+            $.ajax({
+                url: '/Employee/GetTaxDetails',
+                type: 'GET',
+                data: { employeeId: employeeId },
+                success: function (response) {
+                    if (response && response.length > 0) {
+                        const taxDetails = response[0]; // Assuming response is an array and we need the first element
+
+                        // Populate view with existing data
+                        $('#taxYear').text(taxDetails.taxYear).removeClass('d-none');
+                        $('#name').text(taxDetails.name).removeClass('d-none');
+                        $('#returnSubmit').text(taxDetails.returnSubmit ? 'Yes' : 'No').removeClass('d-none');
+
+                        // Format date to YYYY-MM-DD before displaying
+                        $('#submitDate').text(formatDisplayDate(taxDetails.returnSubmitDate)).removeClass('d-none');
+                        $('#acknowledgementDate').text(formatDisplayDate(taxDetails.acknowledgmentSlipRecDate)).removeClass('d-none');
+
+                        $('#certificateReceive').text(taxDetails.taxCertificateReceive ? 'Yes' : 'No').removeClass('d-none');
+                        $('#taxExtension').text(taxDetails.taxExtension ? 'Yes' : 'No').removeClass('d-none');
+
+                        // Set existing ID if applicable
+                        $('#TaxId').val(taxDetails.id);
+                        $('#editButtonTax').removeAttr('disabled'); // Enable the edit button
+                        EmpTaxToggleViewMode(true); // Show view mode
+                    } else {
+                        // Data not found, prepare for new entry
+                        $('#TaxId').val(null); // Set ID to null
+                        EmpTaxToggleViewMode(false); // Show edit mode for new entry
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    EmpTaxToggleViewMode(false); // Show edit mode if there's an error fetching data
+                }
+            });
+        }
+
+        // Helper function to format the date for display
+        function formatDisplayDate(dateString) {
+            if (!dateString) return ''; // Handle empty dates
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so add 1
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`; // Format as YYYY-MM-DD
+        }
+
+
+        function saveTaxInfo() {
+            const updatedData = {
+                id: $('#TaxId').val() || null, // Send null for new entry if no ID
+                taxYear: $('#taxYearInput').val().trim(),
+                name: $('#nameInput').val().trim(),
+                returnSubmit: $('#returnSubmitInput').val() === 'true',
+                returnSubmitDate: formatDate($('#submitDateInput').val()), // Format date
+                acknowledgmentSlipRecDate: formatDate($('#acknowledgementDateInput').val()), // Format date
+                taxCertificateReceive: $('#certificateReceiveInput').val() === 'true',
+                taxExtension: $('#taxExtensionInput').val() === 'true',
+
+                employeeId: employeeId
+            };
+
+            $.ajax({
+                url: '/Employee/SaveOrUpdateTaxDetails',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updatedData),
+                success: function (response) {
+                    alert('Tax information updated successfully');
+                    getTaxInfo(); // Refresh data after successful save
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert('Error updating tax information. Please try again.');
+                }
+            });
+        }
+
+        // Helper function to ensure correct date format
+        function formatDate(dateString) {
+            if (!dateString) return null;
+            const date = new Date(dateString);
+            return date.toISOString(); // Returns date in ISO format (YYYY-MM-DDTHH:mm:ss.sssZ)
+        }
+
+
+        function EmpTaxToggleViewMode(isViewMode) {
+            if (isViewMode) {
+                $('.view-mode-tax').removeClass('d-none');
+                $('.edit-mode-tax').addClass('d-none');
+                $('#editButtonTax').removeClass('d-none');
+                $('#saveButtonTax').addClass('d-none'); // Hide save button in view mode
+            } else {
+                $('.edit-mode-tax').removeClass('d-none');
+                $('.view-mode-tax').addClass('d-none');
+                $('#editButtonTax').addClass('d-none'); // Hide edit button in edit mode
+                $('#saveButtonTax').removeClass('d-none'); // Show save button
+            }
+        }
+
+        function enableEditModeTax() {
+            EmpTaxToggleViewMode(false); // Switch to edit mode
+
+            // Populate input fields with current data
+            $('#taxYearInput').val($('#taxYear').text().trim());
+            $('#nameInput').val($('#name').text().trim());
+            $('#returnSubmitInput').val($('#returnSubmit').text().trim() === 'Yes' ? 'true' : 'false');
+
+            // Ensure date inputs are in the correct format (YYYY-MM-DD)
+            $('#submitDateInput').val(formatInputDate($('#submitDate').text().trim()));
+            $('#acknowledgementDateInput').val(formatInputDate($('#acknowledgementDate').text().trim()));
+
+            $('#certificateReceiveInput').val($('#certificateReceive').text().trim() === 'Yes' ? 'true' : 'false');
+            $('#taxExtensionInput').val($('#taxExtension').text().trim() === 'Yes' ? 'true' : 'false');
+        }
+        // Helper function to format the date for input fields
+        function formatInputDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so add 1
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`; // Format as YYYY-MM-DD
+        }
+
+
+
+
+
+        // ************* Employee Tax Info Script End ******************
+   
+        const toggleSwitch = document.getElementById('toggleSwitch');
+        const statusText = toggleSwitch.querySelector('.status-text');
+
+        toggleSwitch.addEventListener('click', function () {
+            this.classList.toggle('off');
+            if (this.classList.contains('off')) {
+                statusText.textContent = 'Deactive';
+            } else {
+                statusText.textContent = 'Active';
+            }
+        });
+
+        function handleFileUpload(event) {
+            const files = event.target.files || event.dataTransfer.files;
+            let fileName = files.length ? files[0].name : '';
+
+            const maxLength = 15; // Set your desired character limit
+            if (fileName.length > maxLength) {
+                fileName = fileName.substring(0, maxLength) + '...'; // Truncate and add ellipsis
+            }
+
+            document.getElementById('file-name').textContent = fileName;
+
+            // Show progress bar
+            document.getElementById('progress-container').style.display = 'block';
+
+            // Simulate upload progress
+            simulateFileUpload();
+        }
+
+        function handleDragOver(event) {
+            event.preventDefault();
+            document.getElementById('upload-container').classList.add('dragover');
+        }
+
+        function handleDragLeave(event) {
+            event.preventDefault();
+            document.getElementById('upload-container').classList.remove('dragover');
+        }
+
+        function handleDrop(event) {
+            event.preventDefault();
+            document.getElementById('upload-container').classList.remove('dragover');
+            handleFileUpload(event);
+        }
+
+        function simulateFileUpload() {
+            const progressBar = document.getElementById('progress-bar');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('progress-container').style.display = 'none';
+                    }, 500); // Hide progress bar after a short delay
+                }
+            }, 300); // Simulate progress every 300ms
+        }
+
+        document.querySelector('.profile-pic').addEventListener('click', () => {
+            document.getElementById('profilePicInput').click();
+        });
+
+        document.getElementById('profilePicInput').addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.querySelector('.profile-pic').style.backgroundImage = `url(${e.target.result})`;
+                    document.querySelector('.profile-pic span').style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function updateFileName(input) {
+            const fileName = input.files[0] ? input.files[0].name : 'No file chosen';
+            const truncatedFileName = fileName.length > 15 ? fileName.substring(0, 15) + '...' : fileName;
+            const fileNameElement = input.nextElementSibling;
+            fileNameElement.textContent = truncatedFileName;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const bankOption = document.getElementById('bankOption');
+            const cardOption = document.getElementById('cardOption');
+            const bankForm = document.getElementById('bankForm');
+            const cardForm = document.getElementById('cardForm');
+
+            bankOption.addEventListener('click', function () {
+                bankForm.classList.add('active');
+                cardForm.classList.remove('active');
+            });
+
+            cardOption.addEventListener('click', function () {
+                cardForm.classList.add('active');
+                bankForm.classList.remove('active');
+            });
+        });
+
+        function previewSignature() {
+            var file = document.getElementById('signatureUpload').files[0];
+            var preview = document.getElementById('signaturePreview');
+            var reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+                preview.classList.remove('d-none');
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "#";
+                preview.classList.add('d-none');
+            }
+        }
+
+        function setCurrentDate() {
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+        }
+
+        // Set current date on page load
+        window.onload = setCurrentDate;
+    </script>
+}

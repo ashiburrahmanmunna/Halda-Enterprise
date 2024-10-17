@@ -1,0 +1,326 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+    .day {
+        border: 1px solid #D0D5DD;
+        border-radius: 10px;
+    }
+
+    .normal-day {
+        background-color: #D3F6D2;
+    }
+
+    .friday {
+        background-color: #FFA08B;
+    }
+
+    /* CSS to center the delete button */
+    .tabulator-cell .delete-btn {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+</style>
+
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2 border-1">
+
+    <div class="row mx-0 mb-2" style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+
+        <div class="p-2 col-12 d-flex align-items-center gap-2">
+            <img alt="calander" src="~/User/img/calender.png" width="40px">
+            <h5 class="header-text-4 mb-0">January 2023 </h5>
+
+        </div>
+
+    </div>
+
+    <div class="row mx-0 " style="background-color: #FFFFFF; border-radius: 5px;  box-shadow: 0px 0px 10px 0px #0000000D; ">
+
+        <div class="pt-2 pb-2" style="border-bottom: 1px solid #D4D4D4; display: flex; justify-content: space-between; align-items: center;">
+            <span class="mt-2" style="font-weight: 500; font-size: 20px;">Workdays</span>
+        </div>
+
+
+        <div class="col-md-5 pt-4 col-12 d-flex align-items-center gap-2">
+            <div class="input-group " style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FAFAFAED; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                    <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                </span>
+            </div>
+        </div>
+
+        <div class=" text-center mt-4">
+            <div class="row g-3">
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Saturday<br>9 am - 6 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Sunday<br>9 am - 1 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Monday<br>9 am - 6 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Tuesday<br>9 am - 6 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Wednesday<br>9 am - 6 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day normal-day">Thursday<br>9 am - 6 pm</div>
+                </div>
+                <div class="col">
+                    <div class="px-2 py-2 day friday">Friday<br>9 am - 6 pm</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-2 mt-3 pb-2" style="border-bottom: 1px solid #D4D4D4; display: flex; justify-content: space-between; align-items: center;">
+            <span class="mt-2" style="font-weight: 500; font-size: 20px;">Holidays</span>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <span>Paid Time Off:</span>
+            </div>
+            <div class="col-md-8">
+                <p>Both full-time and part-time employees are entitled to 18 working days...   Read more</p>
+            </div>
+            <div class="col-md-4">
+                <span>Public Holidays:</span>
+            </div>
+            <div class="col-md-8">
+                <p>Bangladesh celebrates 20 national holidays over 24 days.</p>
+            </div>
+        </div>
+
+        <div class="col-md-5 pt-4 col-12 d-flex align-items-center gap-2">
+            <div class="input-group " style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FAFAFAED; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                    <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                </span>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <h5 style="font-weight: 600;">National public holidays:</h5>
+
+            <div id="holiday-table"></div>
+            <!-- Button to add a new row -->
+            <button id="add-row-btn" class="btn" style="margin-top: 20px;">
+                <i class="fa-solid fa-plus"></i>
+            </button>
+
+            
+        </div>
+        <div class="d-flex justify-content-end" style="margin-top: 30px;">
+            <button type="button" id="save-holidays-btn" class="btn btn-success" style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Save</button>
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        // Call the function to load holidays when the page loads
+        $(document).ready(function () {
+            loadHolidays();
+        });
+
+        // Assuming comid and userid are already defined
+        var comid = '@ViewBag.CompanyId';
+        var userid = '@ViewBag.UserId';
+
+        // Function to format date to YYYY-MM-DD
+        function formatDateToYMD(date) {
+            if (!date) return ''; // Return empty string if date is null or undefined
+            const d = new Date(date);
+            let month = '' + (d.getMonth() + 1);
+            let day = '' + d.getDate();
+            let year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return [year, month, day].join('-');
+        }
+
+        // Initialize Tabulator directly
+        var table = new Tabulator("#holiday-table", {
+            layout: "fitColumns", // Fit columns to width of table
+            placeholder: "No holidays added yet", // Display message when no data is available
+            columns: [
+                { title: "Holiday Name", field: "holidaysName", editor: "input", headerHozAlign: "center" },
+                {
+                    title: "Date",
+                    field: "date",
+                    editor: "input",
+                    editorParams: {
+                        elementAttributes: {
+                            type: "date"
+                        }
+                    },
+                    headerHozAlign: "center",
+                    formatter: function (cell, formatterParams, onRendered) {
+                        var dateValue = cell.getValue();
+                        if (dateValue) {
+                            var dateObj = new Date(dateValue);
+                            // Format as "01 Jan 2024"
+                            var options = { day: '2-digit', month: 'short', year: 'numeric' };
+                            return dateObj.toLocaleDateString('en-GB', options); // "en-GB" for day-month-year format
+                        }
+                        return "";
+                    }
+                },
+                {
+                    title: "Day",
+                    field: "day",
+                    editor: "input",
+                    editorParams: {
+                        elementAttributes: {
+                            type: "number", // Set input type to number
+                            min: 1,         // Optionally, set minimum value for the day
+                            step: 1         // Ensure that only whole numbers are allowed
+                        }
+                    },
+                    headerHozAlign: "center",
+
+                },
+                {
+                    title: " ",
+                    field: "delete",
+                    headerHozAlign: "center",
+                    formatter: function () {
+                        return "<button class='delete-btn btn'>" +
+                            "<img alt='delete' width='20px' height='20px' src='/User/img/delete.svg' />" +
+                            "</button>";
+                    },
+                    width: 50,
+                    headerSort: false,
+                }
+            ],
+            data: [],
+            movableColumns: true,
+        });
+
+        // Add new row when the button is clicked
+        document.getElementById("add-row-btn").addEventListener("click", function () {
+            table.addRow({ holidaysName: "", date: "", day: "", id: null, isNew: true }, false);
+        });
+
+        // Save all holidays when the save button is clicked
+        document.getElementById("save-holidays-btn").addEventListener("click", function () {
+            var holidayData = table.getData();
+
+            // Prepare the data for the controller, including both new and existing rows
+            var models = holidayData.map(function (holiday) {
+                let formattedDate = formatDateToYMD(holiday.date);
+                return {
+                    Id: holiday.id || null,
+                    HolidaysName: holiday.holidaysName,
+                    Date: formattedDate,
+                    Day: holiday.day,
+                    HolidayType: "Public",
+                    CompanyId: comid,
+                    UserId: userid
+                };
+            });
+
+            // Validate the models to ensure no fields are empty
+            var emptyFields = models.some(holiday => !holiday.HolidaysName || !holiday.Date || !holiday.Day);
+
+            if (emptyFields) {
+                alert("Please fill in all fields for all holidays.");
+                return;
+            }
+
+            // Send data to the controller using jQuery AJAX
+            $.ajax({
+                url: '/Attendance/SaveHoliday',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(models),
+                success: function (response) {
+                    if (response.error) {
+                        alert("Error: " + response.message);
+                    } else {
+                        alert("Holidays saved successfully!");
+                        loadHolidays();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    alert("An error occurred while saving holidays.");
+                }
+            });
+        });
+
+        // Function to load holidays into the table
+        function loadHolidays() {
+            $.ajax({
+                url: '/Attendance/GetPublicHolidays',
+                type: 'GET',
+                data: { companyId: comid },
+                success: function (response) {
+                    if (response.error) {
+                        alert("Error: " + response.message);
+                    } else {
+                        response.forEach(holiday => {
+                            holiday.date = formatDateToYMD(holiday.date);
+                            holiday.id = holiday.id || null;
+                            holiday.isNew = false;
+                        });
+                        table.setData(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    alert("An error occurred while loading holidays.");
+                }
+            });
+        }
+
+        // Attach delete event to delete buttons
+        $("#holiday-table").on("click", ".delete-btn", function () {
+            // Get the row that contains the clicked delete button
+            var row = table.getRow(this.closest(".tabulator-row"));
+            var holidayId = row.getData().id;
+
+            if (holidayId) {
+                // Confirm deletion
+                if (confirm("Are you sure you want to delete this holiday?")) {
+                    // Call the delete action method
+                    $.ajax({
+                        url: '/Attendance/DeleteHoliday',
+                        type: 'GET',
+                        data: { holidayid: holidayId },
+                        success: function (response) {
+                            if (response.success === "1") {
+                                alert(response.msg);
+                                row.delete(); // Remove the row from the table
+                            } else {
+                                alert("Error: " + response.msg);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                            alert("An error occurred while deleting the holiday.");
+                        }
+                    });
+                }
+            } else {
+                alert("No holiday ID found to delete.");
+            }
+        });
+    </script>
+}
+

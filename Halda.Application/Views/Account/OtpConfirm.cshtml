@@ -1,0 +1,57 @@
+﻿@model OtpRequest
+
+@{
+    ViewData["Title"] = "ConfirmOTP";
+}
+
+<div class="login-box">
+
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body login-card-body">
+            <div class="login-logo">
+                <p><b>Confrim OTP</b></p>
+            </div>
+            <p class="login-box-msg">An OTP sent to your Email</p>
+
+            <form asp-action="OtpConfirm" method="post">
+
+                <div class="input-group mb-3">
+                    <input type="hidden" asp-for="UserName" />
+                    <input class="form-control"
+                           placeholder="Email" value="@Model.UserName" disabled />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class=" fa-solid fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input asp-for="Otp" class="form-control" placeholder="OTP" />
+                    <span asp-validation-for="Otp" class="text-danger"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" class="button-41">   Confirm   </button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+</div>
+
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

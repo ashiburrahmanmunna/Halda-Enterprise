@@ -1,0 +1,576 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+<style>
+    .nav-tabs{
+        border-bottom: none;
+    }
+    /* Nav Tabs Styling */
+        .nav-tabs .nav-link {
+            color: #6c757d;
+            border: none;
+            font-weight: 500;
+            border-radius: 0px;
+            font-size: 16px !important;
+            border-bottom: 2px solid transparent;
+        }
+
+            .nav-tabs .nav-link.active {
+                color: #4AA147;
+                font-weight: 500;
+                border-radius: 0px;
+                font-size: 16px !important;
+                background-color: transparent;
+                border-bottom: 3px solid #4AA147;
+            }
+
+    /* Apply background color to even and odd rows */
+    #salary-table .tabulator-row-even,
+    #salary-table .tabulator-row-odd {
+        background-color: #FBFBFB !important;
+    }
+
+    /* Apply background color and remove right border for Tabulator columns */
+    #salary-table .tabulator-col {
+        background-color: #FBFBFB !important;
+        
+    }
+</style>
+
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2">
+    
+    <div class="row mx-0" style="background-color: #FFFFFF; border-radius: 5px; box-shadow: 0px 0px 10px 0px #0000000D;">
+        <h5 class="py-2 mb-1">Payroll & Finance</h5>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button style="font-size: 14px;" class="nav-link active" data-bs-toggle="tab" data-bs-target="#payroll-tab" type="button" role="tab" aria-selected="true">Payroll</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button style="font-size: 14px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#loan-management-tab" type="button" role="tab" aria-selected="false">Loan Management</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button style="font-size: 14px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#salary-tab" type="button" role="tab" aria-selected="false">Salary</button>
+            </li>
+        </ul>
+        
+    </div>
+    <div class="tab-content mt-2">
+        <div class="tab-pane fade show active" id="payroll-tab" role="tabpanel">
+            <h6 class="pt-4">Payroll  Summary List</h6>
+            <div id="salary-table" style="background-color: #FBFBFB;"></div>
+
+            <div class="row p-2 mx-0 mt-4" style="background-color: #FFFFFF; border-radius: 5px; box-shadow: 0px 0px 10px 0px #0000000D;">
+                <div class=" col-8 d-flex align-items-center gap-2">
+                    <img alt="calander" src="/User/img/calender.png" width="40px">
+                    <h5 class="header-text-4 mb-0">Salary</h5>
+                    <div class="input-group" style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                        <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                        <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                            <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                        </span>
+                    </div>
+                </div>
+                <div class=" col-4 d-flex justify-content-end align-items-end gap-2">
+
+                    <div class="pdf-upload-print-css">
+                        <img alt="calendar" src="/User/img/pdf.png" width="30px">
+                    </div>
+                    <div class="pdf-upload-print-css">
+                        <img alt="calendar" src="/User/img/upload-trans.png" width="30px">
+                    </div>
+                    <div class="pdf-upload-print-css">
+                        <img alt="calendar" src="/User/img/printer (1).png" width="30px">
+                    </div>
+                </div>
+                <div class="col-12 mt-3">
+                    <div id="salary-overview-table"></div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="loan-management-tab" role="tabpanel">
+            <ul class="nav nav-tabs mt-4" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#loan-request-tab" type="button" role="tab" aria-selected="true" style="font-size: 20px;">Loan Requests</button>
+                </li>
+                <li class="nav-item dropdown" role="presentation">
+                    <button id="dropdownTabButton" class="nav-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" type="button" role="tab" aria-expanded="false" style="font-size: 20px; border: 1px solid #D0D5DD; border-radius: 12px;">
+                        Opened Loan
+                        <i id="dropdownArrowIcon" class="ms-2 bi bi-chevron-down"></i> <!-- Arrow icon for dropdown -->
+                    </button>
+                    <ul class="dropdown-menu" style="width: 100%; border: none; padding: 0;">
+                        <li>
+                            <button id="openedLoan" class="dropdown-item nav-link" data-bs-toggle="tab" data-bs-target="#Open-loan-tab" type="button" role="tab" aria-selected="false" style="width: 100%; text-align: center;">Opened Loan</button>
+                        </li>
+                        <li>
+                            <button id="closedLoan" class="dropdown-item nav-link" data-bs-toggle="tab" data-bs-target="#Closed-loan-tab" type="button" role="tab" aria-selected="false" style="width: 100%; text-align: center;">Closed Loan</button>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#loan-half-tab" type="button" role="tab" aria-selected="false" style="font-size: 20px;">Loan Half Request</button>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Loan Requests Tab Pane -->
+                <div class="tab-pane fade show active" id="loan-request-tab" role="tabpanel">
+                    <div class="row mt-5 mb-3">
+                        <div class="col-4">
+                            <div class="input-group" style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                                <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                                    <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-8 d-flex justify-content-end">
+                            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; padding: 0px 8px; font-size: 16px;"><i class="ri-settings-6-line me-2"></i>Setup Loan</button>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div id="loan-request"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Opened Loan Tab Pane -->
+                <div class="tab-pane fade" id="Open-loan-tab" role="tabpanel">
+                    <div class="row mt-5 mb-3">
+                        <div class="col-4">
+                            <div class="input-group" style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                                <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                                    <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-8 d-flex justify-content-end">
+                            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; padding: 0px 8px; font-size: 16px;"><i class="ri-settings-6-line me-2"></i>Setup Loan</button>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div id="opened-loan"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Closed Loan Tab Pane -->
+                <div class="tab-pane fade" id="Closed-loan-tab" role="tabpanel">
+                    <div class="row mt-5 mb-3">
+                        <div class="col-4">
+                            <div class="input-group" style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                                <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                                    <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-8 d-flex justify-content-end">
+                            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; padding: 0px 8px; font-size: 16px;"><i class="ri-settings-6-line me-2"></i>Setup Loan</button>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div id="closed-loan"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loan Half Request Tab Pane -->
+                <div class="tab-pane fade" id="loan-half-tab" role="tabpanel">
+                    <div class="row mt-5 mb-3">
+                        <div class="col-4">
+                            <div class="input-group" style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                                <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                                    <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-8 d-flex justify-content-end">
+                            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; padding: 0px 8px; font-size: 16px;"><i class="ri-settings-6-line me-2"></i>Setup Loan</button>
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div id="loan-half-request"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="salary-tab" role="tabpanel">
+
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button style="font-size: 16px;" class="nav-link active" data-bs-toggle="tab" data-bs-target="#salary-template-tab" type="button" role="tab" aria-selected="true">Salary Template</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button style="font-size: 16px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#salary-process-tab" type="button" role="tab" aria-selected="false">Salary Process</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button style="font-size: 16px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#salary-addition-tab" type="button" role="tab" aria-selected="false">Salary Addition</button>
+                </li>
+            </ul>
+
+            <div class="mt-2" style="background-color: #FBFBFB; border: 0.5px solid #D4D4D4; border-radius: 12px; ">
+                <div class="tab-content mt-3">
+                    <div class="tab-pane fade show active" id="salary-template-tab" role="tabpanel">
+                        <div class="row mx-2">
+                            <div class="col-md-6">
+                                <div class="dropdown">
+                                    <button style="background-color: transparent; border: 0.8px solid #D0D5DD; font-size: 14px; color: #000;"
+                                            class="btn dropdown-toggle p-2" type="button" id="filterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Filter by Document <i class="bi bi-caret-down-fill"></i>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="filterDropdown">
+                                        <li><a class="dropdown-item" href="#">Document Type 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Document Type 2</a></li>
+                                        <li><a class="dropdown-item" href="#">Document Type 3</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end align-items-center gap-2">
+                                <button style="background-color: #FFFFFF; border: 0.8px solid #D0D5DD; padding: 6px 12px; font-size: 16px; color: #000; font-weight: 400;"
+                                        class="btn d-flex align-items-center gap-1" type="button">
+                                    <i class="bi bi-list"></i> List
+                                </button>
+                                <button style="background-color: #FFFFFF; border: 0.8px solid #D0D5DD; padding: 6px 12px; font-size: 16px; color: #000; font-weight: 400;"
+                                        class="btn d-flex align-items-center gap-1" type="button">
+                                    <i class="bi bi-grid-3x3-gap-fill"></i> Grid
+                                </button>
+                                <button style="background-color: #FFFFFF; border: 0.8px solid #D0D5DD; padding: 6px 12px; font-size: 16px; color: #000; font-weight: 400;"
+                                        class="btn d-flex align-items-center gap-1" type="button">
+                                    <i class="bi bi-plus-circle"></i> Create
+                                </button>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="salary-process-tab" role="tabpanel">
+                        <div class="row mx-2">
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Special title treatment</h5>
+                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Special title treatment</h5>
+                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12 mt-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Special title treatment</h5>
+                                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="salary-addition-tab" role="tabpanel">
+                        <div class="card mx-2">
+                            <div class="card-body">
+                                <h5 class="card-title">Special title treatment</h5>
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Sample data for the table
+    var tableDataOne = [
+        {
+            Department: "HR", EmpTypeName: "Full Time", Employees: 5, GrossSalary: 5000, TotalOTAmt: 200, OTHour: 10, AttBonus: 100, ConvAllow: 50, FoodAllow: 30, OtherAllow: 20, NetAmount: 5300, Absent: 1, PF: 300, Adv: 100, OtherDeduct: 50, Stamp: 10, LunchDeduct: 20, TotalDeduct: 480, NetPayable: 4820
+        },
+        {
+            Department: "IT", EmpTypeName: "Contract", Employees: 8, GrossSalary: 7000, TotalOTAmt: 300, OTHour: 12, AttBonus: 120, ConvAllow: 60, FoodAllow: 40, OtherAllow: 30, NetAmount: 7550, Absent: 2, PF: 350, Adv: 150, OtherDeduct: 60, Stamp: 12, LunchDeduct: 25, TotalDeduct: 597, NetPayable: 6953
+        },
+        {
+            Department: "Finance", EmpTypeName: "Part Time", Employees: 4, GrossSalary: 4000, TotalOTAmt: 150, OTHour: 8, AttBonus: 80, ConvAllow: 40, FoodAllow: 25, OtherAllow: 15, NetAmount: 4310, Absent: 1, PF: 200, Adv: 50, OtherDeduct: 30, Stamp: 8, LunchDeduct: 10, TotalDeduct: 298, NetPayable: 4012
+        },
+        {
+            Department: "Marketing", EmpTypeName: "Intern", Employees: 3, GrossSalary: 2500, TotalOTAmt: 100, OTHour: 5, AttBonus: 50, ConvAllow: 30, FoodAllow: 20, OtherAllow: 10, NetAmount: 2710, Absent: 0, PF: 150, Adv: 30, OtherDeduct: 20, Stamp: 5, LunchDeduct: 5, TotalDeduct: 210, NetPayable: 2500
+        },
+        {
+            Department: "Admin", EmpTypeName: "Full Time", Employees: 6, GrossSalary: 6000, TotalOTAmt: 250, OTHour: 11, AttBonus: 110, ConvAllow: 55, FoodAllow: 35, OtherAllow: 25, NetAmount: 6475, Absent: 1, PF: 320, Adv: 120, OtherDeduct: 40, Stamp: 11, LunchDeduct: 18, TotalDeduct: 509, NetPayable: 5966
+        }
+    ];
+
+    var tableDataTwo = [
+        { name: "John Doe", designation: "Software Engineer", image: "/User/img/robin.png", Earnings: 5000, Additions: 500, Deductions: 200, Company: "Tech Solutions", Employee: "Full-Time", NetPay: 5300 },
+        { name: "Jane Smith", designation: "Project Manager", image: "/User/img/person.png", Earnings: 6000, Additions: 300, Deductions: 150, Company: "Tech Solutions", Employee: "Full-Time", NetPay: 6150 },
+        { name: "Mike Johnson", designation: "UI/UX Designer", image: "/User/img/borhan.png", Earnings: 4500, Additions: 400, Deductions: 100, Company: "Creative Agency", Employee: "Part-Time", NetPay: 4800 },
+        { name: "Emily Davis", designation: "Data Analyst", image: "/User/img/person_icon_3.png", Earnings: 5200, Additions: 600, Deductions: 250, Company: "Data Corp", Employee: "Full-Time", NetPay: 5550 },
+        { name: "Chris Lee", designation: "Marketing Specialist", image: "/User/img/person_icon_2.png", Earnings: 4000, Additions: 300, Deductions: 100, Company: "Ad Agency", Employee: "Contract", NetPay: 4200 }
+    ];
+
+    var loadrequest = [
+        { loanNumber: 'LN001', name: 'John Doe', image: "/User/img/robin.png", designation: 'Software Engineer', loanName: 'Personal Loan', loanAmount: 5000, installments: 12, payBack: '2025-09-30', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN002', name: 'Jane Smith', image: "/User/img/person.png", designation: 'Project Manager', loanName: 'Home Loan', loanAmount: 20000, installments: 24, payBack: '2026-09-30', loanStarts: '2024-09-30', status: 'Closed' },
+        { loanNumber: 'LN003', name: 'Alice Johnson', image: "/User/img/borhan.png", designation: 'Data Analyst', loanName: 'Car Loan', loanAmount: 15000, installments: 18, payBack: '2025-03-15', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN004', name: 'Bob Brown', image: "/User/img/person_icon_3.png", designation: 'HR Specialist', loanName: 'Education Loan', loanAmount: 10000, installments: 24, payBack: '2026-12-31', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN005', name: 'Charlie Davis', image: "/User/img/person_icon_2.png", designation: 'Marketing Manager', loanName: 'Business Loan', loanAmount: 30000, installments: 36, payBack: '2027-07-15', loanStarts: '2024-09-30', status: 'Closed' },
+    ];
+
+    var openedloandata =[
+        { loanNumber: 'LN001', name: 'John Doe', image: "/User/img/robin.png", designation: 'Software Engineer', loanName: 'Personal Loan', loanAmount: 5000, installments: 12, payBack: '2025-09-30', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN002', name: 'Jane Smith', image: "/User/img/person.png", designation: 'Project Manager', loanName: 'Home Loan', loanAmount: 20000, installments: 24, payBack: '2026-09-30', loanStarts: '2024-09-30', status: 'Closed' },
+        { loanNumber: 'LN003', name: 'Alice Johnson', image: "/User/img/borhan.png", designation: 'Data Analyst', loanName: 'Car Loan', loanAmount: 15000, installments: 18, payBack: '2025-03-15', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN004', name: 'Bob Brown', image: "/User/img/person_icon_3.png", designation: 'HR Specialist', loanName: 'Education Loan', loanAmount: 10000, installments: 24, payBack: '2026-12-31', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN005', name: 'Charlie Davis', image: "/User/img/person_icon_2.png", designation: 'Marketing Manager', loanName: 'Business Loan', loanAmount: 30000, installments: 36, payBack: '2027-07-15', loanStarts: '2024-09-30', status: 'Closed' },
+    ];
+
+    var closedloandata = [
+        { loanNumber: 'LN001', name: 'John Doe', image: "/User/img/robin.png", designation: 'Software Engineer', loanName: 'Personal Loan', loanAmount: 5000, installments: 12, payBack: '2025-09-30', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN002', name: 'Jane Smith', image: "/User/img/person.png", designation: 'Project Manager', loanName: 'Home Loan', loanAmount: 20000, installments: 24, payBack: '2026-09-30', loanStarts: '2024-09-30', status: 'Closed' },
+        { loanNumber: 'LN003', name: 'Alice Johnson', image: "/User/img/borhan.png", designation: 'Data Analyst', loanName: 'Car Loan', loanAmount: 15000, installments: 18, payBack: '2025-03-15', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN004', name: 'Bob Brown', image: "/User/img/person_icon_3.png", designation: 'HR Specialist', loanName: 'Education Loan', loanAmount: 10000, installments: 24, payBack: '2026-12-31', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN005', name: 'Charlie Davis', image: "/User/img/person_icon_2.png", designation: 'Marketing Manager', loanName: 'Business Loan', loanAmount: 30000, installments: 36, payBack: '2027-07-15', loanStarts: '2024-09-30', status: 'Closed' },
+    ];
+
+    var loanhalfdata = [
+        { loanNumber: 'LN001', name: 'John Doe', image: "/User/img/robin.png", designation: 'Software Engineer', loanName: 'Personal Loan', loanAmount: 5000, installments: 12, payBack: '2025-09-30', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN002', name: 'Jane Smith', image: "/User/img/person.png", designation: 'Project Manager', loanName: 'Home Loan', loanAmount: 20000, installments: 24, payBack: '2026-09-30', loanStarts: '2024-09-30', status: 'Closed' },
+        { loanNumber: 'LN003', name: 'Alice Johnson', image: "/User/img/borhan.png", designation: 'Data Analyst', loanName: 'Car Loan', loanAmount: 15000, installments: 18, payBack: '2025-03-15', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN004', name: 'Bob Brown', image: "/User/img/person_icon_3.png", designation: 'HR Specialist', loanName: 'Education Loan', loanAmount: 10000, installments: 24, payBack: '2026-12-31', loanStarts: '2024-09-30', status: 'Active' },
+        { loanNumber: 'LN005', name: 'Charlie Davis', image: "/User/img/person_icon_2.png", designation: 'Marketing Manager', loanName: 'Business Loan', loanAmount: 30000, installments: 36, payBack: '2027-07-15', loanStarts: '2024-09-30', status: 'Closed' },
+    ];
+
+    // Wait for the DOM to fully load before initializing Tabulator
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize Tabulator
+        var table = new Tabulator("#salary-table", {
+            data: tableDataOne,
+            layout: "fitColumns", // Fit columns to width of table
+            columns: [
+                { title: "Department", field: "Department", hozAlign: "center", width: 120 },
+                { title: "Emp Type Name", field: "EmpTypeName", hozAlign: "center", width: 130 },
+                { title: "Employees", field: "Employees", hozAlign: "center", width: 90, bottomCalc: "sum" },
+                { title: "Gross Salary", field: "GrossSalary", hozAlign: "center", width: 120, bottomCalc: "sum" },
+                { title: "Total OT Amt", field: "TotalOTAmt", hozAlign: "center", width: 110, bottomCalc: "sum" },
+                { title: "OT Hour", field: "OTHour", hozAlign: "center", width: 100, bottomCalc: "sum" },
+                { title: "Att Bonus", field: "AttBonus", hozAlign: "center", width: 100, bottomCalc: "sum" },
+                { title: "Conv Allow", field: "ConvAllow", hozAlign: "center", width: 100, bottomCalc: "sum" },
+                { title: "Food Allow", field: "FoodAllow", hozAlign: "center", width: 100, bottomCalc: "sum" },
+                { title: "Other Allow", field: "OtherAllow", hozAlign: "center", width: 110, bottomCalc: "sum" },
+                { title: "Net Amount", field: "NetAmount", hozAlign: "center", width: 120, bottomCalc: "sum" },
+                { title: "Absent", field: "Absent", hozAlign: "center", width: 90, bottomCalc: "sum" },
+                { title: "PF", field: "PF", hozAlign: "center", width: 90, bottomCalc: "sum" },
+                { title: "Adv", field: "Adv", hozAlign: "center", width: 90, bottomCalc: "sum" },
+                { title: "Other Deduct", field: "OtherDeduct", hozAlign: "center", width: 110, bottomCalc: "sum" },
+                { title: "Stamp", field: "Stamp", hozAlign: "center", width: 90, bottomCalc: "sum" },
+                { title: "Lunch Deduct", field: "LunchDeduct", hozAlign: "center", width: 110, bottomCalc: "sum" },
+                { title: "Total Deduct", field: "TotalDeduct", hozAlign: "center", width: 110, bottomCalc: "sum" },
+                { title: "Net Payable", field: "NetPayable", hozAlign: "center", width: 120, bottomCalc: "sum" },
+            ],
+        });
+
+        var table = new Tabulator("#salary-overview-table", {
+            data: tableDataTwo,
+            layout: "fitColumns", // Fit columns to width of table
+            columns: [
+                {
+                    title: "Name", field: "name", headerHozAlign: "center", width: 190, formatter: function (cell, formatterParams, onRendered) {
+                        var row = cell.getRow().getData();
+                        return `<div style="display: flex; align-items: center;">
+                                                <img src="${row.image}" class="employee-image" alt="${row.name}">
+                                                <div class="employee-info" style="margin-left: 10px;">
+                                                        <span class="employee-name" style="text-align: start;">${row.name}</span>
+                                                    <span class="employee-designation" style="text-align: start;">${row.designation}</span>
+                                                </div>
+                                            </div>`;
+                    }
+                },
+                { title: "Earnings", field: "Earnings", hozAlign: "center", },
+                { title: "Additions", field: "Additions", hozAlign: "center",  },
+                { title: "Deductions", field: "Deductions", hozAlign: "center",  },
+                { title: "Company", field: "Company", hozAlign: "center",  },
+                { title: "Employee", field: "Employee", hozAlign: "center",  },
+                { title: "Net Pay", field: "NetPay", hozAlign: "center",  },
+                {
+                    title: "",
+                    hozAlign: "center",
+                    width: 40,
+                    formatter: function () {
+                        return "<div style='cursor: pointer;'>&#x22EE;</div>"; // Three-dot icon (⋮)
+                    }
+                }
+            ],
+        });
+
+        var table = new Tabulator("#loan-request", {
+            data: loadrequest, // Set data for the table
+            layout: "fitColumns", // Fit columns to width of table
+            columns: [
+                { title: "Loan Number", field: "loanNumber", width: 150 },
+                {
+                    title: "Employee Name", field: "name", headerHozAlign: "center", width: 190, formatter: function (cell, formatterParams, onRendered) {
+                        var row = cell.getRow().getData();
+                        return `<div style="display: flex; align-items: center;">
+                                                    <img src="${row.image}" class="employee-image" alt="${row.name}">
+                                                    <div class="employee-info" style="margin-left: 10px;">
+                                                            <span class="employee-name" style="text-align: start;">${row.name}</span>
+                                                        <span class="employee-designation" style="text-align: start;">${row.designation}</span>
+                                                    </div>
+                                                </div>`;
+                    }
+                },
+                { title: "Loan Name", field: "loanName", width: 150 },
+                { title: "Loan Amount", field: "loanAmount", width: 150 },
+                { title: "Installments", field: "installments", width: 150 },
+                { title: "Pay Back", field: "payBack", width: 150 },
+                { title: "Loan Starts", field: "loanStarts", width: 150 },
+                {
+                    title: "Action", field: "action", width: 100, formatter: function (cell) {
+                        // Return a button with a PDF icon and "View" text
+                        return "<button class='btn btn-info btn-sm'><i class='bi bi-file-earmark-pdf'></i> View</button>";
+                    }
+                },
+                { title: "Status", field: "status", width: 100 },
+            ],
+        });
+
+        var table = new Tabulator("#opened-loan", {
+            data: openedloandata, // Set data for the table
+            layout: "fitColumns", // Fit columns to width of table
+            columns: [
+                { title: "Loan Number", field: "loanNumber", width: 150 },
+                {
+                    title: "Employee Name", field: "name", headerHozAlign: "center", width: 190, formatter: function (cell, formatterParams, onRendered) {
+                        var row = cell.getRow().getData();
+                        return `<div style="display: flex; align-items: center;">
+                                                        <img src="${row.image}" class="employee-image" alt="${row.name}">
+                                                        <div class="employee-info" style="margin-left: 10px;">
+                                                                <span class="employee-name" style="text-align: start;">${row.name}</span>
+                                                            <span class="employee-designation" style="text-align: start;">${row.designation}</span>
+                                                        </div>
+                                                    </div>`;
+                    }
+                },
+                { title: "Loan Name", field: "loanName", width: 150 },
+                { title: "Loan Amount", field: "loanAmount", width: 150 },
+                { title: "Installments", field: "installments", width: 150 },
+                { title: "Pay Back", field: "payBack", width: 150 },
+                { title: "Loan Starts", field: "loanStarts", width: 150 },
+                {
+                    title: "Action", field: "action", width: 100, formatter: function (cell) {
+                        // Return a button with a PDF icon and "View" text
+                        return "<button class='btn btn-info btn-sm'><i class='bi bi-file-earmark-pdf'></i> View</button>";
+                    }
+                },
+                { title: "Status", field: "status", width: 100 },
+            ],
+        });
+
+        var table = new Tabulator("#closed-loan", {
+            data: closedloandata, // Set data for the table
+            layout: "fitColumns", // Fit columns to width of table
+            columns: [
+                { title: "Loan Number", field: "loanNumber", width: 150 },
+                {
+                    title: "Employee Name", field: "name", headerHozAlign: "center", width: 190, formatter: function (cell, formatterParams, onRendered) {
+                        var row = cell.getRow().getData();
+                        return `<div style="display: flex; align-items: center;">
+                                                        <img src="${row.image}" class="employee-image" alt="${row.name}">
+                                                        <div class="employee-info" style="margin-left: 10px;">
+                                                                <span class="employee-name" style="text-align: start;">${row.name}</span>
+                                                            <span class="employee-designation" style="text-align: start;">${row.designation}</span>
+                                                        </div>
+                                                    </div>`;
+                    }
+                },
+                { title: "Loan Name", field: "loanName", width: 150 },
+                { title: "Loan Amount", field: "loanAmount", width: 150 },
+                { title: "Installments", field: "installments", width: 150 },
+                { title: "Pay Back", field: "payBack", width: 150 },
+                { title: "Loan Starts", field: "loanStarts", width: 150 },
+                {
+                    title: "Action", field: "action", width: 100, formatter: function (cell) {
+                        // Return a button with a PDF icon and "View" text
+                        return "<button class='btn btn-info btn-sm'><i class='bi bi-file-earmark-pdf'></i> View</button>";
+                    }
+                },
+                { title: "Status", field: "status", width: 100 },
+            ],
+        });
+
+        var table = new Tabulator("#loan-half-request", {
+            data: loanhalfdata, // Set data for the table
+            layout: "fitColumns", // Fit columns to width of table
+            columns: [
+                { title: "Loan Number", field: "loanNumber", width: 150 },
+                {
+                    title: "Employee Name", field: "name", headerHozAlign: "center", width: 190, formatter: function (cell, formatterParams, onRendered) {
+                        var row = cell.getRow().getData();
+                        return `<div style="display: flex; align-items: center;">
+                                                        <img src="${row.image}" class="employee-image" alt="${row.name}">
+                                                        <div class="employee-info" style="margin-left: 10px;">
+                                                                <span class="employee-name" style="text-align: start;">${row.name}</span>
+                                                            <span class="employee-designation" style="text-align: start;">${row.designation}</span>
+                                                        </div>
+                                                    </div>`;
+                    }
+                },
+                { title: "Loan Name", field: "loanName", width: 150 },
+                { title: "Loan Amount", field: "loanAmount", width: 150 },
+                { title: "Installments", field: "installments", width: 150 },
+                { title: "Pay Back", field: "payBack", width: 150 },
+                { title: "Loan Starts", field: "loanStarts", width: 150 },
+                {
+                    title: "Action", field: "action", width: 100, formatter: function (cell) {
+                        // Return a button with a PDF icon and "View" text
+                        return "<button class='btn btn-info btn-sm'><i class='bi bi-file-earmark-pdf'></i> View</button>";
+                    }
+                },
+                { title: "Status", field: "status", width: 100 },
+            ],
+        });
+    });
+
+    // Select the dropdown button and arrow icon elements
+    const dropdownTabButton = document.getElementById('dropdownTabButton');
+    const dropdownArrowIcon = document.getElementById('dropdownArrowIcon');
+    const openedLoanButton = document.getElementById('openedLoan');
+    const closedLoanButton = document.getElementById('closedLoan');
+
+    // Add event listener to dropdown items to change the button text
+    openedLoanButton.addEventListener('click', function () {
+        dropdownTabButton.innerHTML = 'Opened Loan <i id="dropdownArrowIcon" class="ms-2 bi bi-chevron-down"></i>';
+    });
+
+    closedLoanButton.addEventListener('click', function () {
+        dropdownTabButton.innerHTML = 'Closed Loan <i id="dropdownArrowIcon" class="ms-2 bi bi-chevron-down"></i>';
+    });
+
+    // Add an event listener to the dropdown button to toggle the arrow icon
+    dropdownTabButton.addEventListener('click', function () {
+        if (dropdownTabButton.getAttribute('aria-expanded') === 'true') {
+            dropdownArrowIcon.classList.remove('bi-chevron-down');
+            dropdownArrowIcon.classList.add('bi-chevron-up');
+        } else {
+            dropdownArrowIcon.classList.remove('bi-chevron-up');
+            dropdownArrowIcon.classList.add('bi-chevron-down');
+        }
+    });
+</script>

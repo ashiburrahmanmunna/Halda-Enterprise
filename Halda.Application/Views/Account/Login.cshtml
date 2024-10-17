@@ -1,0 +1,257 @@
+﻿@model LoginRequest
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_LayoutLogin";
+}
+
+
+
+
+@section Styles{
+<style>
+    .login-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .input-container {
+        position: relative;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+        .input-container input {
+            width: 100%;
+            padding: 10px;
+            padding-left: 35px; /* Space for the icon */
+            border: 0.5px solid #D6D9DE;
+            border-radius: 4px;
+        }
+
+        .input-container .icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+        }
+
+    .tab-container {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+    }
+
+    .tab {
+        cursor: pointer;
+        padding: 5px 10px;
+        color: #A0A0A0;
+       font-weight: 500;
+    }
+
+        .tab.active {
+            color: #495057;
+            border-bottom: 2px solid #28a745; /* green underline */
+        }
+
+    .login-btn {
+        width: 100%;
+        font-weight: 700;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        font-size: 16px;
+        text-align: center;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .login-btn:hover {
+            background-color: #45a049;
+        }
+
+     input::placeholder {
+            font-size: 16px !important; /* Adjust font size */
+            font-weight: 400 !important; /* Adjust font weight */
+            color: #97909E !important; /* Optional: Customize placeholder color */
+     }
+
+     .font-Montserrat {
+            font-family: 'Montserrat' !important;
+     }
+
+</style>}
+
+
+
+<div class="login-box " style="font-family: 'Montserrat' !important;">
+
+    <div class="card shadow-lg " style="border: solid; border-color: #ffff; border-radius: 10px;box-shadow: 0px 0px 30px 0px #9C9D9E14; max-width: 380px; margin-top: 50px;">
+        <div class="card-body login-card-body px-4">
+            <div class="login-logo d-flex justify-content-center pt-2" >
+                <h3 class="font-Montserrat" style="font-weight: 700; color: #403D3D; font-size: 30px;">Log in</h3>
+            </div>
+            
+            <div class="d-flex justify-content-center px-2 ">
+                <p class="login-box-msg text-center pb-0 mb-0 font-Montserrat" style="color: #839496; font-weight: 400; font-size: 15px;">
+                    Enter your details to get Log in <br />
+                    to your account
+                </p>
+            </div>
+            @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
+
+            <form asp-action="Login" method="post">
+
+                <div class="login-form">
+                    <div class="tab-container gap-5 mt-0 pt-0">
+                        <span id="email-tab" class="tab active font-Montserrat" style="font-weight: 700;">Email</span>
+                        <span id="phone-tab" class="tab font-Montserrat" style="font-weight: 700;">Phone</span>
+                    </div>
+
+                    <div class="input-container">
+                        <input asp-for="PostId" id="PostId" value="@ViewBag.PostId" hidden />
+                        <i id="icon" class="bi bi-envelope icon"></i>
+                        <input type="text" asp-for="UserName" id="userName" name="userName" class="font-Montserrat" placeholder="Enter your email" required="required">
+                    </div>
+
+                    <div class="input-container">
+                        <i id="showPasswordToggle" class="bi bi-eye-slash icon" onclick="togglePasswordVisibility()"></i>
+                        <input type="password" asp-for="Password" id="password" name="password" class="font-Montserrat" placeholder="Enter your Password" required="required">
+                        <span asp-validation-for="Password" class="text-danger font-Montserrat"></span>
+                    </div>
+                    <div class="row" >
+                        <div class="col-6">
+                            <div class="icheck-primary d-flex align-content-center">
+                                <input class="mt-1" type="checkbox" id="remember">
+                                <p for="remember" class="font-Montserrat" style="font-size: 14px; font-weight: 300; color: #97909E; margin-left: 3px; padding-top: 3px;">
+                                    Save Password
+                                </p>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-6 d-flex justify-content-end">
+                            <a asp-controller="Account" asp-action="Forget" style="text-decoration: none; font-size: 14px; font-weight: 300; color: #FC5741;" class="text-center font-Montserrat"> Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="login-btn font-Montserrat ">Log In</button>
+
+                    <div class="col-12 mt-3 text-center">
+                            <h6 class="font-Montserrat" style="color: #69686A;">Don’t have an account? <a onclick="location.href='@Url.Action("Register","Account")'" class="font-Montserrat" style="text-decoration: none; color: #4AA147;">Sign up</a></h6>
+                    </div>
+                </div>
+                </div>
+
+                
+            </form>
+            
+        </div>
+        <!-- /.login-card-body -->
+    </div>
+</div>
+@section Scripts{
+<script>
+
+    document.getElementById('email-tab').addEventListener('click', function () {
+        document.getElementById('icon').className = 'bi bi-envelope icon';
+        document.getElementById('userName').placeholder = 'Enter your email';
+        document.getElementById('email-tab').classList.add('active');
+        document.getElementById('phone-tab').classList.remove('active');
+    });
+
+    document.getElementById('phone-tab').addEventListener('click', function () {
+        document.getElementById('icon').className = 'bi bi-telephone icon';
+        document.getElementById('userName').placeholder = 'Enter your phone';
+        document.getElementById('phone-tab').classList.add('active');
+        document.getElementById('email-tab').classList.remove('active');
+    });
+
+
+
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("password");
+        var showPasswordToggle = document.getElementById("showPasswordToggle");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            showPasswordToggle.classList.remove("bi", "bi-eye-slash");
+            showPasswordToggle.classList.add("bi", "bi-eye");
+        } else {
+            passwordInput.type = "password";
+                showPasswordToggle.classList.remove("bi", "bi-eye");
+                showPasswordToggle.classList.add("bi", "bi-eye-slash");
+        }
+    }
+</script>
+
+}
+
+@*    <div class="row">
+        <div class="card-body">
+            <div class="col-sm-6">
+                <form asp-action="Login" method="post">
+                    <div class="form-group">
+                        <label for="userName">Username:</label>
+                        <input type="text" class="form-control" id="userName" name="userName" placeholder="Enter your username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>*@
+
+@* <div class="input-group mb-3">
+                    <input asp-for="PostId" id="PostId" value="@ViewBag.PostId"  hidden/>
+                    <input type="text" asp-for="UserName" class="form-control" id="userName" name="userName" placeholder="Email" >
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class=" fa-solid fa-user"></span>
+                        </div>
+                    </div>
+                </div> *@
+@* <div class="input-group mb-3">
+                    <input type="password" asp-for="Password" class="form-control" id="password" name="password" placeholder="Password" required="required">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span id="showPasswordToggle" class="fas fa-eye" onclick="togglePasswordVisibility()"></span>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                </div> *@
+
+@* <div class="row">
+                    <div class="col-8">
+                        <div class="icheck-primary">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">
+                                Remember Me
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" class="button-41">Log In</button>
+                    </div>
+                    <!-- /.col -->
+                </div> *@
+
+@* <a asp-controller="Account" asp-action="Forget" style="text-decoration: none;" class="text-center">Forgot password?</a> *@

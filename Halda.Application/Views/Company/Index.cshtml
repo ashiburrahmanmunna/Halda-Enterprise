@@ -1,0 +1,557 @@
+﻿@{
+    ViewData["Title"] = "Company";
+    Layout = "_LayoutCompany";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+<link href="~/Custom Css/custommultistepformcss.css" rel="stylesheet" />
+
+<style>
+    /*added this style by shahinur 7 feb 24*/
+    .upload-image-preview {
+        width: 65px;
+        height: 65px;
+    }
+
+        .upload-image-preview img {
+            width: 100%;
+            height: 100%;
+        }
+
+    .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option {
+        font-size: 14px;
+        border-bottom: 0.5px solid #F2EFE5;
+    }
+    /*end this style by shahinur 7 feb 24*/
+</style>
+<div class="page-wrapper">
+    <div class="collapse navbar-collapse justify-content-end d-none" id="navbarResponsive"></div>
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-8">
+                <form id="regForm" enctype="multipart/form-data">
+                    <h1 id="register">Comapny Settings</h1>
+                    <div class="all-steps mb-5" id="all-steps">
+                        <span class="step ms-2"><i class="fa fa-user"></i></span>
+                        @* <span class="step ms-2"><i class="fa fa-map-marker"></i></span>
+                        <span class="step ms-2"><i class="fa fa-shopping-bag"></i></span> *@
+                        <span class="step ms-2"><i class="fa fa-car"></i></span>
+                        <span class="step ms-2"><i class="fa fa-phone"></i></span>
+                        <span class="step ms-2"><i class="fa fa-address-book"></i></span>
+                        <span class="step ms-2"><i class="fa fa-bookmark"></i></span>
+                    </div>
+
+                    <div class="tab">
+                        <h6>Name of your Company</h6>
+                        <p>
+                            <input placeholder="Name of your Company" id="CompanyName" name="CompanyName">
+                        </p>
+
+                    </div>
+                    <div class="tab">
+                        <h6>Upload your logo & customize theme color</h6>
+                        <div class="row upload-image">
+                            <div class="col-md-8 col-8">
+                                <input name="CompanyImage" id="image-uploadify" type="file" accept=".xlsx,.xls,image/*,.doc,audio/*,.docx,video/*,.ppt,.pptx,.txt,.pdf" multiple>
+                                @*<p><input placeholder="City"   name="dd"></p>*@
+                            </div>
+                            <div class="col-md-4 col-4">
+                                <div class="upload-image-preview">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     
+
+                    <div class="tab">
+                        <h6>Company email / phone</h6>
+                        <p><input placeholder="Company Email / phone" id="CompanyEmail" name="CompanyEmail"></p>
+                        <p><input placeholder="Company Phone" id="CompanyPhone" name="CompanyPhone"></p>
+                    </div>
+
+
+                    <div class="tab">
+                        <h6>Company address</h6>
+                        <p><input placeholder="Company address" id="BusinessAddress" name="BusinessAddress"></p>
+                    </div>
+                    <div class="tab">
+                        <h6>Company website</h6>
+                        <p><input placeholder="Company website" id="CompanyWebsite" name="CompanyWebsite"></p>
+                    </div>
+                    <div class="thanks-message text-center" id="text-message">
+                        <img src="" width="100" class="mb-4">
+                        <h3>
+                            That's it. Now go and change the world!
+                        </h3> <span>And don't forget to have fun</span>
+                    </div>
+                    <div style="overflow:auto;" id="nextprevious">
+                        <div style="float:right;">
+                            <button type="button" id="prevBtn" onclick="nextPrev(-1)"><i class="fa fa-angle-double-left"></i></button>
+                            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="loginUrl" value="@Url.Action("Login", "Home")" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="./js/consumeCookie.js"></script>
+    <script type="text/javascript">
+
+        var chitraComapnyData;
+
+
+        $(document).ready(function () {
+
+
+            $("input[name=CompanyImage]").change(function () {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        var img = $('<img>').attr('src', e.target.result);
+                        $('.upload-image-preview').html(img);
+                    };
+
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            //$("form").submit(function () {
+            //    $("#BusinessTypeId").prop("disabled", false);
+            //});
+            //alert('hit');
+            $('#navbarResponsive').hide();
+          @*   var VatViewActivate = '@HttpContextAccessor.HttpContext.Session.GetInt32("VatViewActivate").ToString()'; *@
+            if (VatViewActivate == 1) { $('.divHiddenItems').hide(); }
+           
+
+        });
+
+        var comId="";
+        var userId = "";
+        document.addEventListener("DOMContentLoaded", () => {
+            comId = getCookie("ComId");
+            console.log("ComId:", comId);
+            
+
+            getChitraCompany(comId);
+            getUserInfo(UserId);
+            if (chitraComapnyData.Name === "Default Company") {
+
+            }
+            
+        });
+
+        function PreviewImage() {
+            var oFReader = new FileReader();
+            oFReader.readAsDataURL(document.getElementById("FileUpload").files[0]);
+
+            oFReader.onload = function (oFREvent) {
+                document.getElementById("UploadFile").src = oFREvent.target.result;
+            };
+        };
+
+
+
+        $("#TimeZoneId, #CurrencyId, #BusinessTypeId, #SubcriptionTypeId, #CountryId, #FiscalYearId, #SubscriptionTypeId").select2({
+            theme: 'bootstrap-5'
+        });
+        /* $("#FiscalYearId").select2();*/
+
+        //multi step form
+        var currentTab = 0;
+        document.addEventListener("DOMContentLoaded", function (event) {
+
+
+            showTab(currentTab);
+
+        });
+
+        function showTab(n) {
+            var x = document.getElementsByClassName("tab");
+            x[n].style.display = "block";
+            if (n == 0) {
+                document.getElementById("prevBtn").style.display = "none";
+            } else {
+                document.getElementById("prevBtn").style.display = "inline";
+            }
+            if (n == (x.length - 1)) {
+                document.getElementById("nextBtn").innerHTML = 'Finish';
+            } else {
+                document.getElementById("nextBtn").innerHTML = 'Next';
+            }
+            fixStepIndicator(n)
+        }
+
+        function nextPrev(n) {
+            var x = document.getElementsByClassName("tab");
+            if (n == 1 && !validateForm()) return false;
+            x[currentTab].style.display = "none";
+            currentTab = currentTab + n;
+            if (currentTab >= x.length) {
+
+                document.getElementById("nextprevious").style.display = "none";
+                document.getElementById("all-steps").style.display = "none";
+                document.getElementById("register").style.display = "none";
+                document.getElementById("text-message").style.display = "block";
+            }
+            showTab(currentTab);
+        }
+
+        function validateForm() {
+            var x, y, i, valid = true;
+            x = document.getElementsByClassName("tab");
+            y = x[currentTab].getElementsByTagName("input");
+            for (i = 0; i < y.length; i++) {
+                if (y[i].value == "") {
+                    y[i].className += " invalid";
+                    valid = false;
+                }
+
+
+            }
+            if (valid) {
+                document.getElementsByClassName("step")[currentTab].className += " finish";
+            }
+            return valid;
+        }
+
+        function fixStepIndicator(n) {
+            var i, x = document.getElementsByClassName("step");
+            for (i = 0; i < x.length; i++) {
+                x[i].className = x[i].className.replace(" active", "");
+            }
+            x[n].className += " active";
+        }
+
+
+        //code to get Currency dropdown
+        $.ajax({
+            //async: false,
+            url: '@Url.Action("GetCurrencyDropdown", "Admin")',//url: "https://www.pqstec.com/InvoiceApps/values/GetCustomerDropdown",
+            success: function (data) {
+                const select = document.querySelector('#CurrencyId');
+                for (var i = 0; i < data.length; i++) {
+                    console.log("data to see currecncy", data);
+                    const option = document.createElement('option');
+                    option.value = data[i].Value;
+                    option.text = data[i].Text
+                    select.appendChild(option);
+                }
+            }
+        });
+
+        function getCookie(name) {
+            console.log("hello cookie");
+            let value = "; " + document.cookie;
+            let parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
+        //Final code for passing input,select,image to controller
+        let currentStep = 0;
+
+        const nextButton = document.querySelector("#nextBtn");
+        nextButton.addEventListener("click", e => {
+            e.preventDefault();
+            currentStep++;
+            var file = $("#image-uploadify")[0].files[0];
+            const form = document.getElementById("regForm");
+           
+            var companyDTO = {
+               // ComId: "3fa85f64-5717-4562-b3fc-2c963f66afa6", 
+                CompanySecretCode: "kamrul007", 
+                AppKey: null, 
+                CompanyCode: "kamrul007", 
+                CompanyName: $("#CompanyName").val(),
+                CompanyNameBangla: null, 
+                CompanyShortName: null, 
+                PrimaryAddress: "kamrul007", 
+                CompanyAddressBangla: null, 
+                SecoundaryAddress: null, 
+                comPhone: "kamrul007", 
+                comPhone2: "kamrul007", 
+                comFax: null, 
+                comEmail: $("#CompanyEmail").val(),
+                comWeb: null, 
+                BaseComId: null, 
+                CountryId: $("#CountryId").val(), 
+                DecimalField: 0, 
+                ContPerson: null, 
+                ContDesig: null, 
+                IsShowCurrencySymbol: true, 
+                IsInActive: true,
+                IsGroup: true, 
+                IsDoller: true, 
+                isBarcode: true, 
+                isProduct: true,
+                isCorporate: true,
+                isPOSprint: true, 
+                IsService: true, 
+                isOldDue: true, 
+                isShortcutSale: true, 
+                isRestaurantSale: true, 
+                isTouch: true, 
+                isShoeSale: true, 
+                isIMEISale: true, 
+                isMultipleWh: true, 
+                isMultiCurrency: true, 
+                isMultiDebitCredit: true, 
+                isVoucherDistributionEntry: true, 
+                isChequeDetails: true, 
+                ComImageHeader: null, 
+                HeaderImagePath: null, 
+                HeaderFileExtension: null, 
+                ComLogo: null,
+                CompanyLogoFile: file ,// Include file data
+                
+                LogoImagePath: null, 
+                LogoFileExtension: null, 
+                ComSign: null, 
+                SignImagePath: null, 
+                SignFileExtension: null, 
+                Addvertise: null, 
+                IsEPZ: true 
+            };
+
+
+            const formData = new FormData();
+            formData.append('ComId', comId);
+            formData.append('CompanySecretCode', 'kamrul007');
+            // Add other fields from your CompanyDTO
+            formData.append('CompanyName', 'Binary Burst');
+            // Add the file
+            formData.append('CompanyLogoFile', $('#image-uploadify')[0].files[0]);
+
+
+            
+            formData.append('CompanyCode', 'kamrul007');
+            formData.append('CompanyName', $("#CompanyName").val());
+            formData.append('PrimaryAddress', 'kamrul007');
+            formData.append('comPhone', 'kamrul007');
+            formData.append('comPhone2', 'kamrul007');
+            formData.append('comEmail', $("#CompanyEmail").val());   
+            formData.append('IsShowCurrencySymbol', 'true');
+            formData.append('IsInActive', 'true');
+            formData.append('IsGroup', 'true');
+            formData.append('IsDoller', 'true');
+            formData.append('isBarcode', 'true');
+            formData.append('isProduct', 'true');
+            formData.append('isCorporate', 'true');
+            formData.append('isPOSprint', 'true');
+            formData.append('IsService', 'true');
+            formData.append('isOldDue', 'true');
+            formData.append('isShortcutSale', 'true');
+            formData.append('isRestaurantSale', 'true');
+            formData.append('isTouch', 'true');
+            formData.append('isShoeSale', 'true');
+            formData.append('isIMEISale', 'true');
+            formData.append('isMultipleWh', 'true');
+            formData.append('isMultiCurrency', 'true');
+            formData.append('isMultiDebitCredit', 'true');
+            formData.append('isVoucherDistributionEntry', 'true');
+            formData.append('isChequeDetails', 'true');          
+            formData.append('IsEPZ', 'true');
+
+
+
+            // chitraComapnyData.Id = comId.toString();
+            // chitraComapnyData.Name = model.Name;
+            if (currentStep === 5) {
+                console.log("form: ", formData);
+                console.log("form hello");
+                console.log("file: ", file);
+                $.ajax({
+                    type: "POST",
+
+                    url: '/Company/Create',
+
+                   // data: JSON.stringify(formData),
+                    //data: companyDTO,
+                    data: formData,
+                    contentType: "application/json", 
+                    contentType: false, 
+                    processData: false, 
+                    success: function (response) {
+                        //updateCompany(data);
+
+
+                        console.log(response);
+                        if (response.ff === 0) {
+                            console.log('url sent');
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            console.log('url not sent');
+                            var abc = '@Url.Action("Login", "Home")';
+                            window.location = abc;
+                        }
+                    },
+                    error: function (error) {
+                        // handle error
+                        alert('not saved');
+                        console.log("Error");
+                    }
+                });
+            }
+
+
+
+          //  updateChitraCompnay(chitraComapnyData);
+
+                })
+
+
+
+        const _chitra = 'http://gtrbd.net/chitraupdateapi/api/';
+        const _halda = 'http://gtrbd.net/chitraupdateapi/api/';
+
+
+
+        function getChitraCompany(comid) {
+            console.log("Company information stored globally:", comid);
+
+            var apiUrl = "https://gtrbd.net/chitraupdateapi/api/Company/" + comid.toString();
+
+            $.ajax({
+                type: "GET",
+                url: apiUrl,
+                success: function (data) {
+                    console.log("Company information:", data);
+
+                     chitraComapnyData = {
+                        Id: data.id.toString(),
+                        IsDeleted: data.isDeleted,
+                        Name: data.name,
+                        IsActive: data.isActive,
+                        ReferbyPartnerId: data.referbyPartnerId,
+                        ReferbyPartner: data.referbyPartner,
+                        ParentId: data.parentId,
+                        AddressLineOne: data.addresLineOne,
+                        AddressLineTwo: data.addresLinetwo,
+                        City: data.city,
+                        State: data.state,
+                        ZipOrPostalCode: data.zipOrPostalCode,
+                        PhoneNumber: data.phoneNumber,
+                        TechnicalContactEmail: data.teachnicalContactEmail,
+                        TradeLicenseNo: data.tradeLicenseNo,
+                        CreatedAt: data.createdAt,
+                        UpdatedAt: data.updatedAt
+                    };
+
+                    console.log("Company Object", chitraComapnyData);
+
+
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+
+
+
+        function getUserInfo(userId) {
+            var apiUrl = "https://gtrbd.net/chitraupdateapi/api/Company/UserCompany/Userinfo?id=" + userId;
+
+            $.ajax({
+                type: "POST",
+                url: apiUrl,
+                success: function (data) {
+                    console.log("User information:", data);
+
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+
+        function createUser() {
+
+        }
+
+        function updateChitraCompnay(chitraComapnyData) {
+            $.ajax({
+                type: "PUT",
+                url: "http://gtrbd.net/chitraupdateapi/api/Company/" + Comid,
+                contentType: "application/json",
+                data: JSON.stringify(chitraComapnyData),
+                success: function (response) {
+                    console.log("PUT request successful:", response);
+                },
+                error: function (error) {
+                    // Handle error
+                    console.error('PUT request error:', error);
+                }
+            });
+
+        }
+
+
+
+
+
+
+
+
+
+
+        // function getChitraCompany(comid) {
+        //     console.log("Company information stored globally:1", comid);
+
+        //     var apiUrl = "https://gtrbd.net/chitraupdateapi/api/Company/" + Comid.toString()";
+
+        //     $.ajax({
+        //         type: "GET",
+        //         url: apiUrl,
+        //         success: function (data) {
+        //             console.log("Company information:", data);
+        //         },
+        //         error: function (error) {
+        //             console.error('Error:', error);
+        //         }
+        //     });
+
+
+        //     // $.ajax({
+        //     //     type: "POST",
+        //     //     url: "http://gtrbd.net/chitraupdateapi/api/Company/" + Comid,
+        //     //     contentType: false,
+        //     //     processData: false,
+        //     //     success: function (response) {
+        //     //         console.log("Company information stored globally:");
+        //     //         chitraComapnyData = {
+        //     //             Id: response.Id.toString(),
+        //     //             IsDeleted: response.IsDeleted,
+        //     //             Name: response.Name,
+        //     //             IsActive: response.IsActive,
+        //     //             ReferbyPartnerId: response.ReferbyPartnerId,
+        //     //             ReferbyPartner: response.ReferbyPartner,
+        //     //             ParentId: response.ParentId
+        //     //         };
+
+        //     //         console.log("Company information stored globally:", data);
+        //     //     },
+        //     //     error: function (error) {
+        //     //         alert('Not saved');
+        //     //         console.log("Error", error);
+        //     //     }
+        //     // });
+        // }
+
+
+    </script>
+}

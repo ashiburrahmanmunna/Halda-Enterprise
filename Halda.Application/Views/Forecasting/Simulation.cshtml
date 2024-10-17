@@ -1,0 +1,158 @@
+﻿@{
+    ViewData["Title"] = "Assignment";
+    Layout = "_LayoutAdmin";
+}
+
+<h4>Simulation</h4>
+<div class="d-flex align-items-center gap-2 mb-3">
+    <div class="input-group">
+        <span class="input-group-text">Growth:</span>
+        <input type="text" id="growth-percentage" class="form-control" placeholder="10%">
+    </div>
+
+    <select id="growth-type" class="form-select">
+        <option value="custom-growth">Custom Growth</option>
+    </select>
+
+    <select id="timeframe-select" class="form-select">
+        <option value="financial-year">Financial Year</option>
+    </select>
+
+    <select id="frequency-select" class="form-select">
+        <option value="quarterly">Quarterly</option>
+    </select>
+
+    <div class="input-group">
+        <span class="input-group-text">Duration</span>
+        <input type="date" class="form-control" value="Jan 2024 - Dec 2024" >
+        <span class="input-group-text">
+            <i class="bi bi-calendar"></i> <!-- Bootstrap Icon for Calendar -->
+        </span>
+    </div>
+
+    <button id="customize-view" class="btn btn-success">Customize View</button>
+</div>
+<button id="fetch-forecast" class="btn btn-primary">Get Forecast</button>
+<div class="table-container">
+    <div id="forecast-table"></div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var table = new Tabulator("#forecast-table", {
+            layout: "fitColumns",
+            dataTree: true,
+            dataTreeStartExpanded: false,
+            columns: [] // Start with no columns
+        });
+
+        document.getElementById("fetch-forecast").addEventListener("click", function () {
+            const growthPercentageInput = document.getElementById("growth-percentage").value;
+            const growthPercentages = growthPercentageInput.split(',').map(item => parseFloat(item.trim()));
+
+            // Check for valid percentages
+            if (growthPercentages.some(isNaN)) {
+                alert("Please enter valid growth percentages, separated by commas.");
+                return;
+            }
+
+            fetchForecastData(growthPercentages);
+        });
+
+        function fetchForecastData(growthPercentages) {
+            $.ajax({
+                url: `/Forecasting/GetForecastData`,
+                method: 'GET',
+                success: function (data) {
+                    console.log("Received data:", data);
+                    var formattedData = formatForecastData(data, growthPercentages);
+                    console.log("Formatted data:", formattedData);
+
+                    // Dynamically generate columns based on growth percentages
+                    let columns = [
+                        { title: "Department", field: "Department", width: 200, responsive: 0, headerSort: false },
+                        {
+                            title: "Manpower",
+                            columns: [
+                                { title: "Previous", field: "Previous", headerSort: false },
+                                ...growthPercentages.map(p => ({
+                                    title: `${p}%`,
+                                    field: `Forecast${p}`,
+                                    headerSort: false
+                                }))
+                            ]
+                        },
+                        { title: "Previous Gross Salary", field: "PreviousGrossSalary", formatter: "money", formatterParams: { thousand: "," }, headerSort: false },
+                        {
+                            title: "Increment",
+                            columns: [
+                                ...growthPercentages.map(p => ({
+                                    title: `${p}%`,
+                                    field: `ForecastSalary${p}`,
+                                    formatter:"money",
+                                    headerSort: false
+                                })),
+                                { title: "Maximum", field: "MaxSalary", formatter: "money", formatterParams: { thousand: "," }, headerSort: false },
+                                { title: "Minimum", field: "MinSalary", formatter: "money", formatterParams: { thousand: "," }, headerSort: false },
+                            ]
+                        }
+                    ];
+
+                    // Set columns and data
+                    table.setColumns(columns);
+                    table.setData(formattedData);
+                },
+                error: function (error) {
+                    console.error("Error fetching forecast data:", error);
+                }
+            });
+        }
+
+        function formatForecastData(forecastData, growthPercentages) {
+            return forecastData.map(company => {
+                const departments = company.departments || [];
+
+                return {
+                    Department: company.company,
+                    Previous: company.previous || 0,
+                    ...calculateForecasts(company.previous, company.previousGrossSalary, growthPercentages),
+                    PreviousGrossSalary: company.previousGrossSalary || 0,
+                    MaxSalary: company.maxSalary || 0,
+                    MinSalary: company.minSalary || 0,
+                    _children: departments.map(dept => {
+                        return {
+                            Department: dept.Department || 'Unknown',
+                            Previous: dept.Previous || 0,
+                            ...calculateForecasts(dept.Previous, dept.PreviousGrossSalary, growthPercentages),
+                            PreviousGrossSalary: dept.PreviousGrossSalary || 0,
+                            MaxSalary: dept.MaxSalary || 0,
+                            MinSalary: dept.MinSalary || 0,
+                            _children: (dept.Designations || []).map(designation => {
+                                return {
+                                    Department: designation.Designation || 'Unknown',
+                                    Previous: designation.Previous || 0,
+                                    ...calculateForecasts(designation.Previous, designation.PreviousGrossSalary, growthPercentages),
+                                    PreviousGrossSalary: designation.PreviousGrossSalary || 0,
+                                    MaxSalary: designation.MaxSalary || 0,
+                                    MinSalary: designation.MinSalary || 0
+                                };
+                            })
+                        };
+                    })
+                };
+            });
+        }
+
+        function calculateForecasts(previous, previousSalary, growthPercentages) {
+            return growthPercentages.reduce((acc, percentage) => {
+                acc[`Forecast${percentage}`] = Math.ceil(previous * (1 + percentage / 100));
+                acc[`ForecastSalary${percentage}`] = previousSalary * (1 + percentage / 100);
+                return acc;
+            }, {});
+        }
+    });
+
+
+
+</script>

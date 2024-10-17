@@ -1,0 +1,279 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+
+    .employee-stats {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px; /* Space between items */
+        background-color: #FFFFFF;
+        padding: 22px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 10px 0px #0000000D;
+    }
+
+
+
+    /* Additional styles for stat-item and stat-text, if needed */
+    .stat-item {
+        background-color: #F9FAFB; /* Light background for each item */
+        border-radius: 12px;
+        padding: 5px;
+    }
+
+    .stat-text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: -18px;
+        color: #667085;
+        font-family: AirbnbCereal_W_Bk;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 20px; /* 166.667% */
+    }
+
+
+    .emp-list-header {
+        color: var(--Gray-h, #414042);
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 20px; /* 111.111% */
+    }
+
+    .emp-list-img {
+        max-width: 25px;
+        max-height: 25px;
+        margin-top: -15px;
+    }
+
+
+    .emp-code-style {
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .emp-header-1 {
+        color: var(--Gray-h, #414042);
+        font-size: 22px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+    }
+
+    .header-text-4 {
+        color: var(--Gray-h, #414042);
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 22.194px; /* 110.97% */
+        white-space: nowrap;
+    }
+
+    .pdf-upload-print-css {
+        border-radius: 8px;
+        border: 0.52px solid #E5E3E3;
+        width: 60px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .parent-container {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        height: 100% !important;
+    }
+</style>
+
+
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2 border-1">
+
+
+
+    <div class="row mx-0 mb-2" style="background-color: #FFFFFF; border-radius: 8px; padding: 9px; box-shadow: 0px 0px 10px 0px #0000000D; ">
+        <div class="col-md-6 col-6">
+            <h5 class="emp-header-1">Employee Management</h5>
+        </div>
+        <div class="col-md-6 col-6 d-flex justify-content-end">
+            <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; font-size: 14px;">Employee Create</button>
+        </div>
+    </div>
+
+    <div class="employee-stats mb-2">
+        <div class="stat-item ">
+            <div class="p-2">
+                <h4 class="emp-list-header">
+                    20,000
+                </h4>
+                <div class="stat-text">
+                    <p>Total Employee</p>
+                    <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                </div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="p-2">
+                <h4 class="emp-list-header">2,500</h4>
+                <div class="stat-text">
+                    <p>Active Employee</p>
+                    <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                </div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="p-2">
+                <h4 class="emp-list-header">100</h4>
+                <div class="stat-text">
+                    <p>Release Employee</p>
+                    <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                </div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="p-2">
+                <h4 class="emp-list-header">50</h4>
+                <div class="stat-text">
+                    <p>New Joining</p>
+                    <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                </div>
+            </div>
+        </div>
+        <div class="stat-item">
+           <div class="p-2">
+                <h4 class="emp-list-header">03</h4>
+                <div class="stat-text">
+                    <p>On Process</p>
+                    <img alt="Profile" class="navbar-profile-image emp-list-img" src="~/User/img/circle-arrow-up-right-round.png">
+                </div>
+           </div>
+        </div>
+    </div>
+
+
+
+    <div style=" box-shadow: 0px 0px 10px 0px #0000000D; border-radius: 9px;">
+        <div class="row mx-0" style="background-color: #FFFFFF; border-radius: 8px 8px 0px 0px; padding: 9px;">
+            <div class="col-md-7 col-12 d-flex align-items-center gap-2">
+                <img alt="calander" src="~/User/img/calender.png" width="40px">
+                <h5 class="header-text-4 mb-0">Employee List</h5>
+                <div class="input-group " style="border-radius: 8px; border: 1px solid #D0D5DD; background: #FFF; box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); padding: 3px 5px;">
+                    <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search" style="background: transparent;">
+                    <span class="input-group-text bg-transparent border-0" style="display: flex; align-items: center;">
+                        <img alt="search" src="~/User/img/search.png" width="20" style="height: auto;">
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-2 col-6 d-flex justify-content-end align-items-end">
+                <button class="btn" style="background-color: #D3F6D2;  border-radius: 12px; margin-top: -3px;" type="button">Custom View</button>
+            </div>
+            <div class="col-md-3 col-6 d-flex justify-content-end align-items-end gap-2">
+                
+
+                <div class="pdf-upload-print-css">
+                    <img alt="calendar" src="~/User/img/pdf.png" width="30px">
+                </div>
+                <div class="pdf-upload-print-css">
+                    <img alt="calendar" src="~/User/img/upload-trans.png" width="30px">
+                </div>
+                <div class="pdf-upload-print-css">
+                    <img alt="calendar" src="~/User/img/printer (1).png" width="30px">
+                </div>
+            </div>
+
+        </div>
+        <div id="employee-table99" ></div>
+    </div>
+    
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var tableData = [
+            { id: 1, empCode: "GTRD-98", image: "/User/img/robin.png", name: "Robin Ahmad", designation: "Software Developer", department: "IT", employeeType: "Worker", email: "robin@example.com", joinDate: "05-Apr-2021", fingerId: "23054", line: "Line A", floor: "Floor 11" },
+            { id: 2, empCode: "GTRD-99", image: "/User/img/robin.png", name: "Colleen Smith", designation: "HR Manager", department: "Human Resources", employeeType: "Staff", email: "colleen@example.com", joinDate: "05-Apr-2021", fingerId: "23055", line: "Line B", floor: "Floor 9" },
+            { id: 3, empCode: "GTRD-100", image: "/User/img/robin.png", name: "Marjorie Johnson", designation: "Project Manager", department: "Operations", employeeType: "Officer", email: "marjorie@example.com", joinDate: "05-Apr-2021", fingerId: "23056", line: "Line A", floor: "Floor 11" },
+            { id: 4, empCode: "GTRD-101", image: "/User/img/robin.png", name: "Gladys Brown", designation: "Quality Assurance", department: "Production", employeeType: "Worker", email: "gladys@example.com", joinDate: "05-Apr-2021", fingerId: "23057", line: "Line A", floor: "Floor 11" },
+            { id: 5, empCode: "GTRD-102", image: "/User/img/robin.png", name: "Victoria Lee", designation: "Marketing Specialist", department: "Marketing", employeeType: "Worker", email: "victoria@example.com", joinDate: "05-Apr-2021", fingerId: "23058", line: "Line A", floor: "Floor 11" },
+            { id: 6, empCode: "GTRD-103", image: "/User/img/robin.png", name: "Michael Davis", designation: "Financial Analyst", department: "Finance", employeeType: "Staff", email: "michael@example.com", joinDate: "06-Apr-2021", fingerId: "23059", line: "Line C", floor: "Floor 10" },
+            { id: 7, empCode: "GTRD-104", image: "/User/img/robin.png", name: "Sarah Wilson", designation: "Customer Support", department: "Customer Service", employeeType: "Worker", email: "sarah@example.com", joinDate: "06-Apr-2021", fingerId: "23060", line: "Line B", floor: "Floor 9" },
+            { id: 8, empCode: "GTRD-105", image: "/User/img/robin.png", name: "David Thompson", designation: "Systems Administrator", department: "IT", employeeType: "Staff", email: "david@example.com", joinDate: "07-Apr-2021", fingerId: "23061", line: "Line A", floor: "Floor 11" },
+            { id: 9, empCode: "GTRD-106", image: "/User/img/robin.png", name: "Emily White", designation: "Graphic Designer", department: "Creative", employeeType: "Worker", email: "emily@example.com", joinDate: "07-Apr-2021", fingerId: "23062", line: "Line D", floor: "Floor 8" },
+            { id: 10, empCode: "GTRD-107", image: "/User/img/robin.png", name: "Daniel Clark", designation: "Sales Representative", department: "Sales", employeeType: "Worker", email: "daniel@example.com", joinDate: "08-Apr-2021", fingerId: "23063", line: "Line B", floor: "Floor 9" },
+            { id: 11, empCode: "GTRD-108", image: "/User/img/robin.png", name: "Olivia Martin", designation: "Content Writer", department: "Marketing", employeeType: "Worker", email: "olivia@example.com", joinDate: "08-Apr-2021", fingerId: "23064", line: "Line C", floor: "Floor 10" },
+            { id: 12, empCode: "GTRD-109", image: "/User/img/robin.png", name: "James Rodriguez", designation: "Product Manager", department: "Product", employeeType: "Officer", email: "james@example.com", joinDate: "09-Apr-2021", fingerId: "23065", line: "Line A", floor: "Floor 11" },
+            { id: 13, empCode: "GTRD-110", image: "/User/img/robin.png", name: "Sophia Taylor", designation: "UX Designer", department: "Creative", employeeType: "Worker", email: "sophia@example.com", joinDate: "09-Apr-2021", fingerId: "23066", line: "Line D", floor: "Floor 8" },
+            { id: 14, empCode: "GTRD-111", image: "/User/img/robin.png", name: "Liam Anderson", designation: "Data Analyst", department: "Analytics", employeeType: "Staff", email: "liam@example.com", joinDate: "10-Apr-2021", fingerId: "23067", line: "Line B", floor: "Floor 9" },
+            { id: 15, empCode: "GTRD-112", image: "/User/img/robin.png", name: "Ava Martinez", designation: "HR Coordinator", department: "Human Resources", employeeType: "Worker", email: "ava@example.com", joinDate: "10-Apr-2021", fingerId: "23068", line: "Line C", floor: "Floor 10" },
+        ];
+
+        var table = new Tabulator("#employee-table99", {
+            data: tableData,
+            layout: "fitColumns",
+            columns: [
+                { formatter: "rowSelection", titleFormatter: "rowSelection", hozAlign: "center", headerSort: false, width: 50, headerHozAlign: "center" },
+                {
+                    title: "Emp. Code", field: "empCode", headerHozAlign: "center", width: 135, formatter: function (cell, formatterParams) {
+                        return `<span class="emp-code-style">${cell.getValue()}</span>`;
+                    }
+                },
+                {
+                    title: "Employee", field: "name", headerHozAlign: "center", width: 210, formatter: function (cell, formatterParams, onRendered) {
+                        var row = cell.getRow().getData();
+                        return `<div style="display: flex; align-items: center; margin-top: 0px; padding-top: 0px; margin-bottom: 0px; padding-bottom: 0px;">
+                                <img src="${row.image}" class="employee-image" alt="${row.name}">
+                                <div class="employee-info" style="margin-left: 10px;">
+                                    <span class="employee-name">${row.name}</span>
+                                    <span class="employee-designation">${row.designation}</span>
+                                </div>
+                            </div>`;
+                    }
+                },
+                { title: "Department", field: "department", width: 150, headerHozAlign: "center" },
+                { title: "Employee Type", field: "employeeType", width: 170, headerHozAlign: "center" },
+                { title: "Email", field: "email", width: 200, headerHozAlign: "center" },
+                { title: "Join Date", field: "joinDate", width: 125, headerHozAlign: "center" },
+                { title: "Finger ID", field: "fingerId", width: 125, headerHozAlign: "center" },
+                { title: "Line", field: "line", width: 90, headerHozAlign: "center" },
+                { title: "Floor", field: "floor", width: 90, headerHozAlign: "center" },
+                {
+                    title: "Actions",
+                    formatter: function (cell, formatterParams, onRendered) {
+                        return `
+                             <i class="fa-solid fa-pen-to-square fs-5"  style="color: #414042;"></i>
+                                  <i class="fa-solid fa-trash ms-2 fs-5" style="color: #414042;"></i>
+                    `;
+                    },
+                    width: 110,
+                    hozAlign: "center",
+                    cellClick: function (e, cell) {
+                        const target = e.target;
+                        if (target.tagName === "IMG") {
+                            if (target.alt === "edit") {
+                                alert("Edit action for: " + cell.getRow().getData().name);
+                            } else if (target.alt === "delete") {
+                                alert("Delete action for: " + cell.getRow().getData().name);
+                            }
+                        }
+                    }
+                }
+            ],
+            pagination: "local",
+            paginationSize: 6,
+            paginationButtonCount: 4,
+            paginationSizeSelector: [10, 25, 50, 100],
+        });
+    });
+
+   
+
+   
+</script>
+

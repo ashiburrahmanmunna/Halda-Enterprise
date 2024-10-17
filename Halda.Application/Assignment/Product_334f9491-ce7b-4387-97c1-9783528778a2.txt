@@ -1,0 +1,3287 @@
+@model OKR.Application.DTO.ProjectTemplateDTO
+@using Newtonsoft.Json
+@{
+    // Get the project ID from ViewBag
+    var projectId = ViewBag.ProjectData?.Id;
+}
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<div class="d-flex flex-column bg-light p-3 rounded">
+    <div class="d-flex justify-content-between align-items-center">
+        <h3 class="m-0">@Model.Name</h3>
+        <div>
+
+                <!-- Attachment Button -->
+    <button type="button" class="btn btn-primary" id="attachment-button">
+        Attachment
+    </button>
+
+            <div class="dropdown">
+                <button class="btn btn-light ps-3 dropdown-toggle" type="button" id="PassignButton" aria-expanded="false">
+                    Project Assignees <i class="bi bi-person-fill-add"></i>
+                </button>
+                <fieldset id="PassigneeFieldset" style="display: none;">
+                    <div class="form-row form-input-flex">
+                        <div class="row" style="width: 100%;">
+                            <select id="Passignee" class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%"></select>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex flex-row flex-wrap">
+        <p id="total-est-time" class="m-0 p-2">Total Estimated Time: 0 minutes</p>
+        <p id="max-due-date" class="m-0 p-2">Max Due Date: N/A</p>
+        <p id="completed-tasks-count" class="m-0 p-2">Completed Tasks: 0</p>
+        <p id="delayed-tasks-count" class="m-0 p-2">Delayed Tasks: 0</p>
+        <p id="completed-tasks-no-delay-count" class="m-0 p-2">Completed Tasks (No Delay): 0</p>
+    </div>
+</div>
+
+<br />
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="fileUploadModal" tabindex="-1" aria-labelledby="fileUploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fileUploadModalLabel">Upload File</h5>
+                    <button type="button" class="close" data-bs-dismiss"modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form asp-controller="File" method="post" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="hidden" id="projectId" name="projectId" value="@projectId">
+                                <!-- Drag and Drop Area -->
+                                <div id="file-drop-area" class="border border-primary rounded p-3">
+                                    <h4>Drag & Drop Files Here</h4>
+                                    <p>or</p>
+                                    <input type="file" id="file-input" name="File" multiple required />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <!-- File List -->
+                                <h4>Uploaded Files</h4>
+                                <ul id="file-list" class="list-group"></ul>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <button type="submit" id="upload-button" @* onclick="attachmentUpload();" *@ class="btn btn-primary">Upload Files</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="upload-button">Upload Files</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.getElementById('attachment-button').addEventListener('click', function () {
+        $('#fileUploadModal').modal('show');
+    });
+
+    var fileDropArea = document.getElementById('file-drop-area');
+    fileDropArea.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        fileDropArea.classList.add('drag-over');
+    });
+    fileDropArea.addEventListener('dragleave', function () {
+        fileDropArea.classList.remove('drag-over');
+    });
+    fileDropArea.addEventListener('drop', function (e) {
+        e.preventDefault();
+        fileDropArea.classList.remove('drag-over');
+        var files = e.dataTransfer.files;
+        handleFiles(files);
+    });
+
+    var fileInput = document.getElementById('file-input');
+    fileInput.addEventListener('change', function () {
+        var files = fileInput.files;
+        handleFiles(files);
+    });
+
+    function handleFiles(files) {
+        var fileList = document.getElementById('file-list');
+        fileList.innerHTML = ''; // Clear the file list
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.textContent = file.name;
+            fileList.appendChild(listItem);
+        }
+    }
+
+    var uploadButton = document.getElementById('upload-button');
+    uploadButton.addEventListener('click', attachmentUpload);
+
+    function attachmentUpload() {
+        var files = fileInput.files;
+        if (files.length > 0) {
+            var formData = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+
+            // Log the FormData contents
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1].name); // pair[1] is the File object, use .name to log the file name
+            }
+
+            $.ajax({
+                url: 'https://localhost:7008/api/v1/Files/Upload',
+                method: 'POST',
+                data: formData,
+                success: function(response) {
+                    console.log('Uploaded', response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error uploading', error);
+                }
+            });
+        }
+    }
+</script>
+
+
+
+
+
+
+<br />
+
+    <div class="container">
+        <div id="example-table-container" class="table-responsive">
+            <div id="example-table" class="table"></div>
+        </div>
+        <div class="tabulator-pagination-container">
+            <ul class="tabulator-pagination"></ul>
+        </div>
+    </div>
+
+
+    <br />
+<!-- ***************ADD MILESTONE MODAL and button***********-->
+
+<div class="button-and-modal-for-add-milestone">
+    <!-- Button to trigger the offcanvas -->
+    <button id="addMilestoneBtn" class="btn btn-primary bg-white text-black border" data-bs-toggle="offcanvas" data-bs-target="#milestoneOffcanvas">
+        <i class="fas fa-plus"></i> Add Milestone
+    </button>
+
+    <!-- Offcanvas sidebar -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="milestoneOffcanvas" aria-labelledby="milestoneOffcanvasLabel" style="width: 903px; margin-top:30px;">
+        <div class="offcanvas-header bg-light">
+            <h5 class="offcanvas-title" id="milestoneOffcanvasLabel">Add Milestone</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <!-- Your content for adding a milestone goes here -->
+
+            <div class="row mt-3">
+                <div class="col-lg-9 pr-4">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="milestoneName" placeholder="Enter milestone name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="milestoneDescription" class="form-label">Milestone Description</label>
+                        <textarea class="form-control" id="milestoneDescription" rows="3" placeholder="Enter milestone description"></textarea>
+                    </div>
+
+                    <!-- Task Section -->
+                    <div class="task-section">
+                        <!-- Button to add a new task -->
+                        <!-- Task Cards -->
+                        <div class="col-lg-12" id="taskCards">
+                            <!-- Task Cards will be dynamically added here -->
+                        </div>
+                    </div>
+                    <!-- End Task Section -->
+                    <!-- Create and Cancel buttons -->
+                    <div class="row mt-3">
+                        <div class="col-lg-6">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
+                        </div>
+                        <div class="col-lg-6 text-end">
+                            <button type="button" class="btn btn-primary" onclick="createTemplate();" >Create</button>
+
+                        </div>
+                    </div>
+                    <!-- End Create and Cancel buttons -->
+                </div>
+
+                <div class="col-lg-3">
+    <div class="ms-4">
+        <div class="mb-3">
+            <div class="dropdown">
+                <button class="btn btn-light ps-3 dropdown-toggle" type="button" id="MaddassignButton" aria-expanded="false">
+                    Assignees <i class="bi bi-person-fill-add"></i>
+                </button>
+                <fieldset id="MaddassigneeFieldset" style="display: none;">
+                    <div class="form-row form-input-flex">
+                        <div class="row" style="width: 100%;">
+                            <select id="Maddassignee" class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%"></select>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <button type="button" class="btn btn-primary bg-white text-black border w-100" onclick="addTaskCard()">
+                <i class="bi bi-check2-square "></i>
+                Add Task
+            </button>
+        </div>
+
+        <div class="mb-3">
+            <label for="attachmentInput" class="btn btn-primary bg-white text-black border w-100">
+                <i class="bi bi-paperclip"></i> Attachment
+                <input type="file" id="attachmentInput" class="d-none" multiple="">
+            </label>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="userlist" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">@Model.Name</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">               
+                <div class="row my-3">
+                    <fieldset>
+                        <label for="Users">Assign Project <i class="fa-solid fa-users"></i></label>
+
+                        <select id="userProjectAssign" class="form-control" 
+                                multiple multiselect-search="true"
+                                multiselect-select-all="true"
+                                multiselect-max-items="3"
+                                onchange="console.log(this.selectedOptions)"
+                                style="width: 100%;" required>
+                            @foreach (var person in ViewBag.Peoples)
+                            {
+                                <option value="@person.Id">@person.UserName</option>
+                            }
+                        </select>
+                    </fieldset>
+                    
+                      
+                  
+                    
+                </div>
+
+                <button type="submit" class="button-41 mt-3" onclick="assignProjectAction()">Assign</button>
+                 <ul id="assigneesList">
+                             <!-- Assignees will be displayed here dynamically -->
+                   </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                 
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="userlistTemplate" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">@Model.Name</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">               
+                <div class="row my-3">
+                    <fieldset>
+                        <label for="Users">Assign Milestone <i class="fa-solid fa-users"></i></label>
+
+                        <select id="userMilestoneAssign" class="form-control" 
+                                multiple multiselect-search="true"
+                                multiselect-select-all="true"
+                                multiselect-max-items="3"
+                                onchange="console.log(this.selectedOptions)"
+                                style="width: 100%;" required>
+                            @foreach (var person in ViewBag.Peoples)
+                            {
+                                <option value="@person.Id">@person.UserName</option>
+                            }
+                        </select>
+                    </fieldset>
+                    
+                      
+                  
+                    
+                </div>
+
+                <button type="submit" class="button-41 mt-3" onclick="assignMilestoneAction()">Assign</button>
+                 <ul id="assigneesMilestoneList">
+                             <!-- Assignees will be displayed here dynamically -->
+                   </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="userlistTask" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">@Model.Name</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">               
+                <div class="row my-3">
+                    <fieldset>
+                        <label for="Users">Assign Task <i class="fa-solid fa-users"></i></label>
+
+                        <select id="userTaskAssign" class="form-control" 
+                                multiple multiselect-search="true"
+                                multiselect-select-all="true"
+                                multiselect-max-items="3"
+                                onchange="console.log(this.selectedOptions)"
+                                style="width: 100%;" required>
+                            @foreach (var person in ViewBag.Peoples)
+                            {
+                                <option value="@person.Id">@person.UserName</option>
+                            }
+                        </select>
+                    </fieldset>
+                </div>
+
+                <button type="submit" class="button-41 mt-3" onclick="assignTaskAction()">Assign</button>
+                <ul id="assigneesTaskList">
+                    <!-- Assignees will be displayed here dynamically -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Task Userlist-->
+
+<div class="modal fade" id="edituserlisttask" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalToggleLabel">@Model.Name</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">               
+                <div class="row my-3">
+                    <fieldset>
+                        <label for="Users">Assign Task <i class="fa-solid fa-users"></i></label>
+
+                        <select id="editusertaskAssign" class="form-control" 
+                                multiple multiselect-search="true"
+                                multiselect-select-all="true"
+                                multiselect-max-items="3"
+                                onchange="console.log(this.selectedOptions)"
+                                style="width: 100%;" required>
+                            @foreach (var person in ViewBag.Peoples)
+                            {
+                                <option value="@person.Id">@person.UserName</option>
+                            }
+                        </select>
+                    </fieldset>
+                </div>
+
+                <button type="submit" class="button-41 mt-3" onclick="editassigntaskAction()">Assign</button>
+                <ul id="assigneesTaskList">
+                    <!-- Assignees will be displayed here dynamically -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Milestoene Edit -->
+
+
+<!-- HTML for offcanvas -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="editmilestoneOffcanvas" aria-labelledby="offcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasLabel">Edit Milestone</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form method="post">
+      <div class="mb-3" style="display: none;">
+        <label>Id</label>
+        <input type="text" class="form-control" id="MId" disabled="disabled" />
+      </div>
+      <div class="mb-3">
+        <label>Milestone Name</label>
+        <input type="text" placeholder="Milestone Name" class="form-control" id="editmilestoneName" autocomplete="off">
+      </div>
+
+
+
+                    <div>
+                        <div class="dropdown">
+                            <button class="btn btn-light ps-3 dropdown-toggle" type="button" id="MassignButton" aria-expanded="false">
+                                Assignees <i class="bi bi-person-fill-add"></i>
+                            </button>
+                            <fieldset id="MassigneeFieldset" style="display: none;">
+                                <div class="form-row form-input-flex">
+                                    <div class="row" style="width: 100%;">
+                                        <select id="Massignee" class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%" ></select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+
+
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" id="editmilestoneDescription"></textarea>
+      </div>
+      <button class="btn-warning" onclick="UpdateMilestone();">Update</button>
+    </form>
+  </div>
+</div>
+
+
+<!-- Task Create -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="addtaskOffcanvas" aria-labelledby="offcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasLabel">Add Task</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+ <form id="addTaskForm" method="post">
+
+      <!-- Removed the hidden div to avoid layout issues -->
+      <div class="mb-3">
+        <label>Task Name</label>
+        <input type="text" placeholder="Task Name" class="form-control" id="addtaskName" autocomplete="off">
+      </div>
+      
+      <div>
+        <div class="dropdown">
+          <button class="btn btn-light ps-3 dropdown-toggle" type="button" id="TaddassignButton" aria-expanded="false">
+            Assignees <i class="bi bi-person-fill-add"></i>
+          </button>
+          <fieldset id="TaddassigneeFieldset" style="display: none;">
+            <div class="form-row form-input-flex">
+              <div class="row" style="width: 100%;">
+                <select id="Taddassignee" class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%"></select>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" id="addtaskDescription"></textarea>
+      </div>
+      <button class="btn btn-primary" >Add</button>
+    </form>
+  </div>
+</div>
+
+
+<!-- Subtask Create -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="addsubtaskOffcanvas" aria-labelledby="offcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasLabel">Add Subtask</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form id="addsubTaskForm" method="post">
+      <div class="mb-3">
+        <label for="addtaskName" class="form-label">Subtask Name</label>
+        <input type="text" placeholder="Subtask Name" class="form-control" id="addsubtaskName" autocomplete="off" required>
+      </div>
+
+            <div>
+        <div class="dropdown">
+          <button class="btn btn-light ps-3 dropdown-toggle" type="button" id="SaddassignButton" aria-expanded="false">
+            Assignees <i class="bi bi-person-fill-add"></i>
+          </button>
+          <fieldset id="SaddassigneeFieldset" style="display: none;">
+            <div class="form-row form-input-flex">
+              <div class="row" style="width: 100%;">
+                <select id="Saddassignee" class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%"></select>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+
+
+
+      <div class="mb-3">
+        <label for="addtaskDescription" class="form-label">Description</label>
+        <textarea class="form-control" id="addsubtaskDescription" placeholder="Subtask Description" required></textarea>
+      </div>
+
+      <div class="mb-3">
+        <label for="addtaskDueDate" class="form-label">Due Date</label>
+        <input type="date" class="form-control" id="addsubtaskDueDate" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="addtaskEstimatedTime" class="form-label">Estimated Time (Minutes)</label>
+        <input type="number" step="0.01" class="form-control" id="addsubtaskEstimatedTime" placeholder="Estimated Time in Minutes" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+
+<!-- Task Edit -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="edittaskOffcanvas" aria-labelledby="offcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasLabel">Edit Task</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form method="post">
+      <div class="mb-3" style="display: none;">
+        <label>Id</label>
+        <input type="text" class="form-control" id="TId" disabled="disabled" />
+      </div>
+      <div class="mb-3">
+        <label>Task Name</label>
+        <input type="text" placeholder="Task Name" class="form-control" id="edittaskName" autocomplete="off">
+      </div>
+
+
+
+                    <div>
+                        <div class="dropdown">
+                            <button class="btn btn-light ps-3 dropdown-toggle" type="button" id="TassignButton" aria-expanded="false">
+                                Assignees <i class="bi bi-person-fill-add"></i>
+                            </button>
+                            <fieldset id="TassigneeFieldset" style="display: none;">
+                                <div class="form-row form-input-flex">
+                                    <div class="row" style="width: 100%;">
+                                        <select id="Tassignee" class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%" ></select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+
+
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" id="edittaskDescription"></textarea>
+      </div>
+      <button class="btn-warning" onclick="UpdateTask();">Update</button>
+    </form>
+  </div>
+</div>
+
+
+
+<!-- SubTask Edit -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="editsubtaskOffcanvas" aria-labelledby="offcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasLabel">Edit Subtask</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <form method="post">
+      <div class="mb-3" style="display: none;">
+        <label>Id</label>
+        <input type="text" class="form-control" id="SId" disabled="disabled" />
+      </div>
+      <div class="mb-3">
+        <label>Subtask Name</label>
+        <input type="text" placeholder="Task Name" class="form-control" id="editsubtaskName" autocomplete="off">
+      </div>
+
+                    <div>
+                        <div class="dropdown">
+                            <button class="btn btn-light ps-3 dropdown-toggle" type="button" id="STassignButton" aria-expanded="false">
+                                Assignees <i class="bi bi-person-fill-add"></i>
+                            </button>
+                            <fieldset id="STassigneeFieldset" style="display: none;">
+                                <div class="form-row form-input-flex">
+                                    <div class="row" style="width: 100%;">
+                                        <select id="STassignee" class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%" ></select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" id="editsubtaskDescription"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Due Date</label>
+        <input type="date" class="form-control" id="editsubtaskDueDate" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Estimated Time (Minutes)</label>
+        <input type="number" step="0.01" class="form-control" id="editsubtaskEstimatedTime" placeholder="Estimated Time in Minutes" required>
+      </div>
+      <button type="button" class="btn btn-warning" onclick="UpdateSubtask();">Update</button>
+    </form>
+  </div>
+</div>
+
+
+
+<!--AssigneeList Modal -->
+<div class="modal fade" id="assigneeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Assignee List</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+@section scripts {
+
+
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabulator Table</title>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <style>
+                .highlight-row {
+            background-color: yellow !important;
+        }
+
+                .progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+            height: 20px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+            border-radius: 5px 0 0 5px;
+        }
+        /* Offcanvas styles */
+.offcanvas {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: -100%; /* Initially hidden off the screen */
+  width: 300px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+}
+
+.offcanvas.open {
+  right: 0; /* Slide in when open */
+}
+
+.offcanvas-content {
+  height: 100%;
+  padding: 20px;
+}
+
+.offcanvas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.offcanvas-header h2 {
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+        .offcanvas {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: -100%; /* Initially hidden off the screen */
+  width: 300px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+}
+
+.offcanvas.open {
+  right: 0; /* Slide in when open */
+}
+
+.offcanvas-content {
+  height: 100%;
+  padding: 20px;
+}
+
+.offcanvas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.offcanvas-header h2 {
+  margin: 0;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+
+            .template-timeline {
+        display: none;
+    }
+            .timeline {
+        position: relative;
+        padding: 0 0 40px;
+        margin-top: 20px;
+    }
+
+    .timeline-content {
+        position: relative;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+    }
+
+    @*.timeline:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        height: 100%;
+        border: 2px solid #ddd;
+        transform: translateX(-50%);
+    }*@
+
+
+
+    .timeline-item {
+        position: relative;
+        padding: 20px 0;
+        clear: both;
+    }
+
+    .timeline-content {
+        position: relative;
+        padding: 10px;
+        background-color: #f5f5f5;
+        border-radius: 5px;
+    }
+
+    .timeline h5 {
+        margin-top: 0;
+    }
+
+            .template-arrow {
+        transition: transform 0.3s ease;
+    }
+
+    .rotate {
+        transform: rotate(90deg);
+    }
+
+              .expandable-item {
+    cursor: pointer;
+    background-color: #f5f5f5;
+    transition: background-color 0.3s ease;
+  }
+
+  .expandable-child {
+    display: none;
+    background-color: #f9f9f9;
+    transition: display 0.3s ease;
+  }
+
+    .table .thead-light th {
+        border: none !important; /* Remove the table header borders */
+    }
+
+    .table-bordered td {
+        border: none !important; /* Remove the table data cell borders */
+    }
+
+
+
+        /* Remove column lines */
+.tabulator-row .tabulator-cell {
+    border: none;
+}
+
+/* Reduce font size */
+.tabulator-cell {
+    font-size: 5px; /* Adjust the font size as needed */
+}
+
+        .container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .tabulator-table thead {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+        }
+
+        .tabulator-tableHolder {
+            max-height: 100px;
+            /* Adjusted to fit within the container */
+            overflow-y: auto;
+            /* Enable vertical scrolling */
+        }
+
+        .tabulator-row {
+            border-bottom: 1px solid #dee2e6;
+            /* Add a border between rows */
+            transition: background-color 0.3s ease;
+            /* Add a smooth transition effect */
+        }
+
+        .tabulator-row:hover {
+            background-color: #f8f9fa;
+            /* Change background color on hover */
+        }
+
+        .tabulator-row .tabulator-cell {
+            padding: 10px;
+            /* Add padding to cells */
+            overflow: hidden;
+            /* Hide overflow content */
+            text-overflow: ellipsis;
+            /* Add ellipsis for overflow text */
+            white-space: nowrap;
+            /* Prevent wrapping text */
+        }
+
+        .tabulator-row .tabulator-cell:last-child {
+            padding-right: 20px;
+            /* Add extra padding to the last cell */
+        }
+
+        .tabulator-row .tabulator-cell i {
+            margin-right: 5px;
+            /* Add margin to icons */
+        }
+
+        .tabulator-header {
+            position: sticky;
+            top: 0;
+            background-color: #000000;
+            /* Set background color for header */
+            z-index: 100;
+            /* Ensure the header stays above other content */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow for depth */
+        }
+
+        .tabulator-header .tabulator-col {
+            padding: 10px;
+            /* Add padding to column headers */
+        }
+
+        .tabulator-header .tabulator-col i {
+            margin-right: 5px;
+            /* Add margin to icons */
+        }
+
+        .tabulator-tableHolder {
+            overflow-y: auto;
+            /* Enable vertical scrolling for table body */
+            max-height: 700px;
+            /* Set maximum height for table body */
+        }
+
+        .tabulator-cell {
+            font-size: 17px;
+            font-weight: bold;
+            /* Adjust the font size as needed */
+        }
+
+        .tabulator-row-even,
+        .tabulator-row-odd {
+            background-color: transparent !important;
+            /* Set background color to transparent */
+        }
+
+        .tabulator-col-title {
+            font-size: 16px;
+        }
+
+        .tabulator-arrow {
+            display: none !important;
+            /* Hide the arrow icon */
+        }
+
+        .tabulator-pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .tabulator-pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+        }
+
+        .tabulator-page {
+            padding: 8px 20px;
+            border-radius: 20px;
+            background-color: aqua;
+            font-size: 15px;
+            color: black;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .tabulator-page.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .tabulator-page.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+
+
+
+
+        /* custom css for lock */
+
+        .tabulator .tabulator-header {}
+
+        .tabulator .tabulator-footer .tabulator-page {
+            
+           font-weight: bold;
+            padding: 2px 10px;
+            border: 1px solid #1b0505;
+            border-radius: 15px;
+            background: hsla(0, 53%, 7%, 0.2);
+        }
+.icon {
+    display: inline-block;
+    width: 30px; /* Adjust size as needed */
+    height: 30px; /* Adjust size as needed */
+    border-radius: 50%;
+    background-color: #6c757d; /* Adjust color as needed */
+    text-align: center;
+    line-height: 30px; /* Should match height for vertical centering */
+    font-size: 20px; /* Adjust size as needed */
+    color: white; /* Adjust color as needed */
+}
+
+
+
+    .tag {
+    display: inline-block;
+    padding: 0.25em 0.5em;
+    border-radius: 0.25rem;
+    background-color: #007bff; /* Primary color, change as needed */
+    color: white;
+    font-size: 0.875rem;
+    margin-right: 0.5em; /* Adjust spacing between tags */
+  }
+
+  .tabulator-row {
+    padding: 50px; /* Adjust padding to reduce row size */
+}
+
+.tabulator-row .tabulator-cell {
+    font-size: 15px; /* Adjust font size to reduce cell size */
+}
+
+
+
+
+
+    </style>
+
+    </head>
+
+     
+        <script>    
+
+
+            var projectId = "";
+             var taskIdCounter = 0;
+            var subtaskIdCounter = 0;
+            var objData = {};
+            var taskAssignees = {};
+            var selectedUserIds = [];
+            var selectedMaddAssigneeId = [];
+            
+$(document).ready(function () {
+
+
+   
+
+
+      const url = window.location.href;
+
+        // Regular expression pattern to match a GUID
+        const guidPattern = /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/;
+
+        // Extract the GUID from the URL
+        const idMatch = url.match(guidPattern);
+
+        // If a match is found, extract the first match which should be the GUID
+         projectId = idMatch ? idMatch[0] : null;
+
+    populatePAssignees();
+    $(document).on('click', '[id^="TaskaddassignButton_"]', function () {
+        var taskId = $(this).attr('id').split('_')[1];
+        $(`#TaskaddassigneeFieldset_${taskId}`).toggle();
+    });
+
+    // Initialize select2 for the dynamically created select elements
+    function initializeSelect2(taskId) {
+        $(`#Taskaddassignee_${taskId}`).select2();
+    }
+
+    // Call the initialize function on the existing select elements if there are any
+    $('[id^="Taskaddassignee_"]').each(function() {
+        var taskId = $(this).attr('id').split('_')[1];
+        initializeSelect2(taskId);
+    });
+
+        $(document).on('click', '[id^="SubtaskaddassignButton_"]', function () {
+        var subtaskId = $(this).attr('id').split('_')[1];
+        $(`#SubtaskaddassigneeFieldset_${subtaskId}`).toggle();
+    });
+
+    // Initialize select2 for the dynamically created select elements
+    function initializeSelect2(taskId) {
+        $(`#Subtaskaddassignee_${subtaskId}`).select2();
+    }
+
+    // Call the initialize function on the existing select elements if there are any
+    $('[id^="Subtaskaddassignee_"]').each(function() {
+        var subtaskId = $(this).attr('id').split('_')[1];
+        initializeSelect2(subtaskId);
+    });
+
+
+
+    $('#MassignButton').on('click', function () {
+        $('#MassigneeFieldset').toggle();
+    });
+    $('#Massignee').select2();
+
+    $('#TassignButton').on('click', function () {
+        $('#TassigneeFieldset').toggle();
+    });
+    $('#Tassignee').select2();
+
+        $('#STassignButton').on('click', function () {
+        $('#STassigneeFieldset').toggle();
+    });
+    $('#STassignee').select2();
+
+
+    $('#MaddassignButton').on('click', function () {
+        $('#MaddassigneeFieldset').toggle();
+    });
+    $('#Maddassignee').select2();
+
+    $('#PassignButton').on('click', function () {
+        $('#PassigneeFieldset').toggle();
+    });
+    $('#Passignee').select2();
+
+    $('#Passignee').on('change', function() {
+        var selectedAssigneeId = $(this).val();
+        // Call the function to save the selected assignee
+        PsaveAssignee(selectedAssigneeId);
+    });
+
+    $('#TaddassignButton').on('click', function () {
+        $('#TaddassigneeFieldset').toggle();
+    });
+    $('#Taddassignee').select2();
+
+    $('#Taddassignee').on('change', function() {
+        var selectedtaskAssigneeId = $(this).val();
+        // Call the function to save the selected assignee
+        // TsaveAssignee(selectedtaskAssigneeId);
+    });
+
+        $('#SaddassignButton').on('click', function () {
+        $('#SaddassigneeFieldset').toggle();
+    });
+    $('#Saddassignee').select2();
+
+    $('#Saddassignee').on('change', function() {
+        var selectedsubtaskAssigneeId = $(this).val();
+        // Call the function to save the selected assignee
+
+    });
+
+
+
+});
+
+
+
+
+
+
+function PsaveAssignee(assigneeId) {
+
+        const url = window.location.href;
+
+    // Regular expression pattern to match a GUID
+    const guidPattern = /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/;
+
+    // Extract the GUID from the URL
+    const idMatch = url.match(guidPattern);
+
+    // If a match is found, extract the first match which should be the GUID
+    const projectId = idMatch ? idMatch[0] : null;
+
+    $.ajax({
+        url: 'https://localhost:7008/api/v1/Project/EditAssignees',
+        method: 'PUT',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify({ 
+            projectId: projectId,
+            userId: assigneeId 
+        }),
+        
+        success: function(response) {
+            console.log('Assignee saved successfully:', response);
+            populateMaddAssignees();
+            populateTaskaddAssignees();
+
+        },
+        error: function(xhr, status, error) {
+            console.error('Error saving assignee: ', error);
+        }
+    });
+}
+
+function populatePAssignees() {
+    const url = window.location.href;
+
+    // Regular expression pattern to match a GUID
+    const guidPattern = /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/;
+
+    // Extract the GUID from the URL
+    const idMatch = url.match(guidPattern);
+
+    // If a match is found, extract the first match which should be the GUID
+    const projectId = idMatch ? idMatch[0] : null;
+    $.ajax({
+        url: 'https://localhost:7008/api/v1/People/GetAssignees/' + projectId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            console.log(response);
+            var savedAssignee = response.map(function(user) {
+                return user.id;
+            });
+            console.log(savedAssignee);
+            var companyId = getCookie('ComId');
+
+            $.ajax({
+                url: 'https://localhost:7008/api/v1/People/GetPeoples/' + companyId,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var assigneesSelect = $('#Passignee');
+
+                    // Clear existing options before appending new ones
+                    assigneesSelect.empty();
+                    console.log(data, savedAssignee);
+                    data.forEach(function (person) {
+                        var option = new Option(person.userName, person.id);
+                        if (savedAssignee && savedAssignee.includes(person.id)) {
+                            $(option).prop('selected', true); // Preselect the option if it matches savedAssignee
+                        }
+                        assigneesSelect.append(option);
+                    });
+
+                    // Trigger Select2 update to reflect changes
+                    assigneesSelect.trigger('change');
+
+                    // Initialize Select2
+                    assigneesSelect.select2();
+
+                    
+                },
+                error: function () {
+                    alert("Failed to fetch assignees");
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching assignees: ', error);
+        }
+    });
+}
+
+function populateMaddAssignees() {
+    const url = window.location.href;
+
+    // Regular expression pattern to match a GUID
+    const guidPattern = /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/;
+
+    // Extract the GUID from the URL
+    const idMatch = url.match(guidPattern);
+
+    // If a match is found, extract the first match which should be the GUID
+    const projectId = idMatch ? idMatch[0] : null;
+
+    $.ajax({
+        url: 'https://localhost:7008/api/v1/People/GetAssignees/' + projectId,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var assigneesSelect = $('#Maddassignee');
+
+            // Clear existing options before appending new ones
+            assigneesSelect.empty();
+
+            data.forEach(function (person) {
+                var option = new Option(person.userName, person.id);
+                assigneesSelect.append(option);
+            });
+
+            // Trigger Select2 update to reflect changes
+            assigneesSelect.trigger('change');
+
+                $('#Maddassignee').on('change', function() {
+    var selectedIds = $(this).val(); // Get selected IDs
+    selectedMaddAssigneeId = [];
+
+    selectedIds.forEach(function(id) {
+        var person = data.find(function(item) {
+            return item.id === id;
+        });
+        if (person) {
+            selectedMaddAssigneeId.push({
+                id: person.id,
+                userName: person.userName
+            });
+        }
+    });
+});
+
+
+        },
+        error: function () {
+            alert("Failed to fetch assignees");
+        }
+    });
+}
+
+
+function populateTaskaddAssignees(taskId) {
+
+                     var assigneesSelect = $(`#Taskaddassignee_${taskId}`);
+// Clear existing options before appending new ones
+assigneesSelect.empty();
+
+selectedMaddAssigneeId.forEach(function (person) {
+    var option = new Option(person.userName, person.id);
+    assigneesSelect.append(option);
+});
+
+
+
+
+}
+
+
+// Function to populate subtask assignees with the same data as the parent task
+function populateSubtaskAssignees(taskId, subtaskId) {
+    var parentAssignees = $(`#Taskaddassignee_${taskId}`).select2('data');
+
+    var subtaskAssigneesSelect = $(`#Subtaskaddassignee_${subtaskId}`);
+    subtaskAssigneesSelect.empty();
+
+    parentAssignees.forEach(function (person) {
+        var option = new Option(person.text, person.id);
+        subtaskAssigneesSelect.append(option);
+    });
+
+    subtaskAssigneesSelect.trigger('change');
+}
+
+
+
+                    function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+            $("#assigneesButton").on("click", function () {
+                const projectId = $("#ProjectId").val()
+                const url = `@Url.Action("GetAssignees", "People")?ProjectId=${projectId}`;
+                console.log(url);
+                // Make an AJAX request to fetch the assignees for the project
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function (response) {
+                        // On success, populate the modal with the retrieved assignees
+                        displayAssigneesInModal(response);
+                    },
+                    error: function (error) {
+                        console.error("Error fetching assignees:", error);
+                    }
+                });
+            });
+
+
+            function displayAssigneesInModal(assigneesData) {
+    const assigneesList = $("#assigneesList");
+    // Clear the existing assignees list
+    assigneesList.empty();
+
+    // Append the assignees data to the modal
+    $.each(assigneesData, function (index, assignee) {
+        // Create the list item for each assignee
+        const li = $("<li>").text(assignee.userName); 
+
+        // Create the disassociate button and add click event
+        const disassociateButton = $("<a>")
+            .attr({
+                "href": "#",
+                "data-action": "disassociate", // Use custom data attribute
+                "data-controller": "Assign",
+                "data-userId": assignee.id // Assign the UserId data attribute dynamically
+            })
+            .html('<i class="fa-solid fa-xmark"></i>');
+
+        disassociateButton.on("click", function () {
+            var userId = $(this).data("userid"); // Retrieve userId from data attribute
+            console.log(userId);
+            disassociateUserFromProject(userId); // Call the function to disassociate the user
+        });
+
+        li.append(disassociateButton);
+        assigneesList.append(li);
+    });
+
+    // Show the modal with the correct ID
+    $("#userlist").modal("show");
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+var table; // Declare table globally
+
+$(document).ready(function () {
+
+    getTabData();
+
+    });
+
+
+function getTabData() {
+    const url = window.location.href;
+
+    // Regular expression pattern to match a GUID
+    const guidPattern = /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/;
+
+    // Extract the GUID from the URL
+    const idMatch = url.match(guidPattern);
+
+    // If a match is found, extract the first match which should be the GUID
+    const projectId = idMatch ? idMatch[0] : null;
+
+    if (projectId) {
+        // Make AJAX request to the API endpoint with the dynamic ID
+        fetch('https://localhost:7008/api/v1/Project/GetIncludeT/' + projectId)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const totalEstTimeMinutes = data.reduce((sum, item) => sum + (item.estTime1 || 0), 0);
+
+                // Find the maximum due date
+                const maxDueDate = data.reduce((maxDate, item) => {
+                    const itemDate = new Date(item.dueDate);
+                    return item.dueDate && itemDate > maxDate ? itemDate : maxDate;
+                }, new Date(0)); // Initialize with a very old date
+
+                // Format the max due date
+                const maxDueDateString = maxDueDate > new Date(0) ? maxDueDate.toDateString() : "No due dates available";
+
+                // Count completed and delayed tasks, and completed tasks that weren't delayed
+                let completedTasksCount = 0;
+                let delayedTasksCount = 0;
+                let completedTasksNoDelayCount = 0;
+
+                function countTasks(tasks) {
+                    tasks.forEach(item => {
+                        if (item.type === 'Task') {
+                            if (item.status === 2) {
+                                completedTasksCount++;
+                                if (!item.delay) {
+                                    completedTasksNoDelayCount++;
+                                }
+                            }
+                            if (item.delay) {
+                                delayedTasksCount++;
+                            }
+                        }
+                        if (item._children && item._children.length > 0) {
+                            countTasks(item._children);
+                        }
+                    });
+                }
+
+                countTasks(data);
+
+                // Update the div with the total estimated time, max due date, completed tasks count, delayed tasks count, and completed tasks with no delay count
+                document.getElementById('total-est-time').textContent = `Total Estimated Time: ${totalEstTimeMinutes} Minutes`;
+                document.getElementById('max-due-date').textContent = `Due Date: ${maxDueDateString}`;
+                document.getElementById('completed-tasks-count').textContent = `Completed Tasks: ${completedTasksCount}`;
+                document.getElementById('delayed-tasks-count').textContent = `Delayed Tasks: ${delayedTasksCount}`;
+                document.getElementById('completed-tasks-no-delay-count').textContent = `Completed Tasks (No Delay): ${completedTasksNoDelayCount}`;
+
+                if (!table) {
+                    // Initialize Tabulator table if it hasn't been initialized yet
+                    table = new Tabulator("#example-table", {
+                        data: data,
+                        dataTree: true,
+                        dataTreeStartExpanded: true,
+                        layout: "fitColumns",
+                        columns: [
+                            { title: "Milestones", field: "name", responsive: 0 },
+                            { title: "Assignee", field: "assignee", formatter: assigneeFormatter },
+                            { title: "Due Date", field: "dueDate" },
+                            { title: "Est. Time", field: "estTime1" },
+                            { title: "Est. Date", field: "estDate" },
+                            { 
+                                title: "Delay", 
+                                field: "delay", 
+                                formatter: function(cell, formatterParams, onRendered) {
+                                    // Check if the delay is not empty
+                                    if (cell.getValue()) {
+                                        // Apply yellow background color to the cell
+                                        cell.getElement().style.backgroundColor = "#ffff99";
+                                    }
+                                    // Return the cell value as the formatted content
+                                    return cell.getValue();
+                                }
+                            },
+                      //      { title: "Tags", field: "tags", formatter: tagFormatter },
+                            { title: "Progress", field: "progress", formatter: progressBarFormatter },
+                            {
+                                title: "<i class='fas fa-plus-minus'></i>", // Change toggle icon here
+                                formatter: function (cell, formatterParams, onRendered) {
+
+                                    var rowData = cell.getRow().getData();
+                                    console.log(rowData);
+                                    var editIcon = `<i class="fas fa-edit edit-icon" onclick="getData('${rowData.id}', '${rowData.type}')"></i>`;
+
+                                    var deleteIcon = `<i class="fas fa-trash-alt" onclick="Delete('${rowData.id}', '${rowData.type}')"></i>`;
+                                    var moreIcon = `<i class="fas fa-ellipsis-v" onclick="AddNew('${rowData.id}', '${rowData.templateId}', '${rowData.type}')"></i>`;
+
+                                    return editIcon + " " + deleteIcon + " " + moreIcon;
+                                },
+                                headerSort: false,
+                                width: 100,
+                                hozAlign: "center"
+                            }
+                        ],
+
+                        virtualDom: true, // Enable virtual DOM
+                        virtualDomBuffer: 10, // Number of rows to render at a time
+                        pagination: "local",
+                        paginationSize: 10, // Number of rows per page
+                        paginationSizeSelector: [10, 20, 30], // Selectable rows per page
+                    });
+                } else {
+                    table.setData(data); // Update the table data if it's already initialized
+                }
+            });
+    }
+}
+
+
+
+
+
+
+
+
+   
+
+        function progressBarFormatter(cell, formatterParams, onRendered) {
+            let rowData = cell.getRow().getData();
+            let value = rowData.progress;
+            
+            // Check if type is subtask and status is completed
+            if (rowData.type === "Subtask" && rowData.status === 2 ) {
+                value = 100;
+            }
+            
+            let progress = Math.min(100, Math.max(0, value)); // Ensure value is between 0 and 100
+            return `<div class="progress-bar">
+                        <div class="progress-bar-fill" style="width: ${progress}%; background-color: ${progress >= 100 ? 'green' : 'blue'};">
+                            ${progress}%
+                        </div>
+                    </div>`;
+        }
+
+function AddNew(id, templateId, type) {
+  const url = window.location.href;
+  
+  // Regular expression pattern to match a GUID
+  const guidPattern = /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/;
+  
+  // Extract the GUID from the URL
+  const idMatch = url.match(guidPattern);
+  
+  // If a match is found, extract the first match which should be the GUID
+  const projectId = idMatch ? idMatch[0] : null;
+  
+  const companyId = getCookie('ComId');
+  
+  const showOffcanvasAndFetchAssignees = (type, apiUrl, selectId) => {
+    $.ajax({
+      url: apiUrl + id,
+      type: 'GET',
+      dataType: 'json',
+      success: function(response) {
+        $(`#${type}Offcanvas`).offcanvas('show');
+        console.log(response);
+        const savedAssignee = response.map(user => ({
+          id: user.id,
+          text: user.userName
+        }));
+        
+        const assigneesSelect = $(`#${selectId}`);
+        assigneesSelect.empty();
+        assigneesSelect.select2({ data: savedAssignee });
+        assigneesSelect.trigger('change');
+      },
+      error: function () {
+        alert("Failed to fetch assignees");
+      }
+    });
+  };
+  
+  if (type === 'Milestone') {
+    showOffcanvasAndFetchAssignees('addtask', 'https://localhost:7008/api/v1/People/GetTemplateAssignees/', 'Taddassignee');
+  } else if (type === 'Task') {
+    showOffcanvasAndFetchAssignees('addsubtask', 'https://localhost:7008/api/v1/People/GetTaskAssignees/', 'Saddassignee');
+  } else {
+    console.error('Invalid type:', type);
+    return;
+  }
+
+  $('#addTaskForm').off('submit').on('submit', function(event) {
+    event.preventDefault();
+    
+    const taskName = $('#addtaskName').val();
+    const assignees = $('#Taddassignee').val();
+    const description = $('#addtaskDescription').val();
+    console.log(taskName, assignees, description);
+    
+    $.ajax({
+      url: 'https://localhost:7008/api/v1/Tasks/Create',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        templateId: id,
+        projectId: projectId,
+        comId: companyId,
+        name: taskName,
+        assignees: assignees,
+        description: description
+      }),
+      success: function(response) {
+        alert('Task added successfully!');
+        $('#addtaskOffcanvas').offcanvas('hide');
+        $('#addTaskForm')[0].reset();
+        getTabData();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert('Failed to add task: ' + errorThrown);
+      }
+    });
+  });
+
+  $('#addsubTaskForm').off('submit').on('submit', function(event) {
+    event.preventDefault();
+    
+    const subtaskName = $('#addsubtaskName').val();
+    const assignees = $('#Saddassignee').val();
+    const subtaskDescription = $('#addsubtaskDescription').val();
+    const subtaskDueDate = $('#addsubtaskDueDate').val();
+    const subtaskEstimatedTime = $('#addsubtaskEstimatedTime').val();
+    
+    $.ajax({
+      url: 'https://localhost:7008/api/v1/Subtask/Create',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        tasksId: id,
+        templateId: templateId,
+        sassignees: assignees,
+        projectId: projectId,
+        comId: companyId,
+        name: subtaskName,
+        description: subtaskDescription,
+        dueDate: subtaskDueDate,
+        estTime1: subtaskEstimatedTime
+      }),
+      success: function(response) {
+        alert('Subtask added successfully!');
+        $('#addsubtaskOffcanvas').offcanvas('hide');
+        $('#addsubTaskForm')[0].reset();
+        getTabData();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert('Failed to add subtask: ' + errorThrown);
+      }
+    });
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+function getData(id, type) {
+        const url = window.location.href;
+
+    // Regular expression pattern to match a GUID
+    const guidPattern = /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/;
+
+    // Extract the GUID from the URL
+    const idMatch = url.match(guidPattern);
+
+    // If a match is found, extract the first match which should be the GUID
+    const projectId = idMatch ? idMatch[0] : null;
+    if (type == 'Milestone') {
+        $.ajax({
+            url: 'https://localhost:7008/api/v1/Template/' + id,
+            type: 'GET',
+            success: function (response) {
+                console.log(response);
+                var savedAssignee = response.users.map(function(user) {
+                    return user.userId;
+                });
+                console.log(savedAssignee);
+                $('#MId').val(response.id);
+                $('#editmilestoneName').val(response.name);
+                $('#editmilestoneDescription').val(response.description)
+                .promise().done(function(){
+                    // Show the offcanvas after all values are updated
+                    $('#editmilestoneOffcanvas').offcanvas('show');
+                });
+
+                var companyId = getCookie('ComId');
+                console.log(companyId, savedAssignee);
+                $.ajax({
+                    url: 'https://localhost:7008/api/v1/People/GetAssignees/' + projectId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        var assigneesSelect = $('#Massignee');
+
+                        // Clear existing options before appending new ones
+                        assigneesSelect.empty();
+                        console.log(data, savedAssignee);
+                        data.forEach(function (person) {
+                            var option = new Option(person.userName, person.id);
+                            if (savedAssignee && savedAssignee.includes(person.id)) {
+                                $(option).prop('selected', true); // Preselect the option if it matches savedAssignee
+                            }
+                            assigneesSelect.append(option);
+                        });
+                        assigneesSelect.trigger('change');
+                        assigneesSelect.select2();
+                    },
+                    error: function () {
+                        alert("Failed to fetch assignees");
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert('error');
+            }
+        });
+    } else if (type == 'Task') {
+        $.ajax({
+            url: 'https://localhost:7008/api/v1/Tasks/' + id,
+            type: 'GET',
+            success: function (response) {
+                console.log(response);
+                var savedAssignee = response.assignees.map(function(user) {
+                    return user.id;
+                });               
+// Assuming response is an object with a property templateId
+var templateId = response.templateId;
+
+console.log(templateId);  // This will print the templateId to the console
+
+
+                console.log(templateId,savedAssignee);
+                $('#TId').val(response.id);
+                $('#edittaskName').val(response.name);
+                $('#edittaskDescription').val(response.description)
+                .promise().done(function(){
+                    // Show the offcanvas after all values are updated
+                    $('#edittaskOffcanvas').offcanvas('show');
+                });
+                
+
+
+
+                $.ajax({
+                    url: 'https://localhost:7008/api/v1/People/GetTemplateAssignees/' + templateId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        var assigneesSelect = $('#Tassignee');
+                        assigneesSelect.empty();
+                        console.log(data, savedAssignee);
+                        data.forEach(function (person) {
+                            var option = new Option(person.userName, person.id);
+                            if (savedAssignee && savedAssignee.includes(person.id)) {
+                                $(option).prop('selected', true);
+                            }
+                            assigneesSelect.append(option);
+                        });
+
+                        // Trigger Select2 update to reflect changes
+                        assigneesSelect.trigger('change');
+
+                        // Initialize Select2
+                        assigneesSelect.select2();
+                    },
+                    error: function () {
+                        alert("Failed to fetch assignees");
+                    }
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert('error');
+            }
+        });
+    } else if (type == 'Subtask') {
+        $.ajax({
+            url: 'https://localhost:7008/api/v1/SubTask/' + id,
+            type: 'GET',
+            success: function (response) {
+                                 var tasksId = response.tasksId;
+                var savedAssignee = response.assignees.map(function(user) {
+                    return user.id;
+                }); 
+
+                console.log(tasksId, savedAssignee);
+
+
+
+                      let subtask = response;
+
+      // Extract the date part from the dueDate
+      let dueDate = subtask.dueDate.split('T')[0]; 
+                console.log(response);
+                $('#SId').val(response.id);
+                $('#editsubtaskName').val(response.name);
+                $('#editsubtaskDescription').val(response.description);
+
+                $('#editsubtaskDueDate').val(dueDate);
+                $('#editsubtaskEstimatedTime').val(response.estTime1)
+
+                .promise().done(function(){
+                    // Show the offcanvas after all values are updated
+                    $('#editsubtaskOffcanvas').offcanvas('show');
+
+                });
+                $.ajax({
+                        url: 'https://localhost:7008/api/v1/People/GetTaskAssignees/' + tasksId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            var assigneesSelect = $('#STassignee');
+                            assigneesSelect.empty();
+                            console.log(data, savedAssignee);
+                            data.forEach(function (person) {
+                                var option = new Option(person.userName, person.id);
+                                if (savedAssignee && savedAssignee.includes(person.id)) {
+                                    $(option).prop('selected', true);
+                                }
+                                assigneesSelect.append(option);
+                            });
+
+                            // Trigger Select2 update to reflect changes
+                            assigneesSelect.trigger('change');
+
+                            // Initialize Select2
+                            assigneesSelect.select2();
+                        },
+                        error: function () {
+                            alert("Failed to fetch assignees");
+                        }
+                    });
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert('error');
+            }
+        });
+    }
+}
+
+
+
+
+
+function UpdateMilestone() {
+    var ComId = getCookie('ComId');
+    var UserId = getCookie('UserId');
+    const url = window.location.href;
+
+    // Regular expression pattern to match a GUID
+    const guidPattern = /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/;
+
+    // Extract the GUID from the URL
+    const idMatch = url.match(guidPattern);
+
+    // If a match is found, extract the first match which should be the GUID
+    const projectId = idMatch ? idMatch[0] : null;
+
+    var Massignees = Array.from(document.getElementById('Massignee').selectedOptions).map(option => option.value);
+
+    var objData = {
+        id: $('#MId').val(),
+        name: $('#editmilestoneName').val(),
+        description: $('#editmilestoneDescription').val(),
+        Assignees: Massignees,
+        comId: ComId,
+        ownerId: UserId,
+        projectId: projectId,
+    };
+
+    $.ajax({
+        url: `https://localhost:7008/api/v1/Template/${objData.id}`,
+        type: 'PUT', // 'Put' should be 'PUT' (case-sensitive)
+        contentType: 'application/json', // 'json' should be 'application/json'
+        data: JSON.stringify(objData), // Convert objData to JSON string
+        success: function () {
+            alert('Updated');
+            // Instead of calling getTabData, update the Tabulator table data directly
+            fetch('https://localhost:7008/api/v1/Project/GetIncludeT/' + projectId)
+                .then(response => response.json())
+                .then(data => {
+                    table.replaceData(data); // Replace the table data
+                });
+        },
+        error: function () {
+            alert('Error: Resource not found'); // Changed error message for clarity
+        }
+    });
+}
+
+
+
+            function UpdateTask() {
+
+
+var Tassignees = Array.from(document.getElementById('Tassignee').selectedOptions).map(option => option.value);
+    var objData = {
+        id: $('#TId').val(),
+        name: $('#edittaskName').val(),
+        assignees: Tassignees,
+        // description: $('#editmilestoneDescription').val(),
+
+
+    }
+            console.log(objData);
+$.ajax({
+    url: `https://localhost:7008/api/v1/Tasks/Edit`,
+    type: 'PUT', // 'Put' should be 'PUT' (case-sensitive)
+    contentType: 'application/json', // 'json' should be 'application/json'
+    data: JSON.stringify(objData), // Convert objData to JSON string
+    success: function () {
+        alert('Updated');
+
+        getTabData();
+        $('#edittaskOffcanvas').offcanvas('hide');
+    },
+    error: function () {
+        alert('Error: Resource not found'); // Changed error message for clarity
+    }
+});
+
+
+
+
+            }
+
+            function editassigntaskAction() {
+           
+        selectedUserIds = [];  
+        var selectedOptions = $('#editusertaskAssign').find(':selected');   
+        var selectedCount = selectedOptions.length;
+        $('#editassigneestaskList').text(selectedCount); 
+
+    
+        selectedOptions.each(function() {
+            selectedUserIds.push($(this).val());
+        });
+
+         console.log("Hello i am from edittask seleted user: ", selectedUserIds);
+
+    
+        $('#edituserlisttask').modal('hide');
+
+    }
+
+
+
+
+            function UpdateSubtask() {
+
+                var STassignees = Array.from(document.getElementById('STassignee').selectedOptions).map(option => option.value);
+
+                    var objData = {
+        id: $('#SId').val(),
+        name: $('#editsubtaskName').val(),
+        description: $('#editmilestoneDescription').val(),
+        dueDate: $('#editsubtaskDueDate').val(),
+        estTime1: $('#editsubtaskEstimatedTime').val(),
+        assignees: STassignees,
+
+    }
+$.ajax({
+    url: `https://localhost:7008/api/v1/SubTask/Edit`,
+    type: 'PUT', // 'Put' should be 'PUT' (case-sensitive)
+    contentType: 'application/json', // 'json' should be 'application/json'
+    data: JSON.stringify(objData), // Convert objData to JSON string
+    success: function () {
+        alert('Updated');
+         $('#editsubtaskOffcanvas').offcanvas('hide');
+        getTabData();
+    },
+    error: function () {
+        alert('Error: Resource not found'); // Changed error message for clarity
+    }
+});
+
+            }
+            
+
+
+
+
+
+function assigneeFormatter(cell, formatterParams, onRendered) {
+    var assignees = cell.getValue(); // Assuming assignees is an array of objects with a 'userName' property
+
+    // Generate HTML for the icon representing assignees
+    var iconHtml = '';
+    assignees.forEach(function(assignee) {
+        let firstLetter = assignee.userName[0].toUpperCase();
+        iconHtml += `<span class="icon">${firstLetter}</span>`;
+    });
+
+    // Add click event listener to the cell
+    cell.getElement().addEventListener("click", function() {
+        // Open the modal when the cell is clicked
+        openModalUserList(assignees);
+    });
+
+    return iconHtml; // Return the HTML representing the icon
+}
+
+function openModalUserList(assignees) {
+    // Clear the modal body content
+    $("#assigneeModal .modal-body").empty();
+
+    // Generate HTML for the list of assignees
+    var modalBodyContent = '<ul>';
+    assignees.forEach(function(assignee) {
+        modalBodyContent += `<li>${assignee.userName}</li>`;
+    });
+    modalBodyContent += '</ul>';
+
+    // Set the HTML content to the modal body
+    $("#assigneeModal .modal-body").html(modalBodyContent);
+
+    // Open the modal
+    $("#assigneeModal").modal("show");
+}
+
+
+
+
+
+
+ function tagFormatter(cell, formatterParams, onRendered) {
+    var content = '';
+    var ad = cell.getValue();
+    var cst = ad.map(x => {
+        let tag = x.tagName; // Get the first letter and convert to uppercase
+        return `<span class="tag">${tag}</span>`;
+    });
+
+    // Instantiate piety chart after the cell element has been added to the DOM
+    onRendered(function() {
+        // peity(content, formatterParams.type,  options);
+    });
+
+    content = cst.join('');
+    return content;
+};
+
+
+function Delete(id, type) {
+    let message;
+
+    if (type === 'Milestone') {
+        message = 'Are you sure you want to delete this Milestone? This will also delete its Tasks and Subtasks.';
+    } else if (type === 'Task') {
+        message = 'Are you sure you want to delete this Task? This will also delete its Subtasks.';
+    } else if (type === 'Subtask') {
+        message = 'Are you sure you want to delete this Subtask?';
+    } else {
+        console.error("Unknown type:", type);
+        return;
+    }
+
+    if (confirm(message)) {
+        let url;
+
+        if (type === 'Milestone') {
+            url = 'https://localhost:7008/api/v1/Template/' + id;
+        } else if (type === 'Task') {
+            url = 'https://localhost:7008/api/v1/Tasks/' + id;
+        } else if (type === 'Subtask') {
+            url = 'https://localhost:7008/api/v1/SubTask/' + id;
+        }
+
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            success: function (response) {
+                console.log(response);
+                getTabData();
+            },
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                alert('error');
+            }
+        });
+    }
+}
+
+
+
+
+
+
+
+
+function createTemplate() {
+
+const url = window.location.href;
+
+// Regular expression pattern to match a GUID
+const guidPattern = /[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89aAbB][a-f0-9]{3}-[a-f0-9]{12}/;
+
+// Extract the GUID from the URL
+const idMatch = url.match(guidPattern);
+
+// If a match is found, extract the first match which should be the GUID
+const projectId = idMatch ? idMatch[0] : null;
+
+var UserId = getCookie('UserId');
+// Function to get a specific cookie value by name
+        // Function to retrieve cookie value by name
+
+
+// Example usage
+var ComId = getCookie('ComId');
+
+var milestoneName = document.getElementById('milestoneName').value;
+    var milestoneDescription = document.getElementById('milestoneDescription').value;
+    
+   // var users = selectedMaddAssigneeId;
+    var tasksData = [];
+    var taskCards = document.getElementsByClassName('card');
+    for (var i = 0; i < taskCards.length; i++) {
+        if (taskCards[i].id.startsWith('task')) {
+            var taskId = taskCards[i].id.split('_')[1];
+            var taskNameInput = taskCards[i].querySelector('input[type="text"]');
+            var taskName = taskNameInput ? taskNameInput.value : '';
+
+                   var selectedTaskUserIds = []; // Array to store selected user IDs
+
+        // Retrieve selected user IDs from Select2
+        var assigneeSelect = $(`#Taskaddassignee_${taskId}`);
+        var selectedOptions = assigneeSelect.select2('data');
+        selectedOptions.forEach(function(option) {
+            selectedTaskUserIds.push(option.id);
+        });
+
+
+            // var dueDateInput = taskCards[i].querySelector('input[type="date"]');
+            // var dueDate = dueDateInput ? dueDateInput.value : '';
+            var prioritySelect = taskCards[i].querySelector('select[id^="prioritySelect_"]');
+            var priority = prioritySelect ? prioritySelect.value : '';
+
+            var subtasksData = []; 
+            var subtaskCards = taskCards[i].getElementsByClassName('subtask-card');
+            for (var j = 0; j < subtaskCards.length; j++) {
+                var subtaskId = subtaskCards[j].id.split('_')[1];
+                var subtaskNameInput = subtaskCards[j].querySelector('input[type="text"]');
+                var subtaskName = subtaskNameInput ? subtaskNameInput.value : '';
+
+                var EstTimeInput = subtaskCards[j].querySelector('input[type="number"]');
+                var EstTime = EstTimeInput ? EstTimeInput.value : '';
+
+
+                                   var selectedSubtaskUserIds = []; // Array to store selected user IDs
+
+        // Retrieve selected user IDs from Select2
+        var assigneeSelect = $(`#Subtaskaddassignee_${subtaskId}`);
+        var selectedOptions = assigneeSelect.select2('data');
+        selectedOptions.forEach(function(option) {
+            selectedSubtaskUserIds.push(option.id);
+        });
+
+
+
+
+
+                var dueDateInput = subtaskCards[j].querySelector('input[type="date"]');
+                var dueDate = dueDateInput ? dueDateInput.value : '';
+
+                subtasksData.push({
+                   // id: subtaskId,
+                    name: subtaskName,
+                    description: "", // Add description if available
+
+                    estTime1: EstTime,
+                    sassignees: selectedSubtaskUserIds,
+                     dueDate: dueDate,
+                    //templateId: taskId, // Assuming this should be taskId
+                    comId: ComId,
+                   projectId: projectId,
+                    // taskId: taskId // Assuming this should be taskId
+                });
+            }
+
+            tasksData.push({
+               // id: taskId,
+                name: taskName,
+                description: "", // Add description if available
+                 assignees: selectedTaskUserIds,
+
+                //dueDate: dueDate,
+
+                subTasks: subtasksData,
+                comId: ComId,
+                projectId: projectId,
+
+            });
+        }
+    }
+    const ids = selectedMaddAssigneeId.map(item => item.id);
+console.log(ids); 
+
+    selectedMaddAssigneeId
+
+      objData = {
+       // id: projectId, // Assuming this should be projectId
+        name: milestoneName,
+        assignees:ids,
+        description: milestoneDescription,
+        tasks: tasksData,
+        projectId: projectId, // Assuming this should be projectId
+        ownerId: UserId, // Add ownerId if available
+        comId: ComId
+    };
+
+    console.log(objData); // Check if the object structure is as expected
+
+    // Your AJAX call here
+
+
+    $.ajax({
+        url: 'https://localhost:7008/api/v1/Template/CreateT',
+         method: 'POST',
+        data: JSON.stringify(objData),
+        contentType: 'application/json', // Set Content-Type header
+        dataType: 'json',
+        success: function(response) {
+            console.log(response);
+
+
+            alert('Milestone added successfully');
+            getTabData();
+             hideOffcanvas();
+                 clearOffcanvas();
+
+             
+            
+        },
+        error: function(err) {
+            console.log(err);
+            alert('Failed to add milestone');
+        }
+    });
+}
+
+
+function hideOffcanvas() {
+    $('#milestoneOffcanvas').offcanvas('hide');
+}
+
+
+
+
+function deleteFile(fileId) {
+    $.ajax({
+        url: '@Url.Action("DeleteFile", "File")', // Replace with the correct URL for your delete endpoint
+        type: 'DELETE',
+        data: { fileId: fileId },
+        success: function (data) {
+            if (data && data.toLowerCase() === "file deleted successfully") {
+                // File deleted successfully
+                alert("File deleted successfully");
+                // Refresh the file list after successful deletion
+                location.reload();
+
+                // showTaskFileListModal(taskId);
+            } else {
+                // Handle other success cases if needed
+                alert("File deletion failed. Please try again later.");
+            }
+        },
+        error: function () {
+            // Handle errors if needed
+            alert("File deletion failed. Please try again later.");
+        }
+    });
+}
+
+
+
+
+               $(document).ready(function () {
+
+           
+
+
+            // Calculate and update task counts for each tab
+            function updateTabCounts() {
+                var currentCount = $("#current-tab-pane tbody tr").length;
+                var lateCount = $("#late-tab-pane tbody tr").length;
+                var upcomingCount = $("#upcoming-tab-pane tbody tr").length;
+
+                $("#current-tab-count").text(currentCount);
+                $("#late-tab-count").text(lateCount);
+                $("#upcoming-tab-count").text(upcomingCount);
+
+            }
+
+            //// Initial update
+            updateTabCounts();
+
+            // Set the background color of selected options when the page loads
+            $('.task-status-select').each(function () {
+                var selectedOption = this.options[this.selectedIndex];
+                var selectedColor = $(selectedOption).css('background-color');
+                $(this).css('background-color', selectedColor);
+            });
+
+            $('.task-status-select').on('change', function () {
+                var taskId = $(this).closest('tr').data('task-id');
+                var selectedStatus = $(this).val();
+
+                $.ajax({
+                    //url: '/Tasks/UpdateTaskStatus',
+                    url: '@Url.Action("UpdateTaskStatus", "Tasks")',
+                    type: 'POST',
+                    data: {
+                        taskId: taskId,
+                        newStatus: selectedStatus
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Reload the page after successful update
+                            location.reload();
+                        } else {
+                            // Handle update failure if needed
+                            alert('Failed to update task status: ' + response.message);
+                        }
+                    },
+                    error: function () {
+                        // Handle error if needed
+                    }
+                });
+            });
+        });
+ 
+
+
+        function displayAssigneesInModal(assigneesData) {
+    const assigneesList = $("#assigneesList");
+    // Clear the existing assignees list
+    assigneesList.empty();
+
+    // Append the assignees data to the modal
+    $.each(assigneesData, function (index, assignee) {
+        // Create the list item for each assignee
+        const li = $("<li>").text(assignee.userName); 
+
+        // Create the disassociate button and add click event
+        const disassociateButton = $("<a>")
+            .attr({
+                "href": "#",
+                "data-action": "disassociate", // Use custom data attribute
+                "data-controller": "Assign",
+                "data-userId": assignee.id // Assign the UserId data attribute dynamically
+            })
+            .html('<i class="fa-solid fa-xmark"></i>');
+
+        disassociateButton.on("click", function () {
+            var userId = $(this).data("userid"); // Retrieve userId from data attribute
+            console.log(userId);
+            disassociateUserFromProject(userId); // Call the function to disassociate the user
+        });
+
+        li.append(disassociateButton);
+        assigneesList.append(li);
+    });
+
+    // Show the modal with the correct ID
+    $("#userlist").modal("show");
+}
+
+
+
+// Function to disassociate the user from the project
+function disassociateUserFromProject(userId) {
+    var project = '@Model.Id'; // Replace with the actual project ID
+    var url = '@Url.Action("DissociateProject", "Assign")';
+    console.log(userId);
+    var users = [userId];
+    var unassign = {
+        projectId: project,
+        userId: users
+    };
+
+    // Perform the AJAX request to disassociate the user
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: unassign, // Convert the object to JSON
+        success: function (response) {
+            // If needed, update the modal content to reflect the changes
+            // E.g., remove the disassociated user from the displayed list
+            // and update the modal accordingly
+        },
+        error: function (error) {
+            console.error("Error disassociating user:", error);
+        }
+    });
+    location.reload();
+}
+
+
+    
+        // Document Ready
+        $(document).ready(function () {
+
+              $('#cancelDeleteTemplate').click(function () {
+                $('#deleteTemplateModal').modal('hide');
+                });
+
+            // Assignees Button Click Event
+            $("#assigneesButton").on("click", function () {
+                const projectId = $("#ProjectId").val()
+                const url = `@Url.Action("GetAssignees", "People")?ProjectId=${projectId}`;
+                console.log(url);
+                // Make an AJAX request to fetch the assignees for the project
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function (response) {
+                        // On success, populate the modal with the retrieved assignees
+                        displayAssigneesInModal(response);
+                    },
+                    error: function (error) {
+                        console.error("Error fetching assignees:", error);
+                    }
+                });
+            });
+
+
+           $("#taskassigneesButton").on("click", function () {
+            var taskId = $(this).data("taskid");
+            console.log(taskId);
+
+            // Create a TaskAssignDTO object
+            var taskAssignDTO = {
+                TaskId: taskId,
+                UserId: [] // Add user IDs here if needed
+            };
+
+            const url = `@Url.Action("AssignTask", "YourController")`; // Replace with your controller and action names
+
+            // Make an AJAX POST request to send the TaskAssignDTO model to your server
+            $.ajax({
+                url: url,
+                type: "POST",
+                contentType: "application/json", // Specify JSON content type
+                data: JSON.stringify(taskAssignDTO), // Convert the object to JSON
+                success: function (response) {
+                    // On success, handle the response if needed
+                    displayTaskAssigneesInModal(response);
+                },
+                error: function (error) {
+                    console.error("Error assigning task:", error);
+                }
+            });
+        });
+
+
+
+            
+
+            $(document).on('click', '.expandable-item', function (e) {
+                // Prevent expanding when clicking delete button
+                if (!$(e.target).hasClass('delete-template')) {
+                    $(this).next('.expandable-child').slideToggle(300);
+                    $(this).find('.template-arrow').toggleClass('rotate');
+                }
+            });
+
+            // Handle click events for delete template buttons
+            $(document).on('click', '.delete-template', function (e) {
+                // Prevent expanding when clicking delete button
+                e.stopPropagation();
+
+                // Show the delete template modal
+                $('#deleteTemplateModal').modal('show');
+
+                // Get the template ID from the clicked delete button
+                var templateId = $(this).data('template-id');
+
+                // Set the template ID as a data attribute on the modal's Confirm Delete button
+                $('#confirmDeleteTemplate').data('template-id', templateId);
+            });
+           
+
+            $(document).on('click', '#confirmDeleteTemplate', function () {
+        // Get the template ID from the data attribute
+        var templateId = $(this).data('template-id');
+
+        // Implement the logic to send an AJAX request to your Delete method with the template ID
+        // You can use jQuery's $.ajax() or other methods to send the request
+        $.ajax({
+            url: baseUrl + '/Template/Delete', // Replace with your actual URL
+            type: 'POST', // Use POST or DELETE depending on your API
+            data: { id: templateId }, // Pass the template ID to the server
+            success: function (data) {
+                // Handle success, e.g., remove the deleted template from the UI
+                
+                $('#template-row-' + templateId).remove();
+                // Close the modal
+                $('#deleteTemplateModal').modal('hide');
+                console.log("baseUrl-->", baseUrl)
+                // window.location.reload();
+            },
+            error: function (error) {
+                // Handle errors if the request fails
+                console.error('Error deleting template: ' + error);
+                // Close the modal
+                $('#deleteTemplateModal').modal('hide');
+            }
+        });
+    });
+
+            console.log("baseUrl-->", baseUrl + '/Template/Delete')
+            console.log("Script loaded.");
+        });
+
+        
+        //Task assginees
+
+    function taskassignees(taskId, taskName) {
+    
+                    //var taskId = $(this).data("taskId");
+                //console.log(taskId);
+                const url = `@Url.Action("GetTaskAssignees", "People")?TaskId=${taskId}`;
+                console.log(url);
+                // Make an AJAX request to fetch the assignees for the project
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    success: function (response) {
+                        // On success, populate the modal with the retrieved assignees
+                        displayTaskAssigneesInModal(response,taskId,taskName);
+                    },
+                    error: function (error) {
+                        console.error("Error fetching assignees:", error);
+                    }
+                });
+
+        // Call the populateOptions function to populate options on page load
+       
+    }
+
+function displayTaskAssigneesInModal(assigneesData,taskId,taskName) {
+    const assigneesList = $("#taskassigneesList");
+    console.log(taskName);
+    // Clear the existing assignees list
+    assigneesList.empty();
+     console.log(taskId);
+    // Append the assignees data to the modal
+    $.each(assigneesData, function (index, assignee) {
+        // Create the list item for each assignee
+        const li = $("<li>").text(assignee.userName);
+
+        // Create the disassociate button and add click event
+        const disassociateButton = $("<a>")
+            .attr({
+                "href": "#",
+                "data-action": "disassociate", // Use custom data attribute
+                "data-controller": "Assign",
+                "data-userId": assignee.id // Assign the UserId data attribute dynamically
+            })
+            .html('<i class="fa-solid fa-xmark"></i>');
+
+        disassociateButton.on("click", function () {
+            var userId = $(this).data("userid"); // Retrieve userId from data attribute
+            //console.log(userId);
+            disassociateUserFromTask(userId,taskId); // Call the function to disassociate the user
+        });
+
+        li.append(disassociateButton);
+        assigneesList.append(li);
+    });
+
+    $("#taskIdForAssign").val(taskId);
+    const task = $("<p>").text(taskName);
+
+     //populateUsers();
+
+
+    $("#taskName").empty();
+    $("#taskName").append(task);
+
+    // Show the modal with the correct ID
+    $("#taskuserlist").modal("show");
+
+}
+
+// Function to disassociate the user from the task
+function disassociateUserFromTask(userId,taskId) {
+
+    console.log(taskId);
+    var url = '@Url.Action("DissociateTask", "Assign")';
+    //console.log(userId);
+    var users = [userId];
+    var unassign = {
+        taskId: taskId,
+        userId: users
+    };
+
+    // Perform the AJAX request to disassociate the user
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: unassign, // Convert the object to JSON
+        success: function (response) {
+            
+        },
+        error: function (error) {
+            console.error("Error disassociating user:", error);
+        }
+    });
+    location.reload();
+}
+
+function populateUsers() {
+            $.ajax({
+                url: '@Url.Action("GetPeoples", "People")', 
+                type: 'GET',
+                dataType: 'json',
+                dataType: 'json',
+                success: function (data) {
+                    var select = $("#userAssign");
+                    select.empty(); 
+
+                   
+                    $.each(data, function () {
+                       
+                        select.append('<option value="" disabled selected>hey</option>');
+                        console.log(this.id);
+                        select.append(new Option(this.id, this.userName));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        }
+
+
+
+        // Function to clear offcanvas content
+function clearOffcanvas() {
+    // Reset milestone name and description inputs
+    $('#milestoneName').val('');
+    $('#milestoneDescription').val('');
+
+    // Remove any dynamically added task cards
+    $('#taskCards').empty();
+}
+
+// Function to create a milestone
+
+
+
+
+       
+
+
+function setCurrentTaskId(taskId) {
+    currentTaskId = taskId; // Set the current task ID when the assignees button is clicked
+}
+
+function assignTaskAction() {
+    var selectedTaskUserIds = [];
+    var selectedOptions = $('#userTaskAssign').find(':selected');
+    var selectedCount = selectedOptions.length;
+    $('#assigneesTaskList').text(selectedCount);
+
+    selectedOptions.each(function() {
+        selectedTaskUserIds.push($(this).val());
+    });
+
+    // Store selected user IDs along with the current task ID
+    taskAssignees[currentTaskId] = selectedTaskUserIds;
+
+    $('#userlistTask').modal('hide');
+
+    // Clear the selected options in the dropdown
+    $('#userTaskAssign').val([]).trigger('change');
+
+    console.log("Task assignee obj:",taskAssignees);
+}
+
+
+
+
+    function assignProjectAction() {
+            var users = [];
+            var assignProjectId = `@Model.Id`;
+            console.log("I'm from project assign action");
+            users = $("#userProjectAssign").val();
+            console.log(JSON.stringify(users));
+            console.log(assignProjectId);
+            //console.log(assignTaskId);
+
+            var taskAssign = {
+                userId : users,
+                projectId : assignProjectId
+                //comId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            }
+
+     var url = 'https://localhost:7008/api/v1/Assign/AssignProject';
+     //var url "= '@Url.Action("AssignTemplate", "Assign")';
+        console.log("TAsk assign", taskAssign);
+
+
+    $.ajax({
+        url: url,
+        method: 'POST',
+        data: JSON.stringify(taskAssign),
+        contentType: 'application/json', // Set Content-Type header
+        dataType: 'json',       
+        success: function (response) {
+          
+        },
+        error: function (error) {
+            console.error("Error disassociating user:", error);
+        }
+    });
+   // location.reload();
+
+    }
+
+
+     
+
+
+
+     function assignMilestoneAction() {
+           
+        selectedUserIds = [];  
+        var selectedOptions = $('#userMilestoneAssign').find(':selected');   
+        var selectedCount = selectedOptions.length;
+        $('#assigneesMilestoneList').text(selectedCount); 
+
+    
+        selectedOptions.each(function() {
+            selectedUserIds.push($(this).val());
+        });
+
+         console.log("Hello i am from Milestone seleted user: ", selectedUserIds);
+
+    
+        $('#userlistTemplate').modal('hide');
+
+    }
+
+
+
+
+            $(document).ready(function () {
+            $(".template-name").click(function () {
+                var templateId = $(this).data("template-id");
+                $(".template-timeline[data-template-id='" + templateId + "']").slideToggle();
+            });
+        });
+
+
+                $(document).ready(function () {
+            let templateIdToDelete;
+
+             $('delete-template').click(function () {
+                $('#deleteTemplateModal').modal('show');
+                });
+
+            $(document).on("click", ".delete-template", function () {
+                templateIdToDelete = $(this).data("template-id");
+            });
+
+            $("#confirmDeleteTemplate").click(function () {
+                if (templateIdToDelete) {
+                    $.ajax({
+                        type: "POST",
+                         url: '@Url.Action("Delete", "Template")',
+                       //url:   ~"/Template/Delete",
+                        data: { tid: templateIdToDelete },
+                        success: function () {
+                            window.location.reload(); 
+                        },
+                        error: function (error) {
+                            console.error(error);
+                           
+                        }
+                    });
+                }
+            });
+        });
+
+       $('.delete-task').click(function () {
+            $('#deleteTaskModal').modal('show');
+        });
+
+
+          $('#deleteTaskModal .btn-secondary').click(function () {
+                $('#deleteTaskModal').modal('hide');
+            });
+
+
+            $('#deleteTaskModal .close').click(function () {
+                $('#deleteTaskModal').modal('hide');
+            });
+
+
+    $(document).ready(function () {
+         var taskIdToDelete;
+
+    $('.delete-task').click(function () {
+        taskIdToDelete = $(this).data('task-id');
+    });
+
+    $('#confirmDeleteTask').click(function () {
+        if (taskIdToDelete) {
+            deleteTask(taskIdToDelete);
+        }
+        $('#deleteTaskModal').modal('hide');
+    });
+
+    function deleteTask(taskId) {
+        
+        $.ajax({
+             url: '@Url.Action("Delete", "Tasks")', // Replace with the actual URL to fetch users
+           // url:  ~'Tasks/Delete', 
+            type: 'POST',
+            data: { id: taskId },
+            success: function () {
+               
+                location.reload();
+            },
+            error: function () {
+               
+            }
+        });
+    }
+});
+
+    $(document).ready(function () {
+        var $input = $("#multiEmailInput-2");
+        var $emailList = $("#emailList-2");
+        var enteredEmails = [];
+
+        function updateEmailList() {
+            $emailList.empty();
+            enteredEmails.forEach(function (email) {
+                $emailList.append("<li>" + email + " <span class='remove-email' data-email='" + email + "'>x</span></li>");
+            });
+        }
+
+        $input.on("keyup", function (event) {
+            if (event.key === "Enter" || event.key === ",") {
+                event.preventDefault();
+                var enteredEmail = $input.val().trim();
+                if (enteredEmail !== "") {
+                    enteredEmails.push(enteredEmail);
+                    updateEmailList();
+                    $input.val("");
+                }
+            }
+        });
+
+        $emailList.on("click", ".remove-email", function () {
+            var emailToRemove = $(this).data("email");
+            enteredEmails = enteredEmails.filter(function (email) {
+                return email !== emailToRemove;
+            });
+            updateEmailList();
+        });
+
+        $("#sendEmailsButton-2").on("click", function () {
+
+           var pid = $(this).data("pid"); 
+       
+        var email = {
+            toEmail: enteredEmails,
+            comId: null,
+            Pid: pid 
+                
+            }
+
+            $.ajax({
+                url: '@Url.Action("InviteProject", "Email")', 
+                type: "POST",
+                data: email,
+                success: function (data) {
+                    alert("Email is valid and POST request successful!");
+                    window.location.href = '@Url.Action("MyTask", "Tasks")';
+                },
+                error: function (error) {
+                    alert("Email is valid but there was an error with the POST request.");
+                }
+            });
+        
+        });
+    });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+        const guestsTabLink = document.querySelector("#guests-tab");
+        const taskIdForAssignGuest = document.querySelector("#taskIdForAssignGuest");
+
+        guestsTabLink.addEventListener("click", function () {
+            // Get the task ID from the "Users" tab's hidden field
+            const taskID = document.querySelector("#taskIdForAssign").value;
+
+            // Set the task ID in the "Guests" tab's hidden field
+            taskIdForAssignGuest.value = taskID;
+        });
+    });
+
+   
+    $(document).ready(function () {
+        $('#taskassigneesButton').click(function () {
+            var taskIDFromButton = $(this).data('taskId');
+            $('#taskIdForAssign').val(taskIDFromButton);
+        });
+    });
+
+    function updateSelectedEmails() {
+        const selectedOptions = document.querySelectorAll('#guestAssign option:checked');
+        const selectedEmails = Array.from(selectedOptions).map(option => option.getAttribute('data-email'));
+        document.getElementById('selectedGuestEmails').value = selectedEmails.join(',');
+    }
+
+        $('#taskassigneesButtonGuests').click(function () {
+        var taskIDFromModal = $('#taskIdForAssign').val(); // Get the task ID from the modal
+        const selectedGuests = $('#guestAssign').val(); // Get selected values from the select element
+        const selectedEmails = selectedGuests.map(guestId => {
+            const option = $(`#guestAssign option[value="${guestId}"]`);
+            return option.data('email');
+        });
+
+        // Prepare the data to send in the POST request
+        const postData = {
+            taskID: taskIDFromModal, // Use the task ID from the modal
+            selectedGuestEmails: selectedEmails.join(','),
+            guestIDs: selectedGuests
+        };
+
+        $.ajax({
+            url: '@Url.Action("AssignGuestTask", "Guest")', // Replace with the actual URL
+            type: 'POST',
+            data: postData,
+            success: function (response) {
+
+                // Handle successful response
+                alert("Task Assign Successful");
+                console.log('POST request successful');
+                 window.location.href = '@Url.Action("MyTask", "Tasks")';
+                //location.reload();
+            },
+            error: function (error) {
+                // Handle errors if any
+                alert("Task Assign Failed..Try Again");
+                console.error('POST request failed', error);
+                 location.reload();
+            }
+        });
+    });
+
+       
+
+function addTaskCard() {
+    taskIdCounter++; // Increment the task ID counter
+
+    console.log(taskIdCounter);
+    var taskCard = document.createElement('div');
+    taskCard.classList.add('card', 'mb-3');
+    taskCard.setAttribute('id', `task_${taskIdCounter}`); // Assign a unique ID to the task card
+    taskCard.innerHTML = `
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4 pt-2 d-flex">
+                        <i class="bi bi-check2-circle mt-2"></i>
+                        <input type="text" id="taskInput_${taskIdCounter}" placeholder="Enter task name" class="border-0">
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="mb-3">
+                            <div class="dropdown">
+                                <button class="btn btn-light ps-3 dropdown-toggle" type="button" id="TaskaddassignButton_${taskIdCounter}" aria-expanded="false">
+                                    Assignees <i class="bi bi-person-fill-add"></i>
+                                </button>
+                                <fieldset id="TaskaddassigneeFieldset_${taskIdCounter}" style="display: none;">
+                                    <div class="form-row form-input-flex">
+                                        <div class="row" style="width: 100%;">
+                                            <select id="Taskaddassignee_${taskIdCounter}" class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%"></select>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 text-end">
+                        <button type="button" class="btn btn-outline-secondary" onclick="deleteTaskCard(${taskIdCounter})">
+                            <i class="bi bi-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-12 pt-3">
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%; background-color: green;">
+                            75%
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-3">
+                    <div class="col-lg-4">
+                        <div class="priority-container">
+                            <label for="prioritySelect_${taskIdCounter}">Priority</label>
+                            <select class="form-control" id="prioritySelect_${taskIdCounter}">
+                                <option value="High">High</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="dependency-container">
+                            <label for="dependencySelect_${taskIdCounter}">Dependency</label>
+                            <select class="form-control" id="dependencySelect_${taskIdCounter}">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-end">
+                        <label for="attachmentInput_${taskIdCounter}" class="btn mt-4 btn-outline-secondary mb-3">
+                            <i class="bi bi-paperclip"></i> Attachment
+                            <input type="file" id="attachmentInput_${taskIdCounter}" class="d-none" multiple>
+                        </label>
+                    </div>
+                </div>
+                <!-- Subtask Section -->
+                <div class="subtask-section mt-3" id="subtaskSection_${taskIdCounter}">
+                    <h5>Subtasks</h5>
+                    <!-- Subtask Cards -->
+                    <div class="subtask-cards mt-3" id="subtaskCards_${taskIdCounter}">
+                        <!-- Subtask Cards will be dynamically added here -->
+                    </div>
+                    <!-- Button to add a new subtask -->
+                    <button type="button" class="btn btn-outline-secondary mt-3" onclick="addSubtask(${taskIdCounter})">
+                        <i class="bi bi-plus"></i> Add Subtask
+                    </button>
+                </div>
+                <!-- End Subtask Section -->
+            </div>`;
+    var taskSection = document.getElementById('taskCards');
+    taskSection.insertBefore(taskCard, taskSection.firstChild);
+
+    // Initialize select2 for the new select element
+    $(`#Taskaddassignee_${taskIdCounter}`).select2();
+    populateTaskaddAssignees(taskIdCounter);
+}
+
+
+
+
+    function toggleDatePicker(datePickerId) {
+        var datePicker = document.getElementById(datePickerId);
+        datePicker.style.display = datePicker.style.display === "none" ? "block" : "none";
+    }
+
+    function addSubtask(taskId) {
+        subtaskIdCounter++; // Increment the subtask ID counter
+        console.log(subtaskIdCounter);
+
+        var subtaskCard = document.createElement('div');
+        subtaskCard.classList.add('card', 'subtask-card', 'mb-2');
+        subtaskCard.setAttribute('id', `subtask_${subtaskIdCounter}`); // Assign a unique ID to the subtask card
+        subtaskCard.innerHTML = `
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-4 d-flex">
+                            <i class="bi bi-check2-circle mt-2"></i>
+                            <input type="text" placeholder="Enter Subtask name" class="border-0">
+                        </div>
+                        <!--
+                        <div class="col-lg-2">
+                            <i class="bi bi-stopwatch fs-3"></i>
+                        </div>
+                        -->
+
+                       <div class="col-lg-3">
+                           <button type="button" class="btn btn-outline-secondary" onclick="toggleSubTaskDatePicker('subtaskDate_${subtaskIdCounter}')">
+                              <i class="bi bi-calendar"></i> Due Date
+                           </button>
+                           <input type="date" id="subtaskDate_${subtaskIdCounter}" style="display: none;">
+                        </div> 
+
+
+                                            <div class="col-lg-4">
+                        <div class="mb-3">
+                            <div class="dropdown">
+                                <button class="btn btn-light ps-3 dropdown-toggle" type="button" id="SubtaskaddassignButton_${subtaskIdCounter}" aria-expanded="false">
+                                    Assignees <i class="bi bi-person-fill-add"></i>
+                                </button>
+                                <fieldset id="SubtaskaddassigneeFieldset_${subtaskIdCounter}" style="display: none;">
+                                    <div class="form-row form-input-flex">
+                                        <div class="row" style="width: 100%;">
+                                            <select id="Subtaskaddassignee_${subtaskIdCounter}" class="js-example-basic-multiple" name="states[]" multiple="multiple" style="width: 100%"></select>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                        <div class="col-lg-4">
+                            <input type="number" min="0" placeholder="Estimated Time in Minutes" class="border-0">
+                        </div>
+
+
+                      <!--  <div class="col-lg-2 pb-2">
+                            <i class="bi bi-person-add fs-4" style="cursor: pointer;"></i>
+                        </div>
+                        -->
+                        <div class="col-lg-1">
+                            <i class="bi bi-three-dots-vertical fs-4" onclick="toggleOptions(this)"></i>
+                            <div class="subtask-options" style="display: none;">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="editSubtask(this)">
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="deleteSubtask(this)">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        var subtaskSection = document.getElementById(`subtaskCards_${taskId}`);
+        subtaskSection.insertBefore(subtaskCard, subtaskSection.firstChild);
+
+            // Initialize select2 for the new select element
+    $(`#Subtaskaddassignee_${subtaskIdCounter}`).select2();
+    populateSubtaskAssignees(taskId,subtaskIdCounter);
+
+    }
+
+function toggleSubTaskDatePicker(datePickerId) {
+                        var datePicker = document.getElementById(datePickerId);
+                        datePicker.style.display = datePicker.style.display === "none" ? "block" : "none";
+                    }
+
+    function toggleOptions(icon) {
+        var options = icon.parentElement.querySelector(".subtask-options");
+        options.style.display = options.style.display === "none" ? "block" : "none";
+    }
+
+    function editSubtask(button) {
+        var card = button.closest('.subtask-card');
+        var input = card.querySelector('input[type="text"]');
+        input.disabled = false;
+        input.focus();
+    }
+
+    function deleteSubtask(button) {
+        var card = button.closest('.subtask-card');
+        card.remove();
+    }
+
+    function deleteTaskCard(taskId) {
+        var taskCard = document.getElementById(`task_${taskId}`);
+        taskCard.remove();
+    }
+   
+
+        </script>
+
+
+
+}
+

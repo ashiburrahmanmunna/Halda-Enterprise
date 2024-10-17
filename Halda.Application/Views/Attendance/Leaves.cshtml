@@ -1,0 +1,1301 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = "_LayoutAdmin";
+}
+
+<style>
+    .nav-tabs .nav-link {
+        color: #6c757d;
+        border: none;
+        font-weight: 500;
+        border-radius: 0px;
+        font-size: 16px !important;
+        border-bottom: 2px solid transparent;
+    }
+
+        .nav-tabs .nav-link.active {
+            color: #4AA147;
+            font-weight: 500;
+            border-radius: 0px;
+            font-size: 16px !important;
+            background-color: transparent;
+            border-bottom: 3px solid #4AA147;
+        }
+
+    .input-group {
+        border-radius: 8px;
+        border: 1px solid #D0D5DD;
+        background: #FAFAFAED;
+        box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
+        padding: 1px 3px;
+    }
+
+        .input-group .form-control {
+            background: transparent;
+        }
+
+    .custom-select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right .75rem center;
+        background-size: 16px 12px;
+    }
+
+    .btn-load {
+        background-color: #5cb85c;
+        border-color: #4cae4c;
+        color: white;
+    }
+
+        .btn-load:hover {
+            background-color: #449d44;
+            border-color: #398439;
+        }
+
+    .custom-input, .custom-select {
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        background-color: #fff;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+        .custom-input:focus, .custom-select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+    .custom-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+    }
+
+    .form-col {
+        flex: 1 1 100%;
+        max-width: 25%;
+        margin-bottom: 0.5rem;
+    }
+
+    .custom-label {
+        font-size: 16px;
+    }
+
+    .tabulator .tabulator-header {
+        border-top: none !important;
+    }
+
+        .tabulator .tabulator-header .tabulator-col {
+            background-color: #F9F9F9 !important;
+        }
+
+    .offcanvas-body label {
+        font-weight: 500;
+    }
+
+    .button-custom {
+        background-color: #4AA147;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 0px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px 8px 8px 8px;
+        cursor: pointer;
+        opacity: 1; /* Fully visible */
+        transform: rotate(0deg); /* No rotation */
+    }
+
+        .button-custom i {
+            margin-right: 5px; /* Space between icon and text */
+        }
+</style>
+
+<div class="container-fluid rounded-4 border border-muted p-2 mt-2 border-1">
+    <div class="row mx-0" style="background-color: #FFFFFF; border-radius: 5px; box-shadow: 0px 0px 10px 0px #0000000D;">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button style="font-size: 14px;" class="nav-link active" data-bs-toggle="tab" data-bs-target="#leave-management" type="button" role="tab" aria-selected="true">Leave Management</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button style="font-size: 14px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#leave-balance" type="button" role="tab" aria-selected="false">Leave Balance</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button style="font-size: 14px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#leave-adjust" type="button" role="tab" aria-selected="false">Leave Adjust</button>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="leave-management" role="tabpanel">
+                <div class="row pt-4">
+                    <div class="col-md-4  col-12 d-flex align-items-center gap-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search">
+                            <span class="input-group-text bg-transparent border-0">
+                                <img alt="search" src="/User/img/search.png" width="20">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-8 d-flex justify-content-end">
+                        <button type="button"
+                                class="btn btn-success"
+                                style="background-color: #4AA147; border-color: #4AA147; padding: 8px; font-size: 16px;"
+                                onclick="location.href='@Url.Action("LeaveSetup", "Attendance")'">
+                            <i class="ri-settings-6-line me-2"></i>Setup leaves
+                        </button>
+
+                    </div>
+                </div>
+                <ul class="nav nav-tabs mt-2" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button style="font-size: 18px;" class="nav-link active" data-bs-toggle="tab" data-bs-target="#leave-request" type="button" role="tab" aria-selected="true">Leave Requests</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button style="font-size: 18px;" class="nav-link" data-bs-toggle="tab" data-bs-target="#leave-history" type="button" role="tab" aria-selected="false">Leave History</button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="leave-request" role="tabpanel">
+                        <div id="LeaveRequest"></div>
+
+
+                    </div>
+                    <div class="tab-pane fade" id="leave-history" role="tabpanel">
+                        <div id="LeaveHistory"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="leave-balance" role="tabpanel">
+
+                <div class="mt-2 p-2 mb-2" style="border: 0.67px solid #D4D4D4; box-shadow: 0px 0px 10px 0px #0000000D; border-radius: 8px;">
+                    <div class="row mt-2 mb-2">
+                        <div class="col-12 col-md-8 mb-2 mb-md-0 d-flex align-items-center">
+                            <label for="leaveBalanceYear" class="custom-label pt-2 me-2">Leave balance year:</label>
+                            <input type="date" class="form-control me-2" id="leaveBalanceYear" value="2024-01-10" style="width: auto;">
+                            <label for="criteria" class="custom-label pt-2 me-2">Criteria</label>
+                            <select class="form-select" id="criteria" style="width: auto;">
+                                <option selected>All Employee</option>
+                                <option value="active">Active Employees</option>
+                                <option value="inactive">Inactive Employees</option>
+                                <option value="on_leave">Employees on Leave</option>
+                                <option value="terminated">Terminated Employees</option>
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row mb-3 mt-4 pb-2" style="border-bottom: 0.52px solid #E5E3E3">
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="employeeCode" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Employee Code</label>
+                            <select class="form-select custom-select" id="employeeCode">
+                                <option selected>Employee Code</option>
+                                <option value="E001">E001</option>
+                                <option value="E002">E002</option>
+                                <option value="E003">E003</option>
+                                <option value="E004">E004</option>
+                                <option value="E005">E005</option>
+                            </select>
+                        </div>
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="department" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Department</label>
+                            <select class="form-select custom-select" id="department">
+                                <option selected>Department</option>
+                                <option value="HR">HR</option>
+                                <option value="IT">IT</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Marketing">Marketing</option>
+                            </select>
+                        </div>
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="section" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Section</label>
+                            <select class="form-select custom-select" id="section">
+                                <option selected>Section</option>
+                                <option value="A">Section A</option>
+                                <option value="B">Section B</option>
+                                <option value="C">Section C</option>
+                            </select>
+                        </div>
+                        <div class="col" style="border-right: 0.52px solid #E5E3E3">
+                            <label for="line" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Line</label>
+                            <select class="form-select custom-select" id="line">
+                                <option selected>Line</option>
+                                <option value="1">Line 1</option>
+                                <option value="2">Line 2</option>
+                                <option value="3">Line 3</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="floor" class="custom-label" style="background-color: #F9F9F9; padding: 10px; display: block; text-align: center;">Floor</label>
+                            <select class="form-select custom-select" id="floor">
+                                <option selected>Floor</option>
+                                <option value="1">Floor 1</option>
+                                <option value="2">Floor 2</option>
+                                <option value="3">Floor 3</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-12 pb-2 d-flex justify-content-end">
+                        <button type="button" class="btn btn-success " style="background-color: #4AA147; border-color: #4AA147; padding: px 8px; font-size: 16px;">Load</button>
+                    </div>
+                </div>
+
+                <div class="mt-2  p-2 mb-2" style="border: 0.67px solid #D4D4D4; box-shadow: 0px 0px 10px 0px #0000000D; border-radius: 8px;">
+                    <div class="row">
+                        <div class="col-md-5 mb-2 col-12 d-flex align-items-center gap-2">
+                            <button id="selectAllBtn" class="btn" style="white-space: nowrap; border: 1px solid #D0D5DD;">Select All</button>
+                            <div class="input-group">
+                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search">
+                                <span class="input-group-text bg-transparent border-0">
+                                    <img alt="search" src="/User/img/search.png" width="20">
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Second col-md-6 containing Font Awesome icons, aligned to the end -->
+                        <div class="col-md-7 col-12 d-flex justify-content-end align-items-center gap-3">
+                            <!-- Adjusted gap for uniform spacing -->
+                            <i class="fas fa-download  px-3 py-2" style="cursor: pointer; font-size: 22px; color: #5C5E64; border: 0.52px solid #E5E3E3; padding: 5px; border-radius: 5px;"></i> <!-- Download Icon -->
+                            <i class="fas fa-upload px-3 py-2" style="cursor: pointer; font-size: 22px; color: #5C5E64; border: 0.52px solid #E5E3E3; padding: 5px; border-radius: 5px;"></i>   <!-- Upload Icon -->
+                            <i class="fas fa-file-pdf px-3 py-2" style="cursor: pointer; font-size: 22px; color: #5C5E64; border: 0.52px solid #E5E3E3; padding: 5px; border-radius: 5px;"></i> <!-- PDF Icon -->
+                            <i class="fas fa-copy px-3 py-2" style="cursor: pointer; font-size: 22px; color: #5C5E64; border: 0.52px solid #E5E3E3; padding: 5px; border-radius: 5px;"></i>     <!-- Copy Icon -->
+                        </div>
+                    </div>
+                    <div id="leaveBalanceTable"></div>
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="leave-adjust" role="tabpanel">
+                <div class="row pt-2 mb-2">
+                    <div class="col-md-6 mb-2 col-12 d-flex align-items-center gap-2">
+                        <button id="selectAllAdjustBtn" class="btn" style="white-space: nowrap; border: 1px solid #D0D5DD;">
+                           Select All
+                        </button>
+                        <button id="deleteSelectedBtn" class="btn" style="white-space: nowrap; border: 1px solid #D0D5DD;">Delete All</button>
+
+                        <div class="input-group">
+                            <input type="text" id="searchInput" class="form-control border-0 shadow-none" placeholder="Search" aria-label="Search">
+                            <span class="input-group-text bg-transparent border-0">
+                                <img alt="search" src="/User/img/search.png" width="20">
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Second col-md-6 containing Font Awesome icons, aligned to the end -->
+                    <div class="col-md-6 col-12 d-flex justify-content-end align-items-center gap-2">
+                        <label style="white-space: nowrap" class="custom-label pt-2 me-2">Date range:</label>
+                        <input type="text" class="form-control" id="leaveBalanceYear" placeholder="Select date range">
+
+                        <button type="button" class="btn btn-success" style="background-color: #4AA147; border-color: #4AA147; padding: 8px; font-size: 16px; white-space: nowrap" data-bs-toggle="offcanvas" data-bs-target="#editLeaveAdjustOffcanvas" aria-controls="editLeaveAdjustOffcanvas">
+                            <i class="fa-solid fa-plus me-1"></i>Create New
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row m-1" style="box-shadow: 0px 0px 10.44px 0px #0000000D; border-radius: 8px;">
+                    <div class="col-md-6 py-2 px-3 d-flex align-items-center">
+                        <img alt="calendar" src="/User/img/calender.png" width="40px" style="margin-right: 8px;">
+                        <h5 class="header-text-4 mb-0">Leave Adjust List</h5>
+                    </div>
+                    <div class="col-md-6 py-2 px-3 d-flex justify-content-end align-items-center gap-3">
+
+                        <div id="printpdf" style="margin-right: 8px; border: 0.52px solid #E5E3E3; border-radius: 7px ; padding: 5px 13px;">
+                            <img alt="pdf" src="/User/img/pdf.svg" width="30px">
+                        </div>
+                        <div id="printadjust" style=" border: 0.52px solid #E5E3E3; border-radius: 7px ; padding: 5px 13px;">
+                            <img alt="printer" src="/User/img/printer.svg" width="30px" >
+                        </div>
+                        
+
+                    </div>
+
+                    <div id="leaveAdjustTable"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Offcanvas -->
+<div class="offcanvas offcanvas-end " tabindex="-1" id="editLeaveAdjustOffcanvas" aria-labelledby="editLeaveAdjustOffcanvasLabel" style="width: 500px;">
+    <div class="offcanvas-header mx-3">
+        <h5 id="editLeaveAdjustOffcanvasLabel">Edit Leave Adjust</h5>
+        <button type="button" class="btn-close text-reset" id="closeButton" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body mx-3">
+        <form>
+            <div class="mb-3 row">
+                <label for="typeSelect" class="form-label col-md-5">Type</label>
+                <div class="col-md-6">
+                    <select class="form-select" id="typeSelect">
+                        <option value="replaceLeave">Replace Leave</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="criteriaSelect" class="form-label col-md-5">Criteria</label>
+                <div class="col-md-6">
+                    <select class="form-select" id="criteriaSelect">
+                        <option value="employee" selected>Employee</option>
+                        <option value="designation">Designation</option>
+                        <option value="department">Department</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="employeeSelect" class="form-label col-md-5">Employee</label>
+                <div class="col-md-6">
+                    <select class="form-select" id="employeeSelect" disabled>
+                        <option value="all">Select All</option>
+                        
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="designationSelect" class="form-label col-md-5">Designation</label>
+                <div class="col-md-6">
+                    <select class="form-select" id="designationSelect" disabled>
+                        <option value="">Select Designation</option>
+                        
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label for="departmentSelect" class="form-label col-md-5">Department</label>
+                <div class="col-md-6">
+                    <select class="form-select" id="departmentSelect" disabled>
+                        <option value="">Select Department</option>
+                       
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="adjustDate" class="form-label col-md-5">Adjust Date</label>
+                <div class="col-md-6">
+                    <input type="date" class="form-control" id="adjustDate">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="adjustToSelect" class="form-label col-md-5">Adjust To</label>
+                <div class="col-md-6">
+                    <select class="form-select" id="adjustToSelect">
+                        <option value="">Select </option>
+                    </select>
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="replaceDate" class="form-label col-md-5">Replace Date</label>
+                <div class="col-md-6">
+                    <input type="date" class="form-control" id="replaceDate">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="remark" class="form-label col-md-5">Remark</label>
+                <div class="col-md-6">
+                    <textarea class="form-control" id="remark" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-secondary me-2" id="cancelButton" data-bs-dismiss="offcanvas">Cancel</button>
+                <button type="submit" class="btn button-custom" id="saveLeaveAdjustButton">Save</button>
+                <button type="button" class="btn button-custom" id="updateLeaveAdjustButton" style="display: none;">Update</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts {
+
+    <script src="~/js/service/apiservice.js" asp-append-version="true"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>
+
+        // Assuming comid and userid are already defined
+        var comid = '@ViewBag.CompanyId';
+        var userid = '@ViewBag.UserId';
+
+        // Document ready function
+        $(document).ready(function () {
+            initializeSelect2(); // Initialize Select2 for dropdowns
+            handleCriteriaChange(); // Set initial state based on criteria selection
+            $('#criteriaSelect').on('change', handleCriteriaChange); // Add event listener for criteria change
+            saveadjustleave(); // Set up save data function
+            loadLeaveAdjustData();
+            // Add event listener for search input
+            document.getElementById("searchInput").addEventListener("input", function (e) {
+                loadLeaveAdjustData(e.target.value);
+            });
+
+
+            // Get today's date in the format YYYY-MM-DD
+            var today = new Date().toISOString().split('T')[0];
+
+            
+        });
+
+        // Get the current date
+        var today = new Date();
+
+        // Format the date to yyyy-mm-dd (required by input[type="date"])
+        var year = today.getFullYear();
+        var month = String(today.getMonth() + 1).padStart(2, '0');  // Months are 0-based in JavaScript
+        var day = String(today.getDate()).padStart(2, '0');
+
+        var formattedToday = `${year}-${month}-${day}`; // Format the date as 'yyyy-mm-dd'
+
+        // Set the value of the date input fields to today's date
+        document.getElementById('adjustDate').value = formattedToday;
+        document.getElementById('replaceDate').value = formattedToday;
+
+        // Function to initialize Select2 dropdowns
+        function initializeSelect2() {
+            select2Initializer("#departmentSelect", '@Url.Action("SearchDepartment", "Department")', "", "#editLeaveAdjustOffcanvas");
+            select2Initializer("#designationSelect", '@Url.Action("SearchDesignation", "Designation")', "", "#editLeaveAdjustOffcanvas");
+            select2Initializer("#employeeSelect", '@Url.Action("SearchEmployee", "EmployeeAdmin")', "", "#editLeaveAdjustOffcanvas");
+            select2Initializer("#adjustToSelect", '@Url.Action("SearchLeave", "Attendance")', "", "#editLeaveAdjustOffcanvas");
+        }
+
+        // Function to handle the criteria selection
+        function handleCriteriaChange() {
+            const criteriaSelect = document.getElementById('criteriaSelect');
+            const employeeSelect = document.getElementById('employeeSelect');
+            const designationSelect = document.getElementById('designationSelect');
+            const departmentSelect = document.getElementById('departmentSelect');
+
+            const selectedCriteria = criteriaSelect.value;
+            employeeSelect.disabled = designationSelect.disabled = departmentSelect.disabled = true;
+
+            if (selectedCriteria === 'employee') {
+                employeeSelect.disabled = false;
+            } else if (selectedCriteria === 'designation') {
+                designationSelect.disabled = false;
+            } else if (selectedCriteria === 'department') {
+                departmentSelect.disabled = false;
+            }
+        }
+
+        function saveadjustleave() {
+            $('#saveLeaveAdjustButton').on('click', function (event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                // Clear any previous error messages
+                $('.is-invalid').removeClass('is-invalid');
+                $('.invalid-feedback').remove();
+
+                // Gather form data
+                const empID = $('#employeeSelect').val(); // This will be 'all' if "Select All" is chosen
+                const data = {
+                    EmpID: empID === 'all' ? null : empID, // If "Select All", set EmpID to null
+                    AdjustType: $('#typeSelect').val(),
+                    AdjustLeaveId: $('#adjustToSelect').val(),  // Get the selected leave ID
+                    AdjustDate: $('#adjustDate').val(),
+                    ReplaceDate: $('#replaceDate').val(),
+                    Remarks: $('#remark').val(),
+                    DepartmentId: $('#departmentSelect').val(), // Capture the selected Department ID
+                    DesignationId: $('#designationSelect').val(), // Capture the selected Designation ID
+                    CompanyId: comid, // Replace with dynamic company ID as needed
+                    UserId: userid, // Replace with dynamic user ID as needed
+                };
+
+                // Validate form data
+                let isValid = true;
+
+                // Check required fields and display error messages
+                if (!data.AdjustType) {
+                    $('#typeSelect').addClass('is-invalid').after('<div class="invalid-feedback">Type is required.</div>');
+                    isValid = false;
+                }
+                if (!data.AdjustLeaveId) {
+                    $('#adjustToSelect').addClass('is-invalid').after('<div class="invalid-feedback">Adjust To is required.</div>');
+                    isValid = false;
+                }
+                if (!data.AdjustDate) {
+                    $('#adjustDate').addClass('is-invalid').after('<div class="invalid-feedback">Adjust Date is required.</div>');
+                    isValid = false;
+                }
+                if (!data.ReplaceDate) {
+                    $('#replaceDate').addClass('is-invalid').after('<div class="invalid-feedback">Replace Date is required.</div>');
+                    isValid = false;
+                }
+                if (!data.Remarks) {
+                    $('#remark').addClass('is-invalid').after('<div class="invalid-feedback">Remarks are required.</div>');
+                    isValid = false;
+                }
+                // Check if AdjustDate is equal to ReplaceDate
+                if (data.AdjustDate === data.ReplaceDate) {
+                    $('#adjustDate').addClass('is-invalid').after('<div class="invalid-feedback">Adjust Date cannot be the same as Replace Date.</div>');
+                    $('#replaceDate').addClass('is-invalid').after('<div class="invalid-feedback">Replace Date cannot be the same as Adjust Date.</div>');
+                    isValid = false;
+                }
+
+                // If form is not valid, stop further processing
+                if (!isValid) {
+                    return;
+                }
+
+                // Make the AJAX call to save the leave adjustment
+                $.ajax({
+                    url: '/Attendance/SaveLeaveAdjust', // Replace with your actual endpoint
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (response) {
+                        // Handle success response
+                        alert(response.message); // Show success message
+                        $('#editLeaveAdjustOffcanvas').offcanvas('hide'); // Close the offcanvas
+                        resetLeaveAdjustForm();
+                         loadLeaveAdjustData();
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response
+                        alert('Error saving data: ' + error);
+                    }
+                });
+            });
+        }
+
+        function resetLeaveAdjustForm() {
+            // Reset the 'Type' select dropdown to the default value
+            $('#typeSelect').val('replaceLeave').trigger('change');
+
+            // Reset the 'Criteria' select dropdown and trigger the change event
+            $('#criteriaSelect').val('employee').trigger('change');
+
+            // Reset the 'Adjust To' select dropdown
+            $('#employeeSelect').val('all').trigger('change');
+
+            // Reset the 'Designation' select dropdown and disable it
+            $('#designationSelect').val('').prop('disabled', true).trigger('change');
+
+            // Reset the 'Department' select dropdown and disable it
+            $('#departmentSelect').val('').prop('disabled', true).trigger('change');
+
+            // Reset the 'Adjust Date' and 'Replace Date' to today's date
+            $('#adjustDate').val(formattedToday);
+            $('#replaceDate').val(formattedToday);
+
+            // Reset the 'Adjust To' select dropdown
+            $('#adjustToSelect').val('').trigger('change');
+
+            // Clear the 'Remark' textarea
+            $('#remark').val('');
+
+            // Show 'Save' button and hide 'Update' button
+            $("#saveLeaveAdjustButton").show();
+            $("#updateLeaveAdjustButton").hide();
+        }
+
+
+        // Attach the closeAndClearOffcanvas function to the Cancel and Close buttons
+        $("#cancelButton, #closeButton").on("click", function () {
+            resetLeaveAdjustForm();
+        });
+
+
+        // Tabulator configuration with server-side pagination
+        var table = new Tabulator("#leaveAdjustTable", {
+            layout: "fitColumns",
+            pagination: true,
+            paginationMode: "remote",
+            paginationSize: 10,
+            paginationSizeSelector: [10, 25, 50, 100],
+            ajaxURL: "/Attendance/GetLeaveAdjustList",
+            ajaxConfig: "GET",
+            ajaxParams: {
+                searchQuery: "",
+                startDate: "",
+                endDate: ""
+            },
+            columns: [
+                {
+                    title: `Sl`,  // "Select All" checkbox in header
+                    field: "id",
+                    headerHozAlign: "center",
+                    formatter: function (cell) {
+                        return `<input type='checkbox' class='select-row-checkbox' name='selectLeaveAdjust' value='${cell.getValue()}' />`;
+                    },
+                    width: 50,
+                    headerSort: false
+                },
+                { title: "Emp. Code", field: "emp.employeeCode", headerHozAlign: "center", width: 133, }, // Employee Code
+                { title: "Name", field: "emp.firstName", headerHozAlign: "center", width: 200, formatter: function (cell) { return `${cell.getValue()} ${cell.getRow().getData().emp.lastName}`; } }, // Employee Name
+                { title: "Department", field: "emp.department.deptName", headerHozAlign: "center" }, // Department
+                { title: "Designation", field: "emp.designation.desigName", headerHozAlign: "center" }, // Designation
+                { title: "Leave Type", field: "adjustType", headerHozAlign: "center" },
+                {
+                    title: "Date",
+                    field: "replaceDate",
+                    headerHozAlign: "center",
+                    formatter: function (cell) {
+                        var dateValue = cell.getValue();
+                        if (dateValue) {
+                            var dateObj = new Date(dateValue);
+                            if (!isNaN(dateObj.getTime())) {
+                                var options = { day: '2-digit', month: 'short', year: 'numeric' };
+                                return dateObj.toLocaleDateString('en-GB', options);
+                            }
+                        }
+                        return "Invalid Date";
+                    }
+                },
+                { title: "Remarks", field: "remarks", headerHozAlign: "center" },
+                {
+                    title: "Actions",
+                    width: 50,
+                    formatter: function (cell) {
+                        return `
+                                <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                                    <button class="editLeaveAdjustBtn action-icon" style="background: none; border: none; cursor: pointer; padding: 0;">
+                                        <img alt="edit" width="20px" height="20px" src="/User/img/edit.svg" />
+                                    </button>
+                                    <button class="deleteLeaveAdjustBtn action-icon leave-adjust-delete-btn" style="background: none; border: none; cursor: pointer; padding: 0; margin-left: 8px;">
+                                        <img alt="delete" width="20px" height="20px" src="/User/img/delete.svg" />
+                                    </button>
+                                </div>
+
+                        `;
+                    },
+                    width: 110,
+                    hozAlign: "center"
+                }
+            ],
+            ajaxResponse: function (url, params, response) {
+                console.log("Raw API Response:", response);
+
+                if (response.success && Array.isArray(response.data)) {
+                    return {
+                        data: response.data,
+                        last_page: response.pageCount
+                    };
+                } else {
+                    console.error("Invalid API response format:", response);
+                    return {
+                        data: [],
+                        last_page: 1
+                    };
+                }
+            },
+            ajaxError: function (error) {
+                console.error("Tabulator AJAX Error:", error);
+                document.getElementById("errorMessage").textContent = "An error occurred while fetching data. Please try again.";
+                document.getElementById("errorMessage").style.display = "block";
+            },
+            dataLoaded: function (data) {
+                console.log("Data loaded into Tabulator:", data);
+                if (data.length === 0) {
+                    document.getElementById("noDataMessage").style.display = "block";
+                    document.getElementById("errorMessage").style.display = "none";
+                } else {
+                    document.getElementById("noDataMessage").style.display = "none";
+                    document.getElementById("errorMessage").style.display = "none";
+                }
+            },
+            movableColumns: true,
+        });
+
+        flatpickr("#leaveBalanceYear", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            showMonths: 2,
+            enableTime: false,
+            altInput: true,
+            altFormat: "F j, Y",
+            conjunction: " to ",
+            locale: {
+                firstDayOfWeek: 1
+            },
+            onChange: function (selectedDates, dateStr, instance) {
+                console.log("Selected date range:", dateStr);
+                if (selectedDates.length === 2) {
+                    var startDate = selectedDates[0].toISOString().split('T')[0];
+                    var endDate = selectedDates[1].toISOString().split('T')[0];
+                    updateTable(document.getElementById("searchInput").value, startDate, endDate);
+                }
+            }
+        });
+
+        // Function to update the table
+        function updateTable(searchQuery, startDate, endDate) {
+            table.setData("/Attendance/GetLeaveAdjustList", {
+                searchQuery: searchQuery,
+                startDate: startDate || "",
+                endDate: endDate || ""
+            });
+        }
+
+        // Add event listener for search input
+        document.getElementById("searchInput").addEventListener("input", function (e) {
+            var searchQuery = e.target.value;
+            var dateRange = document.getElementById("leaveBalanceYear").value.split(" to ");
+            var startDate = dateRange[0] ? new Date(dateRange[0]).toISOString().split('T')[0] : "";
+            var endDate = dateRange[1] ? new Date(dateRange[1]).toISOString().split('T')[0] : "";
+            updateTable(searchQuery, startDate, endDate);
+        });
+
+        // Event listener for Edit button in Leave Table
+        $("#leaveAdjustTable").on("click", ".editLeaveAdjustBtn", function () {
+            console.log("Edit button clicked"); // Debug log
+
+            // Get the row data for the clicked button
+            var row = table.getRow(this.closest('.tabulator-row')); // Get the closest row
+            var data = row.getData(); // Get the row data
+
+            console.log(data);
+
+            editingLeaveAdjustId = data.id;
+
+            // Populate the off-canvas fields with row data
+            $("#typeSelect").val(data.adjustType || ""); // Populate Adjust Type
+            $("#criteriaSelect").val(data.criteria || "employee"); // Set default to 'Employee'
+            $("#adjustDate").val(data.adjustDate || ""); // Populate Adjust Date
+            $("#replaceDate").val(data.replaceDate || ""); // Populate Replace Date
+            $("#remark").val(data.remarks || ""); // Populate Remarks
+
+            // Populate Employee dropdown using DefaultSelected function
+            DefaultSelected("#employeeSelect", data.empID, `${data.emp.firstName} ${data.emp.lastName}`);
+            // Disable the employee select to prevent changes
+            $("#criteriaSelect").prop('disabled', true);
+            $("#employeeSelect").prop('disabled', true);
+            // Populate Adjust To dropdown using DefaultSelected function
+            DefaultSelected("#adjustToSelect", data.adjustLeaveId, data.adjustLeave.displayName);
+
+
+            // Show the off-canvas
+            var offcanvas = new bootstrap.Offcanvas(document.getElementById('editLeaveAdjustOffcanvas'));
+            offcanvas.show();
+
+
+
+            // Set up buttons
+            $("#saveLeaveAdjustButton").hide(); // Hide create button
+            $("#updateLeaveAdjustButton").show(); // Show update button
+        });
+
+        // Event listener for the "Update" button
+        $("#updateLeaveAdjustButton").on("click", function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Collect form data
+            var leaveAdjustData = {
+                id: editingLeaveAdjustId,  // The ID of the leave adjustment being edited
+                empID: $("#employeeSelect").val(),  // Employee ID from the dropdown
+                adjustType: $("#typeSelect").val(),  // Adjustment type
+                adjustLeaveId: $("#adjustToSelect").val(),  // Selected Leave ID
+                adjustDate: $("#adjustDate").val(),  // Adjustment date
+                replaceDate: $("#replaceDate").val(),  // Replace date
+                remarks: $("#remark").val(),  // Remarks field
+                departmentId: $("#departmentSelect").val(), // Capture the selected Department ID
+                designationId: $("#designationSelect").val(), // Capture the selected Designation ID
+                companyId: comid, // Replace with dynamic company ID as needed
+                userId: userid // Replace with dynamic user ID as needed
+            };
+
+            // Validate form data before sending
+            let isValid = true;
+
+            // Check required fields and display error messages
+            if (!leaveAdjustData.adjustType) {
+                $("#typeSelect").addClass("is-invalid").after("<div class='invalid-feedback'>Type is required.</div>");
+                isValid = false;
+            }
+            if (!leaveAdjustData.adjustLeaveId) {
+                $("#adjustToSelect").addClass("is-invalid").after("<div class='invalid-feedback'>Adjust To is required.</div>");
+                isValid = false;
+            }
+            if (!leaveAdjustData.adjustDate) {
+                $("#adjustDate").addClass("is-invalid").after("<div class='invalid-feedback'>Adjust Date is required.</div>");
+                isValid = false;
+            }
+            if (!leaveAdjustData.replaceDate) {
+                $("#replaceDate").addClass("is-invalid").after("<div class='invalid-feedback'>Replace Date is required.</div>");
+                isValid = false;
+            }
+            if (!leaveAdjustData.remarks) {
+                $("#remark").addClass("is-invalid").after("<div class='invalid-feedback'>Remarks are required.</div>");
+                isValid = false;
+            }
+            // Check if AdjustDate is equal to ReplaceDate
+            if (leaveAdjustData.adjustDate === leaveAdjustData.replaceDate) {
+                $("#adjustDate").addClass("is-invalid").after("<div class='invalid-feedback'>Adjust Date cannot be the same as Replace Date.</div>");
+                $("#replaceDate").addClass("is-invalid").after("<div class='invalid-feedback'>Replace Date cannot be the same as Adjust Date.</div>");
+                isValid = false;
+            }
+
+            // If form is not valid, stop further processing
+            if (!isValid) {
+                return;
+            }
+
+            // Send AJAX request to update the leave adjustment
+            $.ajax({
+                url: "/Attendance/EditLeaveAdjust",  // The endpoint for editing the leave adjustment
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(leaveAdjustData),  // Convert data to JSON format
+                success: function (response) {
+                    // If the response is successful, show success message or refresh the table
+                    alert(response.message || "Leave adjustment updated successfully.");
+
+                    // Optionally, close the off-canvas after successful update
+                    var offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('editLeaveAdjustOffcanvas'));
+                    offcanvas.hide();
+
+                    // Reload the Tabulator table data (if necessary)
+                    table.setData();
+                },
+                error: function (xhr, status, error) {
+                    // Handle error case, show validation errors or other messages
+                    alert("An error occurred while updating the leave adjustment: " + xhr.responseText);
+                }
+            });
+        });
+
+
+
+        $("#leaveAdjustTable").on("click", ".deleteLeaveAdjustBtn", function () {
+            // Get the row that contains the clicked delete button
+            var row = table.getRow(this.closest(".tabulator-row"));
+            var adjustleaveid = row.getData().id;
+
+            if (adjustleaveid) {
+                // Confirm deletion
+                if (confirm("Are you sure you want to delete this holiday?")) {
+                    // Call the delete action method
+                    $.ajax({
+                        url: '/Attendance/LeaveAdjustDelete',
+                        type: 'GET',
+                        data: { adjustleaveid: adjustleaveid },
+                        success: function (response) {
+                            if (response.success === "1") {
+                                alert(response.msg);
+                                row.delete(); // Remove the row from the table
+                            } else {
+                                alert("Error: " + response.msg);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                            alert("An error occurred while deleting the holiday.");
+                        }
+                    });
+                }
+            } else {
+                alert("No holiday ID found to delete.");
+            }
+        });
+
+        var selectAllState = false;
+
+        // Toggle 'Select All' checkboxes (header and button) and update row checkboxes
+        function toggleSelectAll(isChecked) {
+            $("input[name='selectLeaveAdjust']").prop("checked", isChecked);  // Check/uncheck all row checkboxes
+        }
+
+        // "Select All" button click event
+        $("#selectAllAdjustBtn").click(function () {
+            selectAllState = !selectAllState;  // Toggle the state
+
+            // Set checkboxes based on the updated state
+            toggleSelectAll(selectAllState);
+        });
+
+        // "Select All" checkbox in the table header
+        $("#selectAllCheckbox").change(function () {
+            var isChecked = $(this).is(":checked");
+            toggleSelectAll(isChecked);  // Synchronize with all row checkboxes
+        });
+
+        // "Delete Selected" button click event
+        $("#deleteSelectedBtn").click(function () {
+            var selectedIds = [];
+            $("input[name='selectLeaveAdjust']:checked").each(function () {
+                selectedIds.push($(this).val());  // Collect selected IDs
+            });
+
+            if (selectedIds.length === 0) {
+                alert("Please select at least one leave adjustment to delete.");
+                return;
+            }
+
+            // AJAX request to delete selected leave adjustments
+            $.ajax({
+                url: "/Attendance/DeleteLeaveAdjustments",  // Action method URL
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(selectedIds),  // Send selected IDs as JSON
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message);
+                        table.setData();  // Reload Tabulator to reflect changes
+                    } else {
+                        alert("Failed to delete leave adjustments.");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("An error occurred: " + xhr.responseText);
+                }
+            });
+        });
+
+
+        // Function to load data with search query
+        function loadLeaveAdjustData(searchQuery = "") {
+            table.setData("/Attendance/GetLeaveAdjustList", { searchQuery: searchQuery })
+                .then(() => {
+                    console.log("Data loaded successfully");
+                })
+                .catch(error => {
+                    console.error("Error loading data:", error);
+                    document.getElementById("errorMessage").textContent = "An error occurred while fetching data. Please try again.";
+                    document.getElementById("errorMessage").style.display = "block";
+                });
+        }
+
+
+        document.getElementById("printpdf").addEventListener("click", function () {
+            // Hide the checkbox column before downloading
+            let checkboxColumn = table.getColumn("id");
+            checkboxColumn.hide(); // Hide the checkbox column
+
+            // Download PDF excluding the checkbox column
+            table.download("pdf", "data.pdf", { title: "Employee List" });
+
+            // Show the checkbox column again after downloading
+            checkboxColumn.show();
+        });
+
+        document.getElementById("printadjust").addEventListener("click", function () {
+            // Hide the checkbox column before printing
+            let checkboxColumn = table.getColumn("id");
+            checkboxColumn.hide(); // Hide the checkbox column
+
+            // Print table excluding the checkbox column
+            table.print(false, true);
+
+            // Show the checkbox column again after printing
+            checkboxColumn.show();
+        });
+
+
+        // Add any additional code here that needs to run after the DOM is ready
+
+        
+        
+
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabledata = [
+                { "ID": 1, "Employee Name": "John Doe", image: "/User/img/robin.png", Designation: "Software Engineer", "Leave Date": "2024-09-25", Type: "Annual Leave", Status: "Pending", "Approved By": "Alice Smith", Application: "Online", Remarks: "On Time" },
+                { "ID": 2, "Employee Name": "Jane Smith", image: "/User/img/person.png", Designation: "Project Manager", "Leave Date": "2024-09-24", Type: "Sick Leave", Status: "Pending", "Approved By": "Michael Brown", Application: "Paper", Remarks: "Submitted with doctor's note" },
+                { "ID": 3, "Employee Name": "Emily Johnson", image: "/User/img/borhan.png", Designation: "Designer", "Leave Date": "2024-09-23", Type: "Casual Leave", Status: "Pending", "Approved By": "HR Department", Application: "Email", Remarks: "Insufficient balance" },
+                { "ID": 4, "Employee Name": "Michael Brown", image: "/User/img/person_icon_3.png", Designation: "Data Analyst", "Leave Date": "2024-09-22", Type: "Maternity Leave", Status: "Pending", "Approved By": "Grace Williams", Application: "Online", Remarks: "Awaiting approval" },
+                { "ID": 5, "Employee Name": "Sarah Davis", image: "/User/img/person_icon_2.png", Designation: "HR Specialist", "Leave Date": "2024-09-21", Type: "Work From Home", Status: "Pending", "Approved By": "John Doe", Application: "Online", Remarks: "Approved due to urgent work" }
+            ];
+            // Create the Tabulator table after the DOM is loaded
+            var table = new Tabulator("#LeaveRequest", {
+                data: tabledata, // Load the data into the table
+                layout: "fitColumns", // Fit columns to width of the table
+                columns: [
+                    {
+                        titleFormatter: "rowSelection", // Add select all checkbox in the header
+                        headerHozAlign: "center",
+                        hozAlign: "center",
+                        formatter: "rowSelection",
+                        cellClick: function (e, cell) {
+                            cell.getRow().toggleSelect();
+                        },
+                        width: 50,
+                        headerSort: false
+                    },
+                    { title: "ID", field: "ID", sorter: "number", width: 70, headerHozAlign: "center" },
+                    {
+                        title: "Employee Name", field: "Employee Name", headerHozAlign: "center", width: 190, formatter: function (cell, formatterParams, onRendered) {
+                            var row = cell.getRow().getData();
+                            return `<div style="display: flex; align-items: center;">
+                                                        <img src="${row.image}" class="employee-image" alt="${row['Employee Name']}" style="width: 30px; height: 30px; border-radius: 50%;">
+                                                        <div class="employee-info" style="margin-left: 10px;">
+                                                            <span class="employee-name" style="text-align: start;">${row['Employee Name']}</span>
+                                                            <span class="employee-designation" style="text-align: start;">${row.Designation}</span>
+                                                        </div>
+                                                    </div>`;
+                        }
+                    },
+                    { title: "Leave Date", field: "Leave Date", formatter: "textarea", headerHozAlign: "center" },
+                    { title: "Type", field: "Type", headerHozAlign: "center" },
+                    {
+                        title: "Status",
+                        field: "Status",
+                        width: 135,
+                        headerHozAlign: "center",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            const value = cell.getValue();
+                            let backgroundColor = "";
+
+                            if (value === "Rejected") {
+                                backgroundColor = "#FFA08B"; // Red background for rejected
+                            } else if (value === "Approved") {
+                                backgroundColor = "#D3F6D2"; // Green background for approved
+                            } else if (value === "Pending") {
+                                backgroundColor = "#FFF9C4"; // Light yellow background for pending (or any color you prefer)
+                            }
+
+                            return `<span style="display: inline-block; padding: 4px 9px; background-color: ${backgroundColor}; border-radius: 7px;">${value}</span>`;
+                        }
+                    },
+                    { title: "Approved By", field: "Approved By", headerHozAlign: "center" },
+                    { title: "Application", field: "Application", headerHozAlign: "center" },
+                ],
+                pagination: "local",
+                paginationSize: 7,
+                paginationButtonCount: 4,
+                paginationSizeSelector: [10, 25, 50, 100],
+                selectable: true, // Enable row selection
+            });
+        });
+
+        const tabledataTWO = [
+            { "ID": 1, "Employee Name": "John Doe", image: "/User/img/robin.png", Designation: "Software Engineer", "Leave Date": "2024-09-25", Type: "Annual Leave", Status: "Approved", "Approved By": "Alice Smith", Application: "Online", Remarks: "On Time" },
+            { "ID": 2, "Employee Name": "Jane Smith", image: "/User/img/person.png", Designation: "Project Manager", "Leave Date": "2024-09-24", Type: "Sick Leave", Status: "Rejected", "Approved By": "Michael Brown", Application: "Paper", Remarks: "Submitted with doctor's note" },
+            { "ID": 3, "Employee Name": "Emily Johnson", image: "/User/img/borhan.png", Designation: "Designer", "Leave Date": "2024-09-23", Type: "Casual Leave", Status: "Rejected", "Approved By": "HR Department", Application: "Email", Remarks: "Insufficient balance" },
+            { "ID": 4, "Employee Name": "Michael Brown", image: "/User/img/person_icon_3.png", Designation: "Data Analyst", "Leave Date": "2024-09-22", Type: "Maternity Leave", Status: "Approved", "Approved By": "Grace Williams", Application: "Online", Remarks: "Awaiting approval" },
+            { "ID": 5, "Employee Name": "Sarah Davis", image: "/User/img/person_icon_2.png", Designation: "HR Specialist", "Leave Date": "2024-09-21", Type: "Work From Home", Status: "Approved", "Approved By": "John Doe", Application: "Online", Remarks: "Approved due to urgent work" }
+        ];
+
+
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            // Create the Tabulator table after the DOM is loaded
+            var table = new Tabulator("#LeaveHistory", {
+                data: tabledataTWO, // Load the data into the table
+                layout: "fitColumns", // Fit columns to width of the table
+                columns: [
+                    {
+                        titleFormatter: "rowSelection", // Add select all checkbox in the header
+                        headerHozAlign: "center",
+                        hozAlign: "center",
+                        formatter: "rowSelection",
+                        cellClick: function (e, cell) {
+                            cell.getRow().toggleSelect();
+                        },
+                        width: 50,
+                        headerSort: false
+                    },
+                    { title: "ID", field: "ID", sorter: "number", width: 70, headerHozAlign: "center" },
+                    {
+                        title: "Employee Name", field: "Employee Name", headerHozAlign: "center", width: 190, formatter: function (cell, formatterParams, onRendered) {
+                            var row = cell.getRow().getData();
+                            return `<div style="display: flex; align-items: center;">
+                                                    <img src="${row.image}" class="employee-image" alt="${row['Employee Name']}" style="width: 30px; height: 30px; border-radius: 50%;">
+                                                    <div class="employee-info" style="margin-left: 10px;">
+                                                        <span class="employee-name" style="text-align: start;">${row['Employee Name']}</span>
+                                                        <span class="employee-designation" style="text-align: start;">${row.Designation}</span>
+                                                    </div>
+                                                </div>`;
+                        }
+                    },
+                    { title: "Leave Date", field: "Leave Date", formatter: "textarea", headerHozAlign: "center" },
+                    { title: "Type", field: "Type", headerHozAlign: "center" },
+                    {
+                        title: "Status",
+                        field: "Status",
+                        width: 135,
+                        headerHozAlign: "center",
+                        formatter: function (cell, formatterParams, onRendered) {
+                            const value = cell.getValue();
+                            let backgroundColor = "";
+
+                            if (value === "Rejected") {
+                                backgroundColor = "#FFA08B"; // Red background for rejected
+                            } else if (value === "Approved") {
+                                backgroundColor = "#D3F6D2"; // Green background for approved
+                            } else if (value === "Pending") {
+                                backgroundColor = "#FFF9C4"; // Light yellow background for pending (or any color you prefer)
+                            }
+
+                            return `<span style="display: inline-block; padding: 4px 9px; background-color: ${backgroundColor}; border-radius: 7px;">${value}</span>`;
+                        }
+                    },
+                    { title: "Approved By", field: "Approved By", headerHozAlign: "center" },
+                    { title: "Application", field: "Application", headerHozAlign: "center" },
+                ],
+                pagination: "local",
+                paginationSize: 7,
+                paginationButtonCount: 4,
+                paginationSizeSelector: [10, 25, 50, 100],
+                selectable: true, // Enable row selection
+            });
+        });
+
+        // Ensure only one active tab at a time for both primary and secondary tabs
+        document.querySelectorAll('.nav-tabs .nav-link').forEach(tab => {
+            tab.addEventListener('click', function () {
+                const parent = this.closest('.nav-tabs');
+                parent.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
+
+                // Display the correct tab content
+                const tabContent = document.querySelector(this.getAttribute('data-bs-target'));
+                tabContent.classList.add('show', 'active');
+                tabContent.siblings.forEach(sibling => sibling.classList.remove('show', 'active'));
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var table = new Tabulator("#leaveBalanceTable", {
+                data: [
+                    { employee_code: "GTRC114", employee_name: "Charles", cl: 14, sl: 4, el: 8, ml: 30, department: "Software Implementation", section: "Software" },
+                    { employee_code: "GTRC115", employee_name: "Abdul", cl: 12, sl: 3, el: 6, ml: 28, department: "Business Operation", section: "UI/UX Designer" },
+                    { employee_code: "GTRC116", employee_name: "Martha", cl: 10, sl: 5, el: 7, ml: 25, department: "Human Resources", section: "Recruitment" },
+                    { employee_code: "GTRC117", employee_name: "John", cl: 15, sl: 2, el: 10, ml: 20, department: "Marketing", section: "Digital Marketing" },
+                    { employee_code: "GTRC118", employee_name: "Sophia", cl: 16, sl: 6, el: 12, ml: 15, department: "Finance", section: "Accounts" },
+                    { employee_code: "GTRC119", employee_name: "Michael", cl: 8, sl: 3, el: 5, ml: 10, department: "Customer Support", section: "Technical Support" },
+                    { employee_code: "GTRC120", employee_name: "Aisha", cl: 9, sl: 4, el: 11, ml: 18, department: "Research & Development", section: "Product Design" }
+                ],
+                layout: "fitColumns",
+                columns: [
+                    {
+                        titleFormatter: "rowSelection", headerHozAlign: "center", // The header checkbox
+                        hozAlign: "center",
+                        headerSort: false,
+                        cellClick: function (e, cell) {
+                            cell.getRow().toggleSelect(); // Toggle row selection on cell click
+                        },
+                        formatter: "rowSelection", // Checkbox formatter for each row
+                        width: 50,
+                    },
+                    { title: "Employee Code", field: "employee_code", headerHozAlign: "center" },
+                    { title: "Employee Name", field: "employee_name", headerHozAlign: "center" },
+                    { title: "CL", field: "cl", headerHozAlign: "center" },
+                    { title: "SL", field: "sl", headerHozAlign: "center" },
+                    { title: "EL", field: "el", headerHozAlign: "center" },
+                    { title: "ML", field: "ml", headerHozAlign: "center" },
+                    { title: "Department", field: "department", headerHozAlign: "center" },
+                    { title: "Section", field: "section", headerHozAlign: "center" },
+                ],
+                selectable: true, // Allows row selection
+            });
+            // Button for select/deselect all
+            const selectAllBtn = document.getElementById('selectAllBtn');
+            let isAllSelected = false;
+
+            selectAllBtn.addEventListener('click', function () {
+                if (isAllSelected) {
+                    table.deselectRow(); // Deselect all rows
+                    selectAllBtn.textContent = 'Select All';
+                } else {
+                    table.selectRow(); // Select all rows
+                    selectAllBtn.textContent = 'Deselect All';
+                }
+                isAllSelected = !isAllSelected;
+            });
+
+        });
+
+        // document.addEventListener('DOMContentLoaded', function () {
+        //     var table = new Tabulator("#leaveAdjustTable", {
+        //         data: [
+        //             { employee_code: "GTRC114", employee_name: "Charles", department: "Software Implementation", designation: "Software Engineer", leave_type: "Casual Leave", date: "2024-09-20", remark: "Family function", action: "Approve" },
+        //             { employee_code: "GTRC115", employee_name: "Abdul", department: "Business Operation", designation: "UI/UX Designer", leave_type: "Sick Leave", date: "2024-09-18", remark: "Flu", action: "Approve" },
+        //             { employee_code: "GTRC116", employee_name: "Martha", department: "Human Resources", designation: "Recruiter", leave_type: "Earned Leave", date: "2024-09-15", remark: "Vacation", action: "Approve" },
+        //             { employee_code: "GTRC117", employee_name: "John", department: "Marketing", designation: "Digital Marketer", leave_type: "Maternity Leave", date: "2024-09-22", remark: "Childbirth", action: "Approve" },
+        //             { employee_code: "GTRC118", employee_name: "Sophia", department: "Finance", designation: "Accountant", leave_type: "Casual Leave", date: "2024-09-19", remark: "Family event", action: "Approve" },
+        //             { employee_code: "GTRC119", employee_name: "Michael", department: "Customer Support", designation: "Technical Support", leave_type: "Sick Leave", date: "2024-09-21", remark: "Back pain", action: "Approve" },
+        //             { employee_code: "GTRC120", employee_name: "Aisha", department: "Research & Development", designation: "Product Designer", leave_type: "Vacation Leave", date: "2024-09-23", remark: "Travel", action: "Approve" }
+        //         ],
+        //         layout: "fitColumns",
+        //         columns: [
+        //             {
+        //                 titleFormatter: "rowSelection", headerHozAlign: "center", // The header checkbox
+        //                 hozAlign: "center",
+        //                 headerSort: false,
+        //                 cellClick: function (e, cell) {
+        //                     cell.getRow().toggleSelect(); // Toggle row selection on cell click
+        //                 },
+        //                 formatter: "rowSelection", // Checkbox formatter for each row
+        //                 width: 50,
+        //             },
+        //             { title: "Emp. Code", field: "employee_code", headerHozAlign: "center" },
+        //             { title: "Name", field: "employee_name", headerHozAlign: "center" },
+        //             { title: "Department", field: "department", headerHozAlign: "center" },
+        //             { title: "Designation", field: "designation", headerHozAlign: "center" },
+        //             { title: "Leave Type", field: "leave_type", headerHozAlign: "center" },
+        //             { title: "Date", field: "date", headerHozAlign: "center" },
+        //             { title: "Remark", field: "remark", headerHozAlign: "center" },
+        //             {
+        //                 title: "Action",
+        //                 field: "action",
+        //                 headerHozAlign: "center",
+        //                 formatter: function (cell) {
+        //                     // Create edit and delete buttons
+        //                     return `
+        //                                 <div style="display: flex; justify-content: center;">
+        //                                     <button class="edit-btn" style="border: none; background: none; cursor: pointer;">
+        //                                                     <i class="bi bi-pencil-square" "></i>
+        //                                     </button>
+        //                                     <button class="delete-btn" style="border: none; background: none; cursor: pointer;">
+        //                                             <i class="bi bi-trash3" ></i>
+        //                                     </button>
+        //                                 </div>
+        //                             `;
+        //                 },
+        //                 cellClick: function (e, cell) {
+        //                     // Handle edit and delete button clicks
+        //                     const target = e.target;
+
+        //                     if (target.classList.contains('edit-btn')) {
+        //                         const rowData = cell.getRow().getData();
+        //                         // Call your edit function here
+        //                         alert(`Edit employee: ${rowData.employee_name}`);
+        //                     }
+
+        //                     if (target.classList.contains('delete-btn')) {
+        //                         const rowData = cell.getRow().getData();
+        //                         // Call your delete function here
+        //                         if (confirm(`Are you sure you want to delete ${rowData.employee_name}?`)) {
+        //                             table.deleteRow(cell.getRow());
+        //                         }
+        //                     }
+        //                 }
+        //             },
+        //         ],
+        //         selectable: true, // Allows row selection
+        //     });
+
+        //     // Button for select/deselect all
+        //     const selectAllBtn = document.getElementById('selectAllAdjustBtn');
+        //     let isAllSelected = false;
+
+        //     selectAllBtn.addEventListener('click', function () {
+        //         if (isAllSelected) {
+        //             table.deselectRow(); // Deselect all rows
+        //             selectAllBtn.textContent = 'Select All';
+        //         } else {
+        //             table.selectRow(); // Select all rows
+        //             selectAllBtn.textContent = 'Deselect All';
+        //         }
+        //         isAllSelected = !isAllSelected;
+        //     });
+        // });
+
+
+    </script>
+
+}
+
+

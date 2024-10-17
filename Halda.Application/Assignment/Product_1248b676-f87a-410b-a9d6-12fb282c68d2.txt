@@ -1,0 +1,889 @@
+@inject IConfiguration config
+
+@{
+    ViewData["pageTitle"] = "My Tasks";
+}
+
+    <style>
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .button-container label {
+            margin-bottom: 10px; /* Adjust spacing between label and button */
+        }
+    </style>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <p id="completed-tasks-count" class="m-0 p-2">Completed Subtasks</p>
+        @*  <p id="delayed-tasks-count" class="m-0 p-2">Completed Tasks(Delay)</p> *@
+    </div>
+    <div class="dropdown filter-buttons text-end mb-1 col-md-8">
+        <button class="btn border dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Filter
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" id="filter-started">Started</a></li>
+            <li><a class="dropdown-item" id="filter-not-started">Not Started</a></li>
+            <li><a class="dropdown-item" id="filter-completed">Completed</a></li>
+        </ul>
+    </div>
+</div>
+@* <div class="filter-buttons">
+    <button id="filter-started">Started</button>
+    <button id="filter-not-started">Not Started</button>
+    <button id="filter-completed">Completed</button>
+</div> *@
+<div id="task-table"></div>
+
+@* <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+    Create Invoice
+</button> *@
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel" style="width: 60vw;">
+    <div class="offcanvas-header" style="background-color: #f5f5f5;">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel" style="font-weight: bold; color: #000000;"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" id="offcanvasCloseButton"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="row">
+            <div class="col">
+
+                <div>
+                    <label>Milestone</label>
+                    <p id="tableCreationTitle" class="text-dark"></p>
+                </div>
+                </div>
+            <div class="col">
+                <div>
+                    <label>Task</label>
+                    <p id="taskName" class="text-dark"></p>
+                </div>
+            </div>
+
+                <div class="row pt-2">
+                    <div class="col-md-4">
+                        <div class="priority-container">
+                            <label>Priority</label>
+
+                        <p id="prioritySelect" class="text-dark"></p>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="dependency-container">
+                            <label for="dependencySelect">Dependency</label>
+                            <select class="form-control" id="dependencySelect">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                        <div class="col-md-4">
+                            <div class="button-container">
+                                <label>Attachment</label>
+                                <button class="btn btn-success" id="downloadButton" onclick="download();">Download</button>
+                            </div>
+                        </div>
+  
+               
+                </div>
+                <!-- Add margin-top to create space -->
+                <div style="margin-top: 20px;"></div>
+                <!-- Second Tabulator Table Container -->
+                <div id="sub-task-table"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts {
+
+    <script>
+
+        var projectId = '';
+
+        function download() {
+            console.log(projectId);
+
+            fetch(`@config.GetSection("BaseAPI").Value/Files/Files/${projectId}`)
+                .then(response => {
+                    console.log(response);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    // Get the Content-Disposition header
+                    const disposition = response.headers.get('Content-Disposition'); // Make sure header name matches
+
+                    console.log('Content-Disposition:', disposition);
+
+                    let fileName = 'downloaded_file.zip'; // Default file name
+
+                    if (disposition) {
+                        // Try to extract the filename from the filename* parameter
+                        const filenameMatch = /filename\*=UTF-8''([^;]*)/.exec(disposition);
+                        if (filenameMatch) {
+                            fileName = decodeURIComponent(filenameMatch[1]);
+                        } else {
+                            // Fallback to extracting filename from the standard filename parameter
+                            const filenameMatchFallback = /filename="([^"]*)"/.exec(disposition);
+                            if (filenameMatchFallback) {
+                                fileName = filenameMatchFallback[1];
+                            }
+                        }
+                    }
+
+                    console.log('Filename:', fileName);
+
+                    // Use the URL from the response to create an anchor element and trigger download
+                    const downloadUrl = response.url;
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = fileName; // Set the filename for the download
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                })
+                .catch(error => {
+                    console.error('An error occurred while downloading the file:', error);
+                    alert('An error occurred while downloading the file.');
+                });
+        }
+
+
+
+
+
+
+
+
+
+
+        $(document).ready(function () {
+            var userId = getCookie('UserId');
+            var mainTable;
+            var subtaskTable;
+
+            function transformData(data) {
+                return data.map((item, index) => ({
+                    serialNumber: item.serialNumber,
+                    taskName: `${item.name} of ${item.projectName}`,
+                    status: item.status,
+                    estTime: item.estTime1,
+                    dueDate: item.dueDate,
+                    formattedDueDate: dateTimeFormatter(item.dueDate),
+                    progress: item.progress,
+                    id: item.id,
+                    dependency: item.canChangeStatus ? 'No' : 'Yes'
+                }));
+            }
+
+            function dateTimeFormatter(dateTime) {
+                if (dateTime) {
+                    const date = new Date(dateTime);
+                    const formattedDate = `${date.toLocaleString('en-US', { month: 'long', day: '2-digit', year: '2-digit' })}`;
+                    return formattedDate;
+                }
+                return '';
+            }
+
+            function initializeMainTable(data) {
+                console.log('initializeMainTable', data);
+                mainTable = new Tabulator("#task-table", {
+
+                    data: data,
+                    layout: "fitColumns",
+                    rowHeader: { headerSort: false, resizable: false, width: 30, rowHandle: true, formatter: "handle" },
+                    movableRows: true,
+                    columns: [
+                        // { title: "Serial Number", field: "serialNumber" },
+                        { title: "Task Name", field: "taskName", headerFilter: true },
+                        { title: "Estimated Time(Min)", field: "estTime" },
+                        { title: "Dependent", field: "dependency" },
+                        { title: "Due Date", field: "formattedDueDate", headerFilter: true },
+                        { title: "Progress", field: "progress", formatter: pieChartFormatter }
+                    ],
+                    initialFilter: [
+                        { field: "status", type: "=", value: "Started" }
+                    ]
+                });
+
+                mainTable.on("rowClick", function (e, row) {
+                    const rowData = row.getData();
+                    const rowId = rowData.id;
+                    const offcanvasElement = document.getElementById('offcanvasExample');
+                    const offcanvasInstance = bootstrap.Offcanvas.getOrCreateInstance(offcanvasElement);
+                    offcanvasInstance.show();
+                    loadSubTable(rowId);
+                });
+
+                mainTable.on("rowMoved", function (e, row) {
+                    // Get the current filter
+                    const filters = mainTable.getFilters();
+                    const statusFilter = filters.find(filter => filter.field === 'status');
+
+                    // Get the new order of rows based on the current filter
+                    let rows = mainTable.getRows(); // Get all rows
+                    if (statusFilter) {
+                        rows = rows.filter(row => row.getData().status === statusFilter.value); // Filter rows based on current status filter
+                    }
+                    const newOrder = rows.map(row => row.getData().id); // Extract row data in the new order
+                    console.log("New order of rows:", newOrder);
+                    // Prepare data to send
+                    var requestData = {
+                        userId: userId,
+                        order: newOrder
+                    };
+
+                    $.ajax({
+                        url: `@config.GetSection("BaseAPI").Value/Tasks/Reordering`,
+                        method: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(requestData),
+                        success: function (response) {
+                            console.log('Success:', response);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error Status:', status);
+                            console.error('Error Thrown:', error);
+                            console.error('Response Text:', xhr.responseText);
+                            console.error('Response Status:', xhr.status);
+                            console.error('Response Headers:', xhr.getAllResponseHeaders());
+                        }
+                    });
+
+
+                });
+            }
+
+
+            function loadSubTable(rowId) {
+                $.ajax({
+                    url: `@config.GetSection("BaseAPI").Value/Tasks/GetTaskByUserNewSubtask/${userId}/${rowId}`,
+                    method: "GET",
+                    success: function (subTasks) {
+                        console.log('subTasks', subTasks);
+                        const transformedSubTasks = transformSubTaskData(subTasks);
+                        console.log("transformedSubTasks", transformedSubTasks);
+
+                        // Assuming you have fetched the project, milestone, and task names
+                        const projectName = subTasks[0].projectName; // Assuming the first task's project name
+                        const milestoneName = subTasks[0].mstName; // Assuming the first task's milestone name
+                        const taskName = subTasks[0].taskName; // Assuming the first task's task name
+                        const priority = subTasks[0].priority;
+                        projectId = subTasks[0].pid;
+
+                        // Update Offcanvas title and content
+                        $('#offcanvasExampleLabel').text(projectName);
+                        $('#tableCreationTitle').text(milestoneName);
+                        $('#taskName').text(taskName);
+                        $('#prioritySelect').text(priority);
+
+                        // Populate the dependency dropdown with distinct dtaskNames
+                        const dtaskNames = subTasks.flatMap(task =>
+                            task.dtaskName ? task.dtaskName.split(',').map(name => name.trim()) : []
+                        );
+
+                        // Use Set to get distinct values
+                        const uniqueDtaskNames = [...new Set(dtaskNames)];
+
+                        const dependencySelect = $('#dependencySelect');
+                        dependencySelect.empty(); // Clear existing options
+
+                        uniqueDtaskNames.forEach((name, index) => {
+                            dependencySelect.append(`<option value="${index + 1}">${name}</option>`);
+                        });
+
+                        subtaskTable = new Tabulator("#sub-task-table", {
+                            data: transformedSubTasks,
+                            movableRows: true,
+                            rowHeader: { headerSort: false, resizable: false, minWidth: 30, width: 30, rowHandle: true, formatter: "handle" },
+                            layout: "fitColumns",
+                            columns: [
+                                // { title: "Serial Number", field: "serialNumber" },
+                                { title: "Sub Task Name", field: "subTaskName", headerFilter: true },
+                                { title: "Type", field: "type", visible: false },
+                                { title: "cng", field: "canChangeStatus", visible: false },
+                                { title: "ID", field: "id", visible: false },
+                                {
+                                    title: "Status",
+                                    field: "status",
+                                    formatter: function (cell, formatterParams, onRendered) {
+                                        return statusFormatter(cell, formatterParams, onRendered, cell.getValue());
+                                    }
+                                },
+                                { title: "Estimate Time(Min)", field: "estTime1" },
+                                { title: "Due Date", field: "dueDate", headerFilter: true }
+
+                            ],
+                        });
+
+                        applyMainTableFilterToSubtaskTable();
+
+                        subtaskTable.on("rowMoved", function (e, row) {
+                            // Get the new order of rows
+                            var rows = subtaskTable.getRows(); // Get all rows
+                            var newOrder = rows.map(row => row.getData().id); // Extract row data in the new order
+                            console.log("New order of rows:", newOrder);
+                            // Prepare data to send
+                            var requestData = {
+                                userId: userId,
+                                order: newOrder
+                            };
+
+                            $.ajax({
+                                url: `@config.GetSection("BaseAPI").Value/SubTask/Reordering`,
+                                method: 'POST',
+                                contentType: 'application/json',
+                                data: JSON.stringify(requestData),
+                                success: function (response) {
+                                    console.log('Success:', response);
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('Error Status:', status);
+                                    console.error('Error Thrown:', error);
+                                    console.error('Response Text:', xhr.responseText);
+                                    console.error('Response Status:', xhr.status);
+                                    console.error('Response Headers:', xhr.getAllResponseHeaders());
+                                }
+                            });
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching sub-task data:", error);
+                    }
+                });
+
+            }
+
+            function transformSubTaskData(data) {
+                console.log('data', data);
+                return data.map(item => ({
+
+                    subTaskName: item.name,
+                    status: item.status,
+                    estTime1: item.estTime1,
+                    dueDate: dateTimeFormatter(item.dueDate),
+                    id: item.id,
+                    type: item.type,
+                    serialNumber: item.serialNumber,
+                    canChangeStatus: item.canChangeStatus
+                }));
+            }
+
+            $.ajax({
+                url: `@config.GetSection("BaseAPI").Value/Tasks/GetTaskByUserNew/${userId}`,
+                method: "GET",
+                success: function (response) {
+                    console.log(response);
+                    const transformedData = transformData(response);
+                    console.log('transformedData', transformedData);
+                    initializeMainTable(transformedData);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+
+            function applyMainTableFilterToSubtaskTable() {
+                if (subtaskTable) {
+                    const filters = mainTable.getFilters();
+                    const statusFilter = filters.find(filter => filter.field === 'status');
+                    if (statusFilter) {
+                        subtaskTable.setFilter('status', '=', statusFilter.value);
+                    }
+                }
+            }
+
+            $('#filter-started').on('click', function () {
+                mainTable.setFilter('status', '=', 'Started');
+                applyMainTableFilterToSubtaskTable();
+            });
+
+            $('#filter-not-started').on('click', function () {
+                mainTable.setFilter('status', '=', 'NotStarted');
+                applyMainTableFilterToSubtaskTable();
+            });
+
+            $('#filter-completed').on('click', function () {
+                mainTable.setFilter('status', '=', 'Completed');
+                applyMainTableFilterToSubtaskTable();
+            });
+
+            // Add event listener for the offcanvas close event
+            $('#offcanvasExample').on('hidden.bs.offcanvas', function () {
+                // Get the current filter
+                const currentFilter = mainTable.getFilters()[0].value;
+
+                // Refresh the main table data
+                $.ajax({
+                    url: `@config.GetSection("BaseAPI").Value/Tasks/GetTaskByUserNew/${userId}`,
+                    method: "GET",
+                    success: function (response) {
+                        console.log('response', response);
+                        // $('#prioritySelect').val(response.priority);
+                        const transformedData = transformData(response);
+                        mainTable.replaceData(transformedData);
+                        mainTable.setFilter('status', '=', currentFilter);
+                        applyMainTableFilterToSubtaskTable();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error fetching data:", error);
+                    }
+                });
+            });
+        });
+
+
+
+        function pieChartFormatter(cell, formatterParams, onRendered) {
+            var progress = cell.getValue();
+            var data = {
+                datasets: [{
+                    data: [progress, 100 - progress],
+                    backgroundColor: [
+                        'rgba(25, 205, 92, 0.2)', // Color for completed
+                        'rgba(255, 255, 255, 0.2)'  // Color for remaining
+                    ],
+                    borderColor: [
+                        'rgba(25, 205, 92, 1)',
+                        'rgba(168, 168, 168, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+
+            };
+
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    },
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, ctx) => {
+                                return Math.round(value) + '%';
+                            },
+                            color: '#000000',
+                            display: true,
+                            align: 'end'
+                        }
+                    }
+                }
+            });
+
+            var container = document.createElement('div');
+            container.classList.add('pie-chart-container');
+
+            container.appendChild(canvas);
+
+            var progressText = document.createElement('span');
+            progressText.textContent = Math.round(progress) + "%";
+            container.appendChild(progressText);
+
+            return container;
+        }
+
+        function statusFormatter(cell, formatterParams, onRendered, initialValue) {
+            var row = cell.getRow();
+            var rowData = row.getData();
+            var cng = rowData.canChangeStatus;
+            var status = ["project", "mst", "task"];
+            function getStatusLabel(status) {
+                if (status === "NotStarted") return "Not Started";
+                return status;
+            }
+            if (status.includes(rowData.type)) {
+                return '';
+            } else if (rowData.type === 'sub-task') {
+                var select = document.createElement("select");
+                var statusOptions = [
+                    { label: 'Not Started', value: 'NotStarted' },
+                    { label: 'Started', value: 'Started' },
+                    { label: 'Completed', value: 'Completed' }
+                ];
+                statusOptions.forEach(function (option) {
+                    var optionElement = document.createElement("option");
+                    optionElement.value = option.value;
+                    optionElement.textContent = option.label;
+                    if (initialValue === option.value) {
+                        optionElement.selected = true;
+                    }
+                    select.appendChild(optionElement);
+                });
+
+                // Disable the dropdown if cng is false
+                select.disabled = !cng;
+
+                select.addEventListener("change", function () {
+                    if (cng) {  // Only allow changes if cng is true
+                        cell.setValue(this.value);
+                        var taskId = cell.getRow().getData().id;
+                        var newStatus = this.value;
+                        var st;
+                        if (newStatus == "NotStarted") st = 0;
+                        if (newStatus == "Started") st = 1;
+                        if (newStatus == "Completed") st = 2;
+                        var data = {
+                            id: taskId,
+                            status: st
+                        };
+                        $.ajax({
+                            url: '@config.GetSection("BaseAPI").Value/SubTask/UpdateTaskStatus',
+                            type: "PUT",
+                            contentType: "application/json",
+                            data: JSON.stringify(data),
+                            success: function (response) {
+                                var rowId = cell.getRow().getData().id;
+                                expandedRows[rowId] = row.getTreeParent() === null || row.getTreeParent().isOpen();
+                                LoadTask();
+                            },
+                            error: function (error) {
+                                console.error('Failed to update task status');
+                            }
+                        });
+                    }
+                });
+                return select;
+            } else {
+                return getStatusLabel(rowData.status);
+            }
+        }
+
+
+
+        $(document).ready(function () {
+            // LoadTask();
+            taskstat();
+        });
+
+
+        function taskstat() {
+            var UserId = getCookie('UserId');
+            $.ajax({
+                url: `@config.GetSection("BaseAPI").Value/Tasks/GetStats/${UserId}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+
+
+                    let completedNoDelayCount = response.filter(task => task.status1 === 2).length;
+                    document.getElementById('completed-tasks-count').textContent = `Completed Subtasks: ${completedNoDelayCount}`;
+                    //  document.getElementById('delayed-tasks-count').textContent = `Completed Tasks(Delay): ${delayedCount}`;
+
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+
+
+        // function LoadTask() {
+        //     var UserId = getCookie('UserId');
+        //     const baseUrl = `@config.GetSection("BaseAPI").Value/Tasks/GetTaskByUserNew/${UserId}`;
+
+        //     let table;
+        //     let currentFilter = ''; // To keep track of the current filter
+
+        //     // Function to fetch data from API and filter by status
+        //     function fetchData(url, filterStatus) {
+        //         fetch(url)
+        //             .then(response => {
+        //                 console.log(response);
+        //                 if (!response.ok) {
+        //                     throw new Error(`HTTP error! Status: ${response.status}`);
+        //                 }
+        //                 return response.json();
+        //             })
+        //             .then(data => {
+        //                 console.log(data);
+        //                 // Apply filter if filterStatus is provided
+        //                 if (filterStatus) {
+        //                     data = data.filter(task => task.status === filterStatus);
+        //                 }
+
+        //                 // Update table data
+        //                 if (table) {
+        //                     table.setData(data);
+        //                 } else {
+        //                     initializeTable(data);
+        //                 }
+        //             })
+        //             .catch(error => {
+        //                 console.error('Error fetching data:', error);
+        //             });
+        //     }
+
+        //     // Function to initialize Tabulator table
+        //     function initializeTable(data) {
+        //         table = new Tabulator("#task-table", {
+        //             data: data,
+        //           //  height: "100%",
+        //             layout: "fitColumns",
+        //             dataTree: true,
+        //             dataTreeFilter: false,
+        //             dataTreeSort: false,
+        //             dataTreeBranchElement: false,
+        //             dataTreeCollapseElement: `<i class="mdi mdi-chevron-down"></i>`,
+        //             dataTreeExpandElement: `<i class="mdi mdi-chevron-right"></i>`,
+        //             pagination: "local",
+        //             dataTreeStartExpanded: false,
+        //             virtualDom: true,
+        //             virtualDomBuffer: 30,
+        //             paginationSize: 10,
+        //             paginationSizeSelector: [10, 20, 30],
+        //             dataTreeChildField: "_children",
+        //             columns: [
+        //                 { title: "ID", field: "id", visible: false },
+        //                 { title: "Type", field: "type", visible: false },
+        //                 { title: "Name", field: "name" },
+        //                 {
+        //                     title: "Status",
+        //                     field: "status",
+        //                     formatter: function (cell, formatterParams, onRendered) {
+        //                         return statusFormatter(cell, formatterParams, onRendered, cell.getValue());
+        //                     }
+        //                 },
+        //                 {
+        //                     title: "Start Date",
+        //                     field: "startDate",
+        //                     formatter: dateTimeFormatter
+        //                 },
+        //                 { title: "Estimated Time", field: "estTime1" },
+        //                 {
+        //                     title: "Due Date",
+        //                     field: "formattedDueDate",
+        //                 },
+        //                 { title: "Delay", field: "delay", visible: false }
+        //             ]
+        //         });
+
+        //         // Event listeners for data tree row expand/collapse
+        //         table.on("dataTreeRowExpanded", function (row) {
+        //             fetchChildrenAndUpdateRow(row, currentFilter); // Pass current filter to child rows
+        //         });
+
+        //         table.on("dataTreeRowCollapsed", function (row) {
+        //             const rowData = row.getData();
+        //             delete expandedRows[rowData.id];
+        //         });
+        //     }
+
+        //     // Function to fetch child data and update the row
+        //     function fetchChildrenAndUpdateRow(row, filterStatus) {
+        //         const rowData = row.getData();
+        //         let endpoint = '';
+
+        //         if (rowData.type === 'project') {
+        //             endpoint = `@config.GetSection("BaseAPI").Value/Tasks/GetTaskByUserNewMst/${UserId}/${rowData.id}`;
+        //         } else if (rowData.type === 'mst') {
+        //             endpoint = `@config.GetSection("BaseAPI").Value/Tasks/GetTaskByUserNewTask/${UserId}/${rowData.id}`;
+        //         } else if (rowData.type === 'task') {
+        //             endpoint = `@config.GetSection("BaseAPI").Value/Tasks/GetTaskByUserNewSubtask/${UserId}/${rowData.id}`;
+        //         }
+
+        //         if (endpoint) {
+        //             fetch(endpoint)
+        //                 .then(response => {
+        //                     if (!response.ok) {
+        //                         throw new Error(`HTTP error! Status: ${response.status}`);
+        //                     }
+        //                     return response.json();
+        //                 })
+        //                 .then(childData => {
+        //                     if (filterStatus) {
+        //                         childData = childData.filter(task => task.status === filterStatus);
+        //                     }
+
+        //                     row.update({ _children: childData });
+        //                     if (expandedRows[rowData.id]) {
+        //                         row.expand();
+        //                     }
+        //                 })
+        //                 .catch(error => {
+        //                     console.error('Error fetching child data:', error);
+        //                 });
+        //         }
+
+        //         expandedRows[rowData.id] = true;
+        //     }
+
+        //     // Date time formatter function
+        //     function dateTimeFormatter(cell, formatterParams, onRendered) {
+        //         const dateTime = cell.getValue();
+        //         if (dateTime) {
+        //             const date = new Date(dateTime);
+        //             const formattedDate = `${date.toLocaleString('en-US', { month: 'long', day: '2-digit', year: 'numeric', hour: 'numeric', minute: 'numeric' })}`;
+        //             return formattedDate;
+        //         }
+        //         return '';
+        //     }
+
+        //     // Initial data fetch - show "Not Started" tasks by default
+        //     fetchData(baseUrl, 'Started');
+        //     currentFilter = 'Started'; // Update current filter
+
+        //     // Event listeners for filter buttons
+        //     document.getElementById('filter-not-started').addEventListener('click', () => {
+        //         if (currentFilter !== 'NotStarted') {
+        //             fetchData(baseUrl, 'NotStarted');
+        //             currentFilter = 'NotStarted';
+        //         }
+        //     });
+
+        //     document.getElementById('filter-started').addEventListener('click', () => {
+        //         if (currentFilter !== 'Started') {
+        //             fetchData(baseUrl, 'Started');
+        //             currentFilter = 'Started';
+        //         }
+        //     });
+        //     document.getElementById('filter-completed').addEventListener('click', () => {
+        //         if (currentFilter !== 'Completed') {
+        //             fetchData(baseUrl, 'Completed');
+        //             currentFilter = 'Completed';
+        //         }
+        //     });
+        // }
+
+
+
+
+
+
+        // function statusFormatter(cell, formatterParams, onRendered, initialValue) {
+        //     //   console.log("Initial Value:", initialValue);
+        //     var row = cell.getRow();
+        //     var rowData = row.getData();
+        //     var status = ["project", "mst", "task"];
+
+        //     // Define a function to map status values to display labels
+        //     function getStatusLabel(status) {
+        //         if (status === "NotStarted") return "Not Started";
+        //         return status;
+        //     }
+
+        //     if (status.includes(rowData.type)) {
+        //         return '';
+        //     } else if (rowData.type === 'sub-task') {
+        //         var select = document.createElement("select");
+        //         var statusOptions = [
+        //             { label: 'Not Started', value: 'NotStarted' },
+        //             { label: 'Started', value: 'Started' },
+        //             { label: 'Completed', value: 'Completed' }
+        //         ];
+
+        //         statusOptions.forEach(function (option) {
+        //             var optionElement = document.createElement("option");
+        //             optionElement.value = option.value;
+        //             optionElement.textContent = option.label;
+        //             if (initialValue === option.value) {
+        //                 optionElement.selected = true;
+        //             }
+        //             select.appendChild(optionElement);
+        //         });
+
+        //         select.addEventListener("change", function () {
+        //             cell.setValue(this.value);
+        //             var taskId = cell.getRow().getData().id; // Get the ID of the task
+        //             var newStatus = this.value; // Get the new status
+        //             var st;
+        //             if (newStatus == "NotStarted")
+        //                 st = 0;
+        //             if (newStatus == "Started")
+        //                 st = 1;
+        //             if (newStatus == "Completed")
+        //                 st = 2;
+        //             // Get the new status
+        //             var data = {
+        //                 id: taskId,
+        //                 status: st // Pass the status as it is
+        //             };
+        //             //  console.log("taskid", data);
+        //             $.ajax({
+        //                 url: '@config.GetSection("BaseAPI").Value/SubTask/UpdateTaskStatus',
+        //                 type: "PUT",
+        //                 contentType: "application/json", // Specify JSON content type
+        //                 data: JSON.stringify(data), // Convert the object to JSON
+        //                 success: function (response) {
+        //                     // Preserve expanded state
+        //                     var rowId = cell.getRow().getData().id;
+        //                     expandedRows[rowId] = row.getTreeParent() === null || row.getTreeParent().isOpen();
+
+        //                     LoadTask();
+
+        //                     //    console.log('Task status updated successfully');
+
+        //                 },
+        //                 error: function (error) {
+        //                     console.error('Failed to update task status');
+        //                 }
+        //             });
+        //         });
+
+        //         return select; // Return the select element for sub-tasks
+        //     } else {
+        //         return getStatusLabel(rowData.status); // Return the status label directly for other types
+        //     }
+        // }
+
+
+        // Function to convert flat data to hierarchical structure
+        function convertToHierarchy(data) {
+            const hierarchy = {};
+            data.forEach(task => {
+                if (!task.assignees.length) {
+                    // Parent task
+                    hierarchy[task.id] = { ...task, _children: [] };
+                } else {
+                    // Child task
+                    task.assignees.forEach(assignee => {
+                        if (hierarchy[assignee.id]) {
+                            hierarchy[assignee.id]._children.push(task);
+                        }
+                    });
+                }
+            });
+            return Object.values(hierarchy);
+        }
+
+
+
+    </script>
+
+
+}
